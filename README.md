@@ -1,3 +1,48 @@
+# Link 
+Link sheet: https://docs.google.com/spreadsheets/d/1T94VoRSNYox1UcCuhYPz2Gi-CSE22-Roq1-KpuG46Js/edit?gid=1274873539#gid=1274873539
+<br/>
+GIT: https://github.com/VuzPham/PRJ_Noah_FETeam9
+<br/>
+DOC: https://docs.google.com/document/d/1YLzO8z7tdmZByn1Y20RcPYNmFm3LiQ8FkNSdMNdbQOk/edit#heading=h.bwv0ugly05we
+<br/>
+API: 
+
+# My Team
+<h4>Tên nhóm: Noah Cứu Thế  </h4>
+
+| STT | Họ tên | Chức vụ  |  Email  | 
+|----------------|--------------------|--------------------|--------------------|
+|  1  |  Phạm Nguyên Vũ  |   Leader  |   phamnguyenvu287@gmail.com  |
+|  2  |  Nguyễn Xuân Bính  |   Member  |   Nguyenbinh17062003@gmail.com  |
+|  3  |  Lê Anh Quân  |   Member  |   leanhquananlao@gmail.com  |
+|  4  |  Lê Minh Tuấn  |   Member  |   lmtuan21082003@gmail.com  |
+|  5 |  Đặng Như Huỳnh |   Member  |  dangnhuh2003@gmail.com  |
+
+-----------------------------------------------
+### Công nghệ sử dụng </br>
+ - ReactJS </br>
+ - Visual studio code </br>
+ - Web:</br>
+  	+ Frontend: HTML, CSS, JavaScript, SCSS</br>
+-----------------------------------------------
+## Hệ thống quản lý vật liệu xây dựng
+<h5>Mô tả dự án: Web site Quản lý khóa học Noah</h5>
+
+
+
+
+
+-----------------------------------------------
+| STT | Nghiệp vụ | Phân công  |
+|----------------|--------------------|--------------------|
+|  1  |  Tìm kiếm v|  Vũ   |
+|  1  |  Tìm kiếm v|  Vũ   |
+|  1  |  Tìm kiếm v|  Vũ   |
+|  1  |  Tìm kiếm v|  Vũ   |
+|  1  |  Tìm kiếm v|  Vũ   |
+|  1  |  Tìm kiếm v|  Vũ   |
+
+-----------------------------------------------
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
