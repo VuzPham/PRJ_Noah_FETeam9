@@ -1,0 +1,104 @@
+// Import Bootstrap SCSS
+@import "~bootstrap/scss/bootstrap";
+
+// Cấu hình màu sắc cho trang
+$primary-color: #007bff;
+$secondary-color: #6c757d;
+$background-color: #f8f9fa;
+$text-color: #212529;
+$btn-border-radius: 0.25rem;
+
+// Cấu hình toàn cục cho trang
+.container {
+  background-color: $background-color;
+  padding: 1rem;
+  border-radius: $btn-border-radius;
+}
+
+// Tiêu đề chính
+.title {
+  color: $primary-color;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+// Input tìm kiếm
+.search-input {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: $btn-border-radius;
+  border: 1px solid #ccc;
+  margin-bottom: 1rem;
+}
+
+// Danh sách câu hỏi
+.question-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .question-item {
+    padding: 1rem;
+    border: 1px solid #ddd;
+    border-radius: $btn-border-radius;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+
+    .question-text {
+      margin-bottom: 0.5rem;
+    }
+
+    .actions {
+      display: flex;
+      gap: 0.5rem;
+
+      .btn-edit,
+      .btn-delete {
+        border-radius: $btn-border-radius;
+        padding: 0.5rem;
+        text-decoration: none;
+        color: #fff;
+        font-weight: bold;
+        border: none;
+        cursor: pointer;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+
+      .btn-edit {
+        background-color: $primary-color;
+
+        &:hover {
+          background-color: darken($primary-color, 10%);
+        }
+      }
+
+      .btn-delete {
+        background-color: #dc3545;
+
+        &:hover {
+          background-color: darken(#dc3545, 10%);
+        }
+      }
+    }
+  }
+}
+
+// Nút thêm câu hỏi
+.btn-add {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: $primary-color;
+  color: #fff;
+  border-radius: $btn-border-radius;
+  text-decoration: none;
+  font-weight: bold;
+  margin-top: 1rem;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
