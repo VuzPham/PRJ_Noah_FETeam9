@@ -1,3 +1,7 @@
+# How To Use
+<h3>Turn on terminal:npm install classnames</h3>
+
+
 # Link 
 Link sheet: https://docs.google.com/spreadsheets/d/1T94VoRSNYox1UcCuhYPz2Gi-CSE22-Roq1-KpuG46Js/edit?gid=1274873539#gid=1274873539
 <br/>
@@ -25,7 +29,7 @@ API:
  - Web:</br>
   	+ Frontend: HTML, CSS, JavaScript, SCSS</br>
 -----------------------------------------------
-## Hệ thống quản lý vật liệu xây dựng
+## Hệ thống WWeb quản lý khóa học Noah
 <h5>Mô tả dự án: Web site Quản lý khóa học Noah</h5>
 
 
