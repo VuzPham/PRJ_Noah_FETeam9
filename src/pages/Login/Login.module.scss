@@ -1,18 +1,11 @@
-html, body {
-    position: relative;
-    height: 100%;
-    margin: 0;
-}
-
 .item-center{
     display: flex;
     justify-content: center;
 }
-
-body{
-    @extend .item-center;
-    align-items: center;
-    background-color: var(--primary);
+.wrapper{
+    @extend .item-center;  
+    position: relative;
+    margin-top: 40px
 }
 
 .login-card{
@@ -194,5 +187,32 @@ body{
     .btn-forgot{
         font-size: 14px;
         font-weight: 100;
+    }
+}
+
+@media (max-width: 768px){
+    .login-card{
+        width: auto;
+        height: auto;
+        padding: 20px 0;
+    }
+   
+    .logo{
+        border-radius: 999px;
+        width: 100px;
+    }
+
+    .draw{
+        display: none;
+    }
+
+    .title-des{
+        display: none;
+    }
+
+    .left-card{
+        display: flex;
+        justify-content: center;
+        align-items: center ;
     }
 }

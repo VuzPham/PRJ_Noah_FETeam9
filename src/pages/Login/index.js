@@ -27,7 +27,7 @@ function Login() {
                     </div>
 
                     <div className={cx('left-card', 'col-md-6')}>
-                    <div className={cx('login-form')}>
+                    <form className={cx('login-form')}>
                         <h1 className={cx('title-form')}>Log In</h1>
                         <div className={cx('input-container')}>
                             <div className={cx('input-wrapper')}>
@@ -65,7 +65,7 @@ function Login() {
                                 Forgot Your Password?
                             </Button>
                         </div>
-                    </div>
+                    </form>
             </div>
         </div>
     </div>

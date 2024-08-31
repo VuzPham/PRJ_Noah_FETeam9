@@ -2,8 +2,9 @@
 
 :root{
     // color
-    --primary: #F8D298;
+    --primary: #f0d8b3;
     --white: #fff;
+    --text-color: #333;
 
     // icon
     --default-icon-width: 25px;
@@ -25,4 +26,11 @@ body{
     line-height: 1.5;
     font-family:Arial, Helvetica, sans-serif;
     text-rendering: optimizeSpeed;
+    background-color: var(--primary);
+    padding: 10px;
+}
+
+a[href]{
+    color: var(--text-color);
+    text-decoration: none;
 }
