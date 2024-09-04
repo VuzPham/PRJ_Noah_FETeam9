@@ -7,8 +7,6 @@ import { QuestionAddPage, QuestionEditPage, QuestionListPage } from '~/pages/Que
 const publicRoutes = [
   { path: '/', component: Login },
   { path: '/questions', component: QuestionListPage },
-  { path: '/questions/edit/:id', component: QuestionEditPage },
-  { path: '/questions/add', component: QuestionAddPage }
 ];
 
 const privateRoutes = [
