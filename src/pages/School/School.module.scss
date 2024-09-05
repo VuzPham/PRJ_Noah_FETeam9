@@ -30,7 +30,7 @@
 
     .other-action {
         button {
-            width    : 70px;
+            width    : 90px;
             font-size: 14px;
         }
     }
@@ -46,12 +46,16 @@
 }
 
 .card-container {
-    display  : flex;
+
+    display  : grid;
     flex-wrap: wrap;
     gap      : 1rem;
+    border   : none;
+    width    : 100%;
+    overflow : hidden;
 
     .col-card {
-        margin-bottom: 20px;
+        margin-bottom: 40px;
     }
 }
 
@@ -73,6 +77,7 @@
             border-top-right-radius: inherit;
             object-fit             : cover;
             height                 : 160px;
+            width                  : 100%;
         }
 
         &:hover {
@@ -131,4 +136,41 @@
     display    : flex;
     align-items: center;
     min-height : calc(100% - 1rem);
+}
+
+
+
+.flash-button {
+    color          : white !important;
+    border         : none;
+    padding        : 10px 20px;
+    text-align     : center;
+    text-decoration: none;
+    display        : inline-block;
+    font-size      : 16px;
+    cursor         : pointer;
+    border-radius  : 5px;
+    transition     : background-color 0.3s ease;
+    position       : relative;
+
+    &:active {
+        animation: flash 0.5s;
+    }
+
+    @keyframes flash {
+        0% {
+            background-color: #ffff00;
+            box-shadow      : 0 0 0 rgba(0, 0, 0, 0);
+        }
+
+        50% {
+            background-color: #068506;
+            box-shadow      : 0 0 15px rgba(2, 128, 2, 0.8);
+        }
+
+        100% {
+            background-color: #ffff00;
+            box-shadow      : 0 0 0 rgba(0, 0, 0, 0);
+        }
+    }
 }

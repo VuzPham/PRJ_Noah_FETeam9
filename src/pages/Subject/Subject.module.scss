@@ -33,3 +33,11 @@
         }
     }
 }
+
+.disable-choose {
+    cursor      : not-allowed;
+    border-color: #d9d9d9;
+    color       : rgba(0, 0, 0, 0.25);
+    background  : rgba(0, 0, 0, 0.04);
+    box-shadow  : none;
+}
