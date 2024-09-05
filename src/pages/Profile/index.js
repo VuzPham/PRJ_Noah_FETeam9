@@ -20,7 +20,6 @@ function Profile() {
         avatar: icons.defaultAvatar 
     });
 
-    // State for error messages
     const [errors, setErrors] = useState({
         name: '',
         username: '',
@@ -41,7 +40,6 @@ function Profile() {
     };
 
     const handleSaveClick = () => {
-        // Clear previous errors
         setErrors({
             name: '',
             username: '',
@@ -51,7 +49,6 @@ function Profile() {
 
         let valid = true;
 
-        // Validate inputs
         if (!userInfo.name) {
             setErrors(prev => ({ ...prev, name: "Full Name is required." }));
             valid = false;
@@ -103,10 +100,15 @@ function Profile() {
             reader.onload = () => {
                 setUserInfo((prevState) => ({
                     ...prevState,
-                    avatar: reader.result, 
+                    avatar: reader.result || icons.defaultAvatar,
                 }));
             };
             reader.readAsDataURL(file);
+        }else{
+            setUserInfo((prevState) => ({
+                ...prevState,
+                avatar: icons.defaultAvatar,
+            }));
         }
     };
 
@@ -114,7 +116,11 @@ function Profile() {
         <div className={cx('wrapper', 'container')}>
             <div className={cx('row', 'profile-card')}>
                 <div className={cx('avatar', 'col-md-4', 'col-12')}>
-                    <img className={cx('default-avatar')} src={userInfo.avatar} alt="avatar" />
+                    <img 
+                        className={cx('default-avatar')} 
+                        src={userInfo.avatar || icons.defaultAvatar} 
+                        alt="avatar" 
+                    />
                     {isEditing && (
                         <>
                             <input

@@ -105,6 +105,11 @@
     }
 }
 
+
+.input-wrapper.error input {
+    border-color: red;
+}
+
 .check-remember{
 
     input{
@@ -188,6 +193,19 @@
         font-size: 14px;
         font-weight: 100;
     }
+}
+
+.input-error {
+    border: 1px solid red;
+  }
+
+.error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+    position: absolute;
+    bottom: -1.5rem; 
+    left: 40px;
 }
 
 @media (max-width: 768px){
