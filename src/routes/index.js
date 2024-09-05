@@ -5,7 +5,7 @@ import Question from '~/pages/Question';
 import Profile from '~/pages/Profile';
 
 const publicRoutes = [
-    {path: '/', component: Login}
+    {path: '/', component: School}
 ];
 
 const privateRoutes = [
