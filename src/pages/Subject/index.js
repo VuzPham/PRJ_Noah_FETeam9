@@ -11,78 +11,81 @@ import ModalEditSubject from '../Modal/Modal_Edit_Subject';
 
 
 
-const columns = [
-    {
-        title: 'Subject Name',
-        dataIndex: 'name',
-        width: '20%',
-    },
-    {
-        title: 'Major Name',
-        dataIndex: 'majorName',
-        width: '20%',
-    },
-    {
-        title: 'Semester',
-        dataIndex: 'semester',
-        width: '20%',
-    },
-    {
-        title: 'Total Questions',
-        dataIndex: 'totalQuestions',
-    },
-    {
-        title: 'Actions',
-        dataIndex: 'actions',
-        render: (_, record) => (
-            <>
-                <Button
-                    style={{ borderRight: '1px solid gray' }}
-                    icon={<EditOutlined />}
-                    size="small"
-                    type="link"
-                // onClick={() => handleEditSubjectClick(record)}
-                >
-                    Edit
-                </Button>
-                <Button
-                    icon={<EyeOutlined />}
-                    size="small"
-                    type="link"
-                // onClick={() => handleViewQuestions(record)}
-                >
-                    View Questions
-                </Button>
-            </>
-        ),
-        width: '20%',
-    },
-];
 
-const initialData = [
-    { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 }
-];
 
 function Subject() {
+
+    const columns = [
+        {
+            title: 'Subject Name',
+            dataIndex: 'name',
+            width: '20%',
+        },
+        {
+            title: 'Major Name',
+            dataIndex: 'majorName',
+            width: '20%',
+        },
+        {
+            title: 'Semester',
+            dataIndex: 'semester',
+            width: '20%',
+        },
+        {
+            title: 'Total Questions',
+            dataIndex: 'totalQuestions',
+        },
+        {
+            title: 'Actions',
+            dataIndex: 'actions',
+            render: (_, record) => (
+                <>
+                    <Button
+                        style={{ borderRight: '1px solid gray' }}
+                        icon={<EditOutlined />}
+                        size="small"
+                        type="link"
+                        onClick={() => handleEditSubjectClick(record)}
+                    >
+                        Edit
+                    </Button>
+                    <Button
+                        icon={<EyeOutlined />}
+                        size="small"
+                        type="link"
+                    // onClick={() => handleViewQuestions(record)}
+                    >
+                        View Questions
+                    </Button>
+                </>
+            ),
+            width: '20%',
+        },
+    ];
+
+
+    const initialData = [
+        { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+        { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+        { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+        { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+        { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+        { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+        { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+        { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+        { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+        { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+        { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+        { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+        { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+        { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 }
+    ];
     const [dataSource, setDataSource] = useState(initialData);
     const [searchValue, setSearchValue] = useState('');
     const [temporarySearchValue, setTemporarySearchValue] = useState('');
@@ -161,55 +164,53 @@ function Subject() {
         setIsAddSubjectModalVisible(false);
     };
 
-    // eidt
-
-    // const handleAddSubjectSave = (newSubject) => {
-    //     setDataSource([newSubject, ...dataSource]);
-    //     handleAddSubjectModalClose();
-    // };
     const handleAddSubjectSave = (newSubject) => {
-        //Convert range date
-        const newData = {
-            ...newSubject,
-            semester: formatSemester(newSubject.semester),
-        };
-        setDataSource([newData, ...dataSource]);
+        setDataSource([newSubject, ...dataSource]);
         handleAddSubjectModalClose();
     };
 
-    const formatSemester = (semester) => {
-        if (!semester) return null;
-        const [startYear, endYear] = semester.split('-');
-        return `${startYear}-${endYear}`;
-    };
+
+
+    //add subject has range date
+    // const handleAddSubjectSave = (newSubject) => {
+    //     //Convert range date
+    //     const newData = {
+    //         ...newSubject,
+    //          semester: formatSemester(newSubject.semester),
+    //     };
+    //     setDataSource([newData, ...dataSource]);
+    //     handleAddSubjectModalClose();
+    // };
+
+    // const formatSemester = (semester) => {
+    //     if (!semester) return null;
+    //     const [startYear, endYear] = semester.split('-');
+    //     return `${startYear}-${endYear}`;
+    // };
 
 
     const rowSelection = {
         selectedRowKeys,
         onChange: onSelectChange,
     };
-    const handleEditSubjectClick = (record) => { // Accept record parameter
-        setEditSubjectData(record); // Set record data for editing
+
+    const handleEditSubjectClick = (record) => {
+        setEditSubjectData(record);
         setIsEditSubjectModalVisible(true);
     };
 
-    // const handleEditSubjectModalClose = () => {
-    //     setIsEditSubjectModalVisible(false);
-    //     setEditSubjectData(null); // Clear edit data after closing modal
-    // };
+    const handleEditSubjectModalClose = () => {
+        setIsEditSubjectModalVisible(false);
+        setEditSubjectData(null);
+    };
 
-    // const handleEditSubjectSave = (updatedSubject) => {
-    //     const updatedDataSource = dataSource.map(item =>
-    //         item.id === updatedSubject.id ? updatedSubject : item
-    //     );
-    //     setDataSource(updatedDataSource);
-    //     handleEditSubjectModalClose();
-    // };
-
-    // const handleSaveChangeSubject = () => {
-
-    // }
-
+    const handleEditSubjectSave = (updatedSubject) => {
+        const updatedDataSource = dataSource.map(item =>
+            item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
+        );
+        setDataSource(updatedDataSource);
+        handleEditSubjectModalClose();
+    };
     const hasSelected = selectedRowKeys.length > 0;
 
     return (
@@ -274,13 +275,10 @@ function Subject() {
 
             <ModalEditSubject
                 open={isEditSubjectModalVisible}
-            // onClose={handleEditSubjectModalClose}
-            // onSave={handleEditSubjectSave}
-            // initialData={editSubjectData}
-            // onEdit={handleEditSubjectClick} // Pass the function down
+                onClose={handleEditSubjectModalClose}
+                onSave={handleEditSubjectSave}
+                initialData={editSubjectData}
             />
-
-
             <Table
                 columns={columns}
                 rowKey={(record) => record.id}

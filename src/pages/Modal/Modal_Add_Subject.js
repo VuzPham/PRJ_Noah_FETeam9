@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { Modal, Form, Input, Select, DatePicker, Button } from 'antd';
 import 'react-markdown-editor-lite/lib/index.css';
 
-const { RangePicker } = DatePicker;
+// const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 function ModalAddSubject({ open, onClose, onSave }) {
@@ -26,18 +26,18 @@ function ModalAddSubject({ open, onClose, onSave }) {
 
 
     const handleSave = (values) => {
-        const [startDate, endDate] = values['RangePicker'] || [];
+        // const [startDate, endDate] = values['RangePicker'] || [];
 
-        // convert rangedate format year
-        const startYear = startDate ? startDate.format('YYYY') : null;
-        const endYear = endDate ? endDate.format('YYYY') : null;
-        const semester = startYear && endYear ? `${startYear}-${endYear}` : null;
+        // // convert rangedate format year
+        // const startYear = startDate ? startDate.format('YYYY') : null;
+        // const endYear = endDate ? endDate.format('YYYY') : null;
+        // const semester = startYear && endYear ? `${startYear}-${endYear}` : null;
 
         const newSubject = {
             name: values['Subject name'],
             majorName: values['Major Name'],
-            semester: semester,
-            generalInfo: editorContent,
+            semester: values['Semester'],
+            // generalInfo: editorContent,
         };
 
         onSave(newSubject);
@@ -46,23 +46,23 @@ function ModalAddSubject({ open, onClose, onSave }) {
 
     const handleReset = () => {
         form.resetFields();
-        setEditorContent('');
+        // setEditorContent('');
     };
 
-    const handleDateChange = (dates) => {
+    // const handleDateChange = (dates) => {
 
-        const [startDate, endDate] = dates || [];
+    //     const [startDate, endDate] = dates || [];
 
 
-        if (startDate && endDate) {
-            console.log(`Start Date: ${startDate.format('YYYY-MM-DD')}`);
-            console.log(`End Date: ${endDate.format('YYYY-MM-DD')}`);
-        } else if (startDate) {
-            console.log(`Start Date: ${startDate.format('YYYY-MM-DD')}`);
-        } else if (endDate) {
-            console.log(`End Date: ${endDate.format('YYYY-MM-DD')}`);
-        }
-    };
+    //     if (startDate && endDate) {
+    //         console.log(`Start Date: ${startDate.format('YYYY-MM-DD')}`);
+    //         console.log(`End Date: ${endDate.format('YYYY-MM-DD')}`);
+    //     } else if (startDate) {
+    //         console.log(`Start Date: ${startDate.format('YYYY-MM-DD')}`);
+    //     } else if (endDate) {
+    //         console.log(`End Date: ${endDate.format('YYYY-MM-DD')}`);
+    //     }
+    // };
 
     return (
         <Modal
@@ -136,12 +136,20 @@ function ModalAddSubject({ open, onClose, onSave }) {
                         ]}
                     />
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                     label="Range Picker"
                     name="RangePicker"
                     rules={[{ required: true, message: 'Please select a date range!' }]}
                 >
                     <RangePicker onChange={handleDateChange} />
+                </Form.Item> */}
+
+                <Form.Item
+                    label="Semester"
+                    name="Semester"
+                    rules={[{ required: true, message: 'Please input the semester of the subject!' }]}
+                >
+                    <Input style={{ width: '100%' }} />
                 </Form.Item>
 
                 <Form.Item>
