@@ -197,8 +197,8 @@ function School() {
                                     </h3>
                                     <div className={styles['card-actions']}>
                                         <ProfileOutlined onClick={() => handleViewClick(school)} />
-                                        <FormOutlined onClick={() => handleEditClick(school)} />
-                                        <DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} />
+                                        <FormOutlined style={{ color: 'orange' }} onClick={() => handleEditClick(school)} />
+                                        <DeleteOutlined style={{ color: 'red' }} onClick={() => handleDeleteClick(startIndex + index)} />
                                     </div>
                                 </div>
                             </div>
