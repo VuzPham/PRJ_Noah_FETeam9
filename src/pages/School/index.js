@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import {
     DeleteOutlined, PlusOutlined, ProfileOutlined,
     DoubleRightOutlined, DoubleLeftOutlined, FormOutlined
@@ -15,31 +16,42 @@ import ModalEditSchool from '../Modal/Modal_Edit_School';
 
 function School() {
     const [allSchools, setAllSchools] = useState([
-        { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' }
+        // { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        // { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' }
+    
     ]);
 
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(0);
     const [showAll, setShowAll] = useState(false);
+    useEffect(() => {
+        axios.get('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools')
+            .then(response => {
+                setAllSchools(response.data);
+            })
+            .catch(error => {
+                console.error("There was an error fetching the schools!", error);
+            });
+    }, []);
+
     const [editingSchool, setEditingSchool] = useState(null);
     const [viewingSchool, setViewingSchool] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,10 +83,10 @@ function School() {
         navigate('/subject');
     };
 
-    const handleDeleteClick = (index) => {
-        setSelectedSchoolIndex(index);
-        setIsModalOpen(true);
-    };
+    // const handleDeleteClick = (index) => {
+    //     setSelectedSchoolIndex(index);
+    //     setIsModalOpen(true);
+    // };
 
     const handleEditClick = (school) => {
         setEditingSchool(school);
@@ -108,15 +120,35 @@ function School() {
         setIsEditSchoolModalVisible(false);
     };
 
-    const handleAddSchool = (newSchool) => {
-        setAllSchools(prevSchools => [...prevSchools, newSchool]);
-        setIsAddSchoolModalVisible(false);
-    };
+    // const handleAddSchool = (newSchool) => {
+    //     setAllSchools(prevSchools => [...prevSchools, newSchool]);
+    //     setIsAddSchoolModalVisible(false);
+    // };
 
     const startIndex = currentPage * itemsPerPage;
     const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
     const currentSchools = allSchools.slice(startIndex, endIndex);
 
+    const handleAddSchool = (newSchool) => {
+        axios.post('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools', newSchool)
+            .then(response => {
+                setAllSchools(prevSchools => [...prevSchools, response.data]);
+            })
+            .catch(error => {
+                console.error("There was an error adding the school!", error);
+            });
+    };
+    
+    const handleDeleteClick = (index) => {
+        const schoolToDelete = allSchools[index];
+        axios.delete(`https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools/${schoolToDelete.id}`)
+            .then(() => {
+                setAllSchools(prevSchools => prevSchools.filter((_, i) => i !== index));
+            })
+            .catch(error => {
+                console.error("There was an error deleting the school!", error);
+            });
+    };
     return (
         <>
             <button className={`btn btn-success ${styles['flash-button']}`} onClick={() => handleDeleteClick(0)}>Đèn flash</button>
@@ -210,8 +242,3 @@ function School() {
     );
 }
 export default School;
-
-
-
-
-
