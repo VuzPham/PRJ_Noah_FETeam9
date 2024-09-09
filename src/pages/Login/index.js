@@ -1,35 +1,38 @@
 import { useState } from "react";
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faLock, faUser, faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faLock, faUser, faSpinner, faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import styles from './Login.module.scss'
 import icons from "~/assets/icon";
 import images from "~/assets/images";
 import Button from "~/components/Button";
+import { useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 
 function Login() {
     const [isLoading, setIsLoading] = useState(false);
-    const [username, setUsername] = useState('');
+    const [loginInput, setLoginInput] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({
-        username: '',
+        loginInput: '',
         password: '',
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const navigator = useNavigate();
 
     const handleLoginClick = () => {
         setErrors({
-            username: '',
+            loginInput: '',
             password: '',
         });
 
         let valid = true;
 
-        if (!username) {
-            setErrors(prev => ({ ...prev, username: 'Username is required.' }));
+        if (!loginInput) {
+            setErrors(prev => ({ ...prev,  loginInput: 'Username is required.' }));
             valid = false;
         }
 
@@ -41,19 +44,51 @@ function Login() {
         if (valid) {
             setIsLoading(true);
 
+            fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users")
+                .then(reponse => reponse.json())
+                .then(data => {
+                        const user = data.find(
+                        user =>
+                            (user.username === loginInput || user.email === loginInput) && user.password === password
+                    );
+
+                    if(user){
+                        navigator('/school');
+                        
+                    }else{
+                        const userExist = data.find(
+                            user => user.username === loginInput || user.email === loginInput
+                        );
+
+                        if(!userExist){
+                            setErrors(prev => ({...prev, loginInput: 'Username or Email not fund.'}));
+                        }else{
+                            setErrors(prev => ({...prev, password: 'Password is incorrect.'}));
+                        }
+                    }
+                })
+
+                .catch(error => {
+                    setIsLoading(false);
+                })
+
             setTimeout(() => {
                 setIsLoading(false);
-            }, 2000); 
+            }, 1000); 
         }
     };
 
-    const handleChangeUsername = (e) => {
-        setUsername(e.target.value);
+    const handleChangeLoginInput = (e) => {
+        setLoginInput(e.target.value);
     };
 
     const handleChangePassword = (e) => {
         setPassword(e.target.value);
     };
+
+    const toggleShowPassword = () => {
+        setShowPassword(!showPassword);
+    }
 
     return (
         <div className={cx('wrapper', 'container')}>
@@ -75,25 +110,30 @@ function Login() {
                     <form className={cx('login-form')}>
                         <h1 className={cx('title-form')}>Log In</h1>
                         <div className={cx('input-container')}>
-                            <div className={cx('input-wrapper', { 'error': errors.username })}>
+                            <div className={cx('input-wrapper', { 'error': errors.loginInput })}>
                                 <FontAwesomeIcon icon={faUser} className={cx('input-icon')} />
                                 <input
-                                    placeholder="Username"
-                                    value={username}
-                                    onChange={handleChangeUsername}
-                                    className={cx({ 'input-error': errors.username })}
+                                    placeholder="Username or Email"
+                                    value={loginInput}
+                                    onChange={handleChangeLoginInput}
+                                    className={cx({ 'input-error': errors.loginInput })}
                                 />
-                                 {errors.username && <div className={cx('error-message')}>{errors.username}</div>}
+                                 {errors.loginInput && <div className={cx('error-message')}>{errors.loginInput}</div>}
                             </div>
                             <div className={cx('input-wrapper', { 'error': errors.password })}>
                                 <FontAwesomeIcon icon={faLock} className={cx('input-icon')} />
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     placeholder="Password"
                                     value={password}
                                     onChange={handleChangePassword}
                                     className={cx({ 'input-error': errors.password })}
                                 />
+                                {password && (
+                                    <span className={cx('toggle-password')} onClick={toggleShowPassword}>
+                                        <FontAwesomeIcon icon={showPassword ? faEyeSlash: faEye}/>
+                                    </span>
+                                )}
                                  {errors.password && <div className={cx('error-message')}>{errors.password}</div>}
                             </div>
                         </div>
