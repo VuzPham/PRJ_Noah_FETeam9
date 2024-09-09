@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import classNames from "classnames/bind";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -11,12 +11,12 @@ const cx = classNames.bind(styles);
 function Profile() {
     const [isEditing, setIsEditing] = useState(false);
     const [userInfo, setUserInfo] = useState({
-        name: 'Nguyễn Xuân Bính',
-        username: 'xuanbinhne',
-        phone: '0123455678',
-        email: 'xuanbinh@gmail.com',
-        phoneConfirmed: 'Yes',
-        emailConfirmed: 'No',
+        name: '',
+        username: '',
+        phone: '',
+        email: '',
+        phoneConfirmed: '',
+        emailConfirmed: '',
         avatar: icons.defaultAvatar 
     });
 
@@ -29,6 +29,22 @@ function Profile() {
 
     const firstInputRef = useRef(null);
     const fileInputRef = useRef(null);
+
+    useEffect(() => {
+        // Fetch user information when the component mounts
+        fetchUserInfo();
+    }, []);
+
+    const fetchUserInfo = () => {
+        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1") // Replace with your API URL and user ID
+            .then(response => response.json())
+            .then(data => {
+                setUserInfo(data);
+            })
+            .catch(error => {
+                console.error("Error fetching user info:", error);
+            });
+    };
 
     const handleEditClick = () => {
         setIsEditing(true);
@@ -76,8 +92,27 @@ function Profile() {
         }
 
         if (valid) {
-            setIsEditing(false);
+            // Save user information
+            saveUserInfo();
         }
+    };
+
+    const saveUserInfo = () => {
+        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1", { // Replace with your API URL and user ID
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(userInfo),
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Profile updated successfully:", data);
+                setIsEditing(false);
+            })
+            .catch(error => {
+                console.error("Error updating profile:", error);
+            });
     };
 
     const handleChange = (e) => {
@@ -104,7 +139,7 @@ function Profile() {
                 }));
             };
             reader.readAsDataURL(file);
-        }else{
+        } else {
             setUserInfo((prevState) => ({
                 ...prevState,
                 avatar: icons.defaultAvatar,
@@ -200,13 +235,13 @@ function Profile() {
                                 <input
                                     className={cx('input-confirm', 'read-only')}
                                     name="phoneConfirmed"
-                                    value={userInfo.phoneConfirmed}
+                                    value={userInfo.phoneconfirm}
                                     readOnly
                                 />
                                 <input
                                     className={cx('input-confirm', 'read-only')}
                                     name="emailConfirmed"
-                                    value={userInfo.emailConfirmed}
+                                    value={userInfo.emailconfirm}
                                     readOnly
                                 />
                             </div>
