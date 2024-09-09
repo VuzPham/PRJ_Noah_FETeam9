@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEdit, faTrashAlt, faPlus, faSave, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { faEdit, faTrashAlt, faPlus, faSave, faTimes, faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
 import styles from './Question.module.scss';
+import { fetchQuestions, addQuestion, updateQuestion, deleteQuestion } from '../config/api';
 
 const QuestionManagement = () => {
   const [questions, setQuestions] = useState([]);
@@ -12,41 +13,34 @@ const QuestionManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [expandedQuestionId, setExpandedQuestionId] = useState(null);
+  const [showConfirmDelete, setShowConfirmDelete] = useState(null); // To control the confirmation dialog
+  const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState(null); // To store the ID of the question to delete
   const questionsPerPage = 5;
 
-  // Fetch questions from API
   useEffect(() => {
-    const fetchQuestions = async () => {
+    const loadQuestions = async () => {
       try {
-        const response = await fetch('https://66bf5cf442533c403145f070.mockapi.io/api/question-answer/id');
-        if (!response.ok) throw new Error('Failed to fetch questions');
-        const data = await response.json();
+        const data = await fetchQuestions();
         setQuestions(data);
-      } catch (error) {
-        setError(error.message);
+      } catch (err) {
+        setError(err.message);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchQuestions();
+    loadQuestions();
   }, []);
 
   const handleAddQuestion = async () => {
     try {
-      const response = await fetch('https://66bf5cf442533c403145f070.mockapi.io/api/question-answer/id', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newQuestion),
-      });
-      const addedQuestion = await response.json();
-      setQuestions([...questions, addedQuestion]);
-      setNewQuestion({ question: '', answer: '' }); // Sửa: dùng `question` thay vì `text`
+      const addedQuestion = await addQuestion(newQuestion);
+      setQuestions((prevQuestions) => [...prevQuestions, addedQuestion]);
+      setNewQuestion({ question: '', answer: '' });
       setCurrentView('list');
-    } catch (error) {
-      console.error('Error adding question:', error);
+    } catch (err) {
+      console.error('Error adding question:', err);
     }
   };
 
@@ -56,46 +50,57 @@ const QuestionManagement = () => {
   };
 
   const handleUpdateQuestion = async () => {
-    try {
-      const response = await fetch(`https://66bf5cf442533c403145f070.mockapi.io/api/question-answer/id/${selectedQuestion.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedQuestion),
-      });
+    if (!selectedQuestion) return;
 
-      if (response.ok) {
-        const updatedQuestion = await response.json();
-        setQuestions(questions.map(q => (q.id === updatedQuestion.id ? updatedQuestion : q)));
-        setSelectedQuestion(null);
-        setCurrentView('list');
-      }
-    } catch (error) {
-      console.error('Error updating question:', error);
+    try {
+      const updatedQuestion = await updateQuestion(selectedQuestion.id, selectedQuestion);
+      setQuestions((prevQuestions) =>
+        prevQuestions.map((q) => (q.id === updatedQuestion.id ? updatedQuestion : q))
+      );
+      setSelectedQuestion(null);
+      setCurrentView('list');
+    } catch (err) {
+      console.error('Error updating question:', err);
     }
   };
 
   const handleDeleteQuestion = async (id) => {
-    try {
-      const response = await fetch(`https://66bf5cf442533c403145f070.mockapi.io/api/question-answer/id/${id}`, {
-        method: 'DELETE',
-      });
+    setConfirmDeleteQuestionId(id);
+    setShowConfirmDelete(true);
+  };
 
-      if (response.ok) {
-        setQuestions(questions.filter(question => question.id !== id));
-      }
-    } catch (error) {
-      console.error('Error deleting question:', error);
+  const confirmDelete = async () => {
+    try {
+      await deleteQuestion(confirmDeleteQuestionId);
+      setQuestions((prevQuestions) =>
+        prevQuestions.filter((question) => question.id !== confirmDeleteQuestionId)
+      );
+    } catch (err) {
+      console.error('Error deleting question:', err);
     }
+    setShowConfirmDelete(false);
+    setConfirmDeleteQuestionId(null);
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmDelete(false);
+    setConfirmDeleteQuestionId(null);
   };
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  const handleQuestionToggle = (id) => {
+    // Only toggle the expanded question ID if the question has an answer
+    const question = questions.find((q) => q.id === id);
+    if (question && question.answer) {
+      setExpandedQuestionId((prevId) => (prevId === id ? null : id));
+    }
+  };
+
   const filteredQuestions = questions.filter((question) =>
-    question?.question?.toLowerCase().includes(searchTerm.toLowerCase()) // Sửa: dùng `question` thay vì `text`
+    question?.question?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
@@ -108,7 +113,15 @@ const QuestionManagement = () => {
 
   return (
     <div className={styles['container']}>
-      <h1>Question Management</h1>
+      {showConfirmDelete && (
+        <div className={styles['confirm-dialog']}>
+          <div className={styles['confirm-dialog-content']}>
+            <p>Are you sure you want to delete this question?</p>
+            <button onClick={confirmDelete} className={styles['confirm-btn']}>Yes</button>
+            <button onClick={cancelDelete} className={styles['cancel-btn']}>No</button>
+          </div>
+        </div>
+      )}
 
       {currentView === 'list' && (
         <>
@@ -125,54 +138,77 @@ const QuestionManagement = () => {
           <button onClick={() => setCurrentView('addQuestion')} className={styles['btn-add']}>
             <FontAwesomeIcon icon={faPlus} /> Add Question
           </button>
-          <ul className={styles['question-list']}>
-            {currentQuestions.map((question) => (
-              <li key={question.id} className={styles['question-item']}>
-                <div className={styles['question-text']}>
-                  {question.question} - {question.answer} {/* Sửa: hiển thị `question` thay vì `text` */}
-                  <div className={styles['actions']}>
-                    <button
-                      onClick={() => handleEditQuestion(question)}
-                      className={styles['btn-edit']}
+          <div className={styles['question-table']}>
+            <div className={styles['table-header']}>
+              <div className={styles['header-item']}>Question & Answer</div>
+              <div className={styles['header-item']}>Edit</div>
+              <div className={styles['header-item']}>Delete</div>
+            </div>
+            <ul className={styles['question-list']}>
+              {currentQuestions.map((question) => (
+                <li key={question.id} className={styles['question-row']}>
+                  <div className={styles['question-item']}>
+                    <div
+                      className={styles['question-text']}
+                      onClick={() => handleQuestionToggle(question.id)}
                     >
-                      Edit Question <FontAwesomeIcon icon={faEdit} />
-                    </button>
-                    <button onClick={() => handleDeleteQuestion(question.id)} className={styles['btn-delete']}>
-                      Delete Question <FontAwesomeIcon icon={faTrashAlt} />
-                    </button>
+                      <FontAwesomeIcon
+                        icon={expandedQuestionId === question.id ? faChevronUp : faChevronDown}
+                        className={styles['question-icon']}
+                      />
+                      {question.question}
+                    </div>
+                    {expandedQuestionId === question.id && question.answer && (
+                      <div className={styles['answer-text']}>{question.answer}</div>
+                    )}
                   </div>
-                </div>
-              </li>
-            ))}
-          </ul>
+                  <div className={styles['form-buttons01']}>
+                    <div className={styles['action-item']}>
+                      <button
+                        onClick={() => handleEditQuestion(question)}
+                        className={styles['btn-edit']}
+                      >
+                        <FontAwesomeIcon icon={faEdit} /> Edit question
+                      </button>
+                    </div>
+                    <div className={styles['action-item']}>
+                      <button onClick={() => handleDeleteQuestion(question.id)} className={styles['btn-delete']}>
+                        <FontAwesomeIcon icon={faTrashAlt} /> Delete question
+                      </button>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
 
-          {/* Pagination */}
-          <div className={styles['pagination']}>
-            <button
-              onClick={() => handlePageChange(currentPage - 1)}
-              className={styles['pagination-btn']}
-              disabled={currentPage === 1}
-            >
-              &laquo; Previous
-            </button>
-            {Array.from({ length: totalPages }, (_, index) => (
+            {/* Pagination */}
+            <div className={styles['pagination']}>
               <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-                className={`${styles['page-item']} ${
-                  currentPage === index + 1 ? styles['active'] : ''
-                }`}
+                onClick={() => handlePageChange(currentPage - 1)}
+                className={styles['pagination-btn']}
+                disabled={currentPage === 1}
               >
-                {index + 1}
+                &laquo; Previous
               </button>
-            ))}
-            <button
-              onClick={() => handlePageChange(currentPage + 1)}
-              className={styles['pagination-btn']}
-              disabled={currentPage === totalPages}
-            >
-              Next &raquo;
-            </button>
+              {Array.from({ length: totalPages }, (_, index) => (
+                <button
+                  key={index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={`${styles['page-item']} ${
+                    currentPage === index + 1 ? styles['active'] : ''
+                  }`}
+                >
+                  {index + 1}
+                </button>
+              ))}
+              <button
+                onClick={() => handlePageChange(currentPage + 1)}
+                className={styles['pagination-btn']}
+                disabled={currentPage === totalPages}
+              >
+                Next &raquo;
+              </button>
+            </div>
           </div>
         </>
       )}
@@ -183,7 +219,7 @@ const QuestionManagement = () => {
           <input
             type="text"
             placeholder="Enter question"
-            value={newQuestion.question} // Sửa: dùng `question` thay vì `text`
+            value={newQuestion.question}
             onChange={(e) => setNewQuestion({ ...newQuestion, question: e.target.value })}
             className={styles['input']}
           />
@@ -194,12 +230,14 @@ const QuestionManagement = () => {
             onChange={(e) => setNewQuestion({ ...newQuestion, answer: e.target.value })}
             className={styles['input']}
           />
-          <button onClick={handleAddQuestion} className={styles['btn-save']}>
-            <FontAwesomeIcon icon={faSave} /> Add
-          </button>
-          <button onClick={() => setCurrentView('list')} className={styles['btn-cancel']}>
-            <FontAwesomeIcon icon={faTimes} /> Cancel
-          </button>
+          <div className={styles['form-buttons02']}>
+            <button onClick={handleAddQuestion} className={styles['btn-save']}>
+              <FontAwesomeIcon icon={faSave} /> Save
+            </button>
+            <button onClick={() => setCurrentView('list')} className={styles['btn-cancel']}>
+              <FontAwesomeIcon icon={faTimes} /> Cancel
+            </button>
+          </div>
         </div>
       )}
 
@@ -208,7 +246,7 @@ const QuestionManagement = () => {
           <h2>Edit Question</h2>
           <input
             type="text"
-            value={selectedQuestion.question} // Sửa: dùng `question` thay vì `text`
+            value={selectedQuestion.question}
             onChange={(e) => setSelectedQuestion({ ...selectedQuestion, question: e.target.value })}
             className={styles['input']}
           />
@@ -218,12 +256,14 @@ const QuestionManagement = () => {
             onChange={(e) => setSelectedQuestion({ ...selectedQuestion, answer: e.target.value })}
             className={styles['input']}
           />
-          <button onClick={handleUpdateQuestion} className={styles['btn-save']}>
-            <FontAwesomeIcon icon={faSave} /> Save
-          </button>
-          <button onClick={() => setCurrentView('list')} className={styles['btn-cancel']}>
-            <FontAwesomeIcon icon={faTimes} /> Cancel
-          </button>
+          <div className={styles['form-buttons02']}>
+            <button onClick={handleUpdateQuestion} className={styles['btn-save']}>
+              <FontAwesomeIcon icon={faSave} /> Save
+            </button>
+            <button onClick={() => setCurrentView('list')} className={styles['btn-cancel']}>
+              <FontAwesomeIcon icon={faTimes} /> Cancel
+            </button>
+          </div>
         </div>
       )}
     </div>
