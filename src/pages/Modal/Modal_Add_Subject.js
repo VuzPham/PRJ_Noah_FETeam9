@@ -3,41 +3,25 @@ import React, { useState } from 'react';
 import { Modal, Form, Input, Select, DatePicker, Button } from 'antd';
 import 'react-markdown-editor-lite/lib/index.css';
 
-// const { RangePicker } = DatePicker;
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 function ModalAddSubject({ open, onClose, onSave }) {
     const [form] = Form.useForm();
     const [editorContent, setEditorContent] = useState('');
-
-    // const handleSave = (values) => {
-    //     const [startDate, endDate] = values['RangePicker'] || [];
-
-    //     const newSubject = {
-    //         name: values['Subject name'],
-    //         majorName: values['Major Name'],
-    //         startDate: startDate ? startDate.format('YYYY-MM-DD') : null,
-    //         endDate: endDate ? endDate.format('YYYY-MM-DD') : null,
-    //         generalInfo: editorContent,
-    //     };
-
-    //     onSave(newSubject);
-    // };
-
-
     const handleSave = (values) => {
-        // const [startDate, endDate] = values['RangePicker'] || [];
+        const [startDate, endDate] = values['RangePicker'] || [];
 
-        // // convert rangedate format year
-        // const startYear = startDate ? startDate.format('YYYY') : null;
-        // const endYear = endDate ? endDate.format('YYYY') : null;
-        // const semester = startYear && endYear ? `${startYear}-${endYear}` : null;
+        // convert rangedate format year
+        const startYear = startDate ? startDate.format('DD/MM/YYYY') : null;
+        const endYear = endDate ? endDate.format('DD/MM/YYYY') : null;
+        const semester = startDate && endDate ? `${startYear}-${endYear}` : null;
 
         const newSubject = {
             name: values['Subject name'],
             majorName: values['Major Name'],
-            semester: values['Semester'],
-            // generalInfo: editorContent,
+            // semester: values['Semester'],
+            semester: semester
         };
 
         onSave(newSubject);
@@ -49,20 +33,22 @@ function ModalAddSubject({ open, onClose, onSave }) {
         // setEditorContent('');
     };
 
-    // const handleDateChange = (dates) => {
+    const handleDateChange = (dates) => {
+        // console.log('Check value date range: ')
+        // const da = dates.map(date => {
+        //     console.log(date.format('DD-MM-YYYY'));
+        // });
+        const [startDate, endDate] = dates || [];
 
-    //     const [startDate, endDate] = dates || [];
-
-
-    //     if (startDate && endDate) {
-    //         console.log(`Start Date: ${startDate.format('YYYY-MM-DD')}`);
-    //         console.log(`End Date: ${endDate.format('YYYY-MM-DD')}`);
-    //     } else if (startDate) {
-    //         console.log(`Start Date: ${startDate.format('YYYY-MM-DD')}`);
-    //     } else if (endDate) {
-    //         console.log(`End Date: ${endDate.format('YYYY-MM-DD')}`);
-    //     }
-    // };
+        if (startDate && endDate) {
+            console.log(`Start Date: ${startDate.format('DD-MM-YYYY')}`);
+            console.log(`End Date: ${endDate.format('DD-MM-YYYY')}`);
+        } else if (startDate) {
+            console.log(`Start Date: ${startDate.format('DD-MM-YYYY')}`);
+        } else if (endDate) {
+            console.log(`End Date: ${endDate.format('DD-MM-YYYY')}`);
+        }
+    };
 
     return (
         <Modal
@@ -136,20 +122,12 @@ function ModalAddSubject({ open, onClose, onSave }) {
                         ]}
                     />
                 </Form.Item>
-                {/* <Form.Item
+                <Form.Item
                     label="Range Picker"
                     name="RangePicker"
                     rules={[{ required: true, message: 'Please select a date range!' }]}
                 >
                     <RangePicker onChange={handleDateChange} />
-                </Form.Item> */}
-
-                <Form.Item
-                    label="Semester"
-                    name="Semester"
-                    rules={[{ required: true, message: 'Please input the semester of the subject!' }]}
-                >
-                    <Input style={{ width: '100%' }} />
                 </Form.Item>
 
                 <Form.Item>
@@ -164,5 +142,3 @@ function ModalAddSubject({ open, onClose, onSave }) {
 }
 
 export default ModalAddSubject;
-
-

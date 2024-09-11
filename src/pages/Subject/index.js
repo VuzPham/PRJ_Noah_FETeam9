@@ -1,6 +1,4 @@
 //c3
-
-
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Input, Modal } from 'antd';
 import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined } from '@ant-design/icons';
@@ -8,7 +6,7 @@ import styles from './Subject.module.scss';
 import ModalDelete from '../Modal/Modal_Delete';
 import ModalAddSubject from '../Modal/Modal_Add_Subject';
 import ModalEditSubject from '../Modal/Modal_Edit_Subject';
-
+import moment from 'moment';
 
 
 
@@ -25,11 +23,29 @@ function Subject() {
             title: 'Major Name',
             dataIndex: 'majorName',
             width: '20%',
+            filters: [
+                { text: 'KHTN', value: 'KHTN' },
+                { text: 'KHXH', value: 'KHXH' },
+                { text: 'Đại Cương', value: 'Đại Cương' },
+                { text: 'Môn học bắt buộc', value: 'Môn học bắt buộc' },
+                { text: 'Môn học tự chọn', value: 'Môn học tự chọn' }
+            ],
+            onFilter: (value, record) => record.majorName.includes(value),
         },
         {
             title: 'Semester',
             dataIndex: 'semester',
             width: '20%',
+            render: semester => {
+                console.log('Check semester bên file subject: ', semester)
+                const [start, end] = semester.split('-');
+                if (start && end) {
+                    const startMonthYear = moment(start, 'DD/MM/YYYY').format('MM/YYYY');
+                    const endMonthYear = moment(end, 'DD/MM/YYYY').format('MM/YYYY');
+
+                    return `${startMonthYear} - ${endMonthYear}`;
+                }
+            }
         },
         {
             title: 'Total Questions',
@@ -65,26 +81,26 @@ function Subject() {
 
 
     const initialData = [
-        { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-        { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-        { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-        { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-        { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-        { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-        { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-        { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-        { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-        { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-        { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-        { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-        { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-        { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 }
+        { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 }
     ];
     const [dataSource, setDataSource] = useState(initialData);
     const [searchValue, setSearchValue] = useState('');
@@ -164,29 +180,6 @@ function Subject() {
         setIsAddSubjectModalVisible(false);
     };
 
-    const handleAddSubjectSave = (newSubject) => {
-        setDataSource([newSubject, ...dataSource]);
-        handleAddSubjectModalClose();
-    };
-
-
-
-    //add subject has range date
-    // const handleAddSubjectSave = (newSubject) => {
-    //     //Convert range date
-    //     const newData = {
-    //         ...newSubject,
-    //          semester: formatSemester(newSubject.semester),
-    //     };
-    //     setDataSource([newData, ...dataSource]);
-    //     handleAddSubjectModalClose();
-    // };
-
-    // const formatSemester = (semester) => {
-    //     if (!semester) return null;
-    //     const [startYear, endYear] = semester.split('-');
-    //     return `${startYear}-${endYear}`;
-    // };
 
 
     const rowSelection = {
@@ -204,9 +197,22 @@ function Subject() {
         setEditSubjectData(null);
     };
 
+
+    //add subject has range date
+    const handleAddSubjectSave = (newSubject) => {
+        console.log('Check value before saving: ', newSubject)
+        //Convert range date
+        const newData = {
+            ...newSubject,
+        };
+        setDataSource([newData, ...dataSource]);
+        console.log('Check value after saving: ', newData)
+        handleAddSubjectModalClose();
+    };
+
     const handleEditSubjectSave = (updatedSubject) => {
         const updatedDataSource = dataSource.map(item =>
-            item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
+            item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item,
         );
         setDataSource(updatedDataSource);
         handleEditSubjectModalClose();
