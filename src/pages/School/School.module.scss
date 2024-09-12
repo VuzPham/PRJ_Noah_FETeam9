@@ -1,3 +1,7 @@
+body {
+    background: linear-gradient(to right, #bae4ff, #6dd5fa, #f7e2e2);
+}
+
 .line {
     width : 100%;
     margin: 0px 20px;
@@ -84,6 +88,11 @@
             height                 : 160px;
             width                  : 100%;
             position               : relative;
+
+            &.slider-visible {
+                filter    : blur(0.5px);
+                transition: filter 0.3s ease;
+            }
         }
 
         &:hover {

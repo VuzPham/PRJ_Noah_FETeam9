@@ -197,7 +197,7 @@ function School() {
                             <div className={`card ${styles.card}`}>
                                 <img
                                     src={school.image}
-                                    className={`card-img-top ${styles['card-img-top']}`}
+                                    className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
                                     alt="School Image"
                                     height={120}
                                     onClick={handleRedirect}

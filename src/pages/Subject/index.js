@@ -7,6 +7,7 @@ import ModalDelete from '../Modal/Modal_Delete';
 import ModalAddSubject from '../Modal/Modal_Add_Subject';
 import ModalEditSubject from '../Modal/Modal_Edit_Subject';
 import moment from 'moment';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -69,7 +70,7 @@ function Subject() {
                         icon={<EyeOutlined />}
                         size="small"
                         type="link"
-                    // onClick={() => handleViewQuestions(record)}
+                        onClick={() => handleViewQuestions()}
                     >
                         View Questions
                     </Button>
@@ -84,23 +85,23 @@ function Subject() {
         { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
         { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
         { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 }
+        { id: 4, name: 'Subject 4', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 5, name: 'Subject 5', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 6, name: 'Subject 6', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 7, name: 'Subject 7', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 8, name: 'Subject 8', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 9, name: 'Subject 9', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 10, name: 'Subject 10', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 11, name: 'Subject 11', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 12, name: 'Subject 12', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 13, name: 'Subject 13', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 14, name: 'Subject 14', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 15, name: 'Subject 15', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 16, name: 'Subject 16', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 17, name: 'Subject 17', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+        { id: 18, name: 'Subject 18', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+        { id: 19, name: 'Subject 19', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+        { id: 20, name: 'Subject 20', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 }
     ];
     const [dataSource, setDataSource] = useState(initialData);
     const [searchValue, setSearchValue] = useState('');
@@ -196,6 +197,13 @@ function Subject() {
         setIsEditSubjectModalVisible(false);
         setEditSubjectData(null);
     };
+
+    const navigate = useNavigate();
+
+    //handle view question
+    const handleViewQuestions = () => {
+        navigate('/question')
+    }
 
 
     //add subject has range date
@@ -293,7 +301,9 @@ function Subject() {
                 loading={loading}
                 onChange={handleTableChange}
                 rowSelection={rowSelection}
+                scroll={{ y: 400 }}
             />
+
         </>
     );
 }
