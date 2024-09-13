@@ -14,7 +14,7 @@ const privateRoutes = [
     { path: '/school', component: School },
     { path: '/subject', component: Subject },
     { path: '/question', component: Question },
-    { path: '/profile', component: Profile },
+    { path: '/profile', component: Profile }
 ]
 
 export { publicRoutes, privateRoutes }

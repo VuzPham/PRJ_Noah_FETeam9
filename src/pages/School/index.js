@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {
     DeleteOutlined, PlusOutlined, ProfileOutlined,
-    DoubleRightOutlined, DoubleLeftOutlined, FormOutlined
+    DoubleRightOutlined, DoubleLeftOutlined, FormOutlined,
+    BarsOutlined, CloseOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from '../Modal/Modal_Delete';
@@ -16,6 +17,7 @@ import ModalEditSchool from '../Modal/Modal_Edit_School';
 
 function School() {
     const [allSchools, setAllSchools] = useState([
+<<<<<<< HEAD
         // { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
         // { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
         // { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
@@ -37,6 +39,28 @@ function School() {
         // { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
         // { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' }
     
+=======
+        { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' }
+>>>>>>> origin/NhuHuynh
     ]);
 
     const itemsPerPage = 10;
@@ -89,6 +113,7 @@ function School() {
     // };
 
     const handleEditClick = (school) => {
+        console.log('Check ')
         setEditingSchool(school);
         setIsEditSchoolModalVisible(true);
     };
@@ -128,6 +153,20 @@ function School() {
     const startIndex = currentPage * itemsPerPage;
     const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
     const currentSchools = allSchools.slice(startIndex, endIndex);
+    const [sliderVisibilities, setSliderVisibilities] = useState([false]);
+    const handleBtnClick = (index) => {
+        // console.log('Value startIndex: ', startIndex);
+        // console.log('Value index; ', index)
+        // console.log('Check value sliderVisibilities: ', sliderVisibilities);
+        const newSliderVisibilities = [...sliderVisibilities];
+        newSliderVisibilities[index] = !newSliderVisibilities[index];
+        setSliderVisibilities(newSliderVisibilities);
+        // console.log('Value lúc sau của sliderVisibilities: ', newSliderVisibilities)
+        // console.log('Check value sau: ', newSliderVisibilities)
+    };
+
+
+
 
     const handleAddSchool = (newSchool) => {
         axios.post('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools', newSchool)
@@ -151,8 +190,6 @@ function School() {
     };
     return (
         <>
-            <button className={`btn btn-success ${styles['flash-button']}`} onClick={() => handleDeleteClick(0)}>Đèn flash</button>
-
             <ModalDelete
                 open={isModalOpen}
                 onOk={handleModalOk}
@@ -215,11 +252,31 @@ function School() {
                             <div className={`card ${styles.card}`}>
                                 <img
                                     src={school.image}
-                                    className={`card-img-top ${styles['card-img-top']}`}
+                                    className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
                                     alt="School Image"
                                     height={120}
                                     onClick={handleRedirect}
                                 />
+                                {/* Cách 2 */}
+                                <div className={styles['icons-slider']}>
+                                    <input type='checkbox' id={`${styles['check']}-${index}`} style={{ display: 'none' }} />
+                                    <label htmlFor={`${styles['check']}-${index}`}>
+                                        <span id={styles['btn']} onClick={() => handleBtnClick(startIndex + index)}>
+                                            {sliderVisibilities[startIndex + index] ? <CloseOutlined /> : <BarsOutlined />}
+                                        </span>
+                                    </label>
+                                    <div className={`${styles['slider-container']} ${sliderVisibilities[startIndex + index] ? styles['visible'] : ''}`} >
+                                        <a>
+                                            <span><FormOutlined onClick={() => handleEditClick(school)} /></span>
+                                        </a>
+                                        <a>
+                                            <span><DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} /></span>
+                                        </a>
+                                        <a>
+                                            <span> <ProfileOutlined onClick={() => handleViewClick(school)} /></span>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div className={`card-body ${styles['card-body']}`}>
                                     <h3
                                         className={`card-title ${styles['card-title']}`}
@@ -227,18 +284,19 @@ function School() {
                                     >
                                         {school.name}
                                     </h3>
-                                    <div className={styles['card-actions']}>
-                                        <ProfileOutlined onClick={() => handleViewClick(school)} />
-                                        <FormOutlined style={{ color: 'orange' }} onClick={() => handleEditClick(school)} />
-                                        <DeleteOutlined style={{ color: 'red' }} onClick={() => handleDeleteClick(startIndex + index)} />
-                                    </div>
                                 </div>
+
+
                             </div>
                         </div>
                     ))}
                 </div>
-            </div>
+            </div >
         </>
     );
 }
+<<<<<<< HEAD
 export default School;
+=======
+export default School;
+>>>>>>> origin/NhuHuynh

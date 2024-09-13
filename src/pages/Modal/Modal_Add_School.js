@@ -28,8 +28,8 @@ function ModalAddSchool({ open, onClose, onSave }) {
             name: values['Name school'],
             image: values['Image'][0]?.thumbUrl,
             address: values['Address'],
-            date: values['Date']?.format('YYYY-MM-DD'),
-            generalInfo: editorContent
+            date: values['Date']?.format('DD-MM-YYYY'),
+            description: editorContent
         };
 
         onSave(newSchool);
