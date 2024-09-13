@@ -1,5 +1,6 @@
 //c3
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Table, Button, Input, Modal } from 'antd';
 import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined } from '@ant-design/icons';
 import styles from './Subject.module.scss';
@@ -11,9 +12,9 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-
 function Subject() {
 
+    
     const columns = [
         {
             title: 'Subject Name',
@@ -70,7 +71,7 @@ function Subject() {
                         icon={<EyeOutlined />}
                         size="small"
                         type="link"
-                        onClick={() => handleViewQuestions()}
+                        // onClick={() => handleViewQuestions()}
                     >
                         View Questions
                     </Button>
@@ -80,31 +81,32 @@ function Subject() {
         },
     ];
 
-
-    const initialData = [
-        { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 4, name: 'Subject 4', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 5, name: 'Subject 5', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 6, name: 'Subject 6', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 7, name: 'Subject 7', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 8, name: 'Subject 8', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 9, name: 'Subject 9', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 10, name: 'Subject 10', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 11, name: 'Subject 11', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 12, name: 'Subject 12', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 13, name: 'Subject 13', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 14, name: 'Subject 14', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 15, name: 'Subject 15', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 16, name: 'Subject 16', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 17, name: 'Subject 17', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 18, name: 'Subject 18', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 19, name: 'Subject 19', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 20, name: 'Subject 20', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 }
-    ];
-    const [dataSource, setDataSource] = useState(initialData);
+    // const initialData = [
+    //     { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+    //     { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+    //     { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+    //     { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+    //     { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+    //     { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+    //     { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+    //     { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+    //     { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+    //     { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+    //     { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
+    //     { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
+    //     { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
+    //     { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 }
+    // ];
+    // const [dataSource, setDataSource] = useState(initialData);
+    const [dataSource, setDataSource] = useState([]);
     const [searchValue, setSearchValue] = useState('');
+    
     const [temporarySearchValue, setTemporarySearchValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState({
@@ -121,6 +123,31 @@ function Subject() {
     const [editSubjectData, setEditSubjectData] = useState(null);
     const [inputFocused, setInputFocused] = useState(false);
 
+    // useEffect(() => {
+    //     if (temporarySearchValue) {
+    //         const filteredData = dataSource.filter(entry =>
+    //             `${entry.name}`.toLowerCase().includes(temporarySearchValue.toLowerCase())
+    //         );
+    //         setDataSource(filteredData);
+    //     } else {
+    //         setDataSource(initialData);
+    //     }
+    // }, [temporarySearchValue]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true);
+            try {
+                const response = await axios.get('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects'); 
+                setDataSource(response.data);
+            } catch (error) {
+                console.error("Error fetching data: ", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     useEffect(() => {
         if (temporarySearchValue) {
@@ -129,7 +156,15 @@ function Subject() {
             );
             setDataSource(filteredData);
         } else {
-            setDataSource(initialData);
+            const fetchData = async () => {
+                try {
+                    const response = await axios.get('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects');
+                    setDataSource(response.data);
+                } catch (error) {
+                    console.error("Error fetching data: ", error);
+                }
+            };
+            fetchData();
         }
     }, [temporarySearchValue]);
 
@@ -152,11 +187,22 @@ function Subject() {
         setIsDeleteModalVisible(true);
     };
 
-    const handleDeleteConfirm = () => {
-        console.log('View handleDeleteConfirm: ', selectedRowKeys)
-        const newData = dataSource.filter(item => !selectedRowKeys.includes(item.id));
-        setDataSource(newData);
-        setSelectedRowKeys([]);
+    // const handleDeleteConfirm = () => {
+    //     console.log('View handleDeleteConfirm: ', selectedRowKeys)
+    //     const newData = dataSource.filter(item => !selectedRowKeys.includes(item.id));
+    //     setDataSource(newData);
+    //     setSelectedRowKeys([]);
+    //     setIsDeleteModalVisible(false);
+    // };
+
+    const handleDeleteConfirm = async () => {
+        try {
+            await axios.delete(`https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects/${selectedRowKeys[0]}`); 
+            setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
+            setSelectedRowKeys([]);
+        } catch (error) {
+            console.error('Delete failed: ', error);
+        }
         setIsDeleteModalVisible(false);
     };
 
@@ -181,7 +227,50 @@ function Subject() {
         setIsAddSubjectModalVisible(false);
     };
 
+    // const handleAddSubjectSave = (newSubject) => {
+    //     setDataSource([newSubject, ...dataSource]);
+    //     handleAddSubjectModalClose();
+    // };
 
+    const handleAddSubjectSave = async (newSubject) => {
+        try {
+            const response = await axios.post('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects', newSubject);
+            setDataSource([response.data, ...dataSource]);
+        } catch (error) {
+            console.error('Error adding subject: ', error);
+        }
+        handleAddSubjectModalClose();
+    };
+
+    const handleEditSubjectSave = async (updatedSubject) => {
+        try {
+            const response = await axios.put(`https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects/${updatedSubject.id}`, updatedSubject);
+            const updatedDataSource = dataSource.map(item =>
+                item.id === updatedSubject.id ? { ...item, ...response.data } : item
+            );
+            setDataSource(updatedDataSource);
+        } catch (error) {
+            console.error('Error updating subject: ', error);
+        }
+        handleEditSubjectModalClose();
+    };
+
+    //add subject has range date
+    // const handleAddSubjectSave = (newSubject) => {
+    //     //Convert range date
+    //     const newData = {
+    //         ...newSubject,
+    //          semester: formatSemester(newSubject.semester),
+    //     };
+    //     setDataSource([newData, ...dataSource]);
+    //     handleAddSubjectModalClose();
+    // };
+
+    // const formatSemester = (semester) => {
+    //     if (!semester) return null;
+    //     const [startYear, endYear] = semester.split('-');
+    //     return `${startYear}-${endYear}`;
+    // };
 
     const rowSelection = {
         selectedRowKeys,
@@ -198,33 +287,13 @@ function Subject() {
         setEditSubjectData(null);
     };
 
-    const navigate = useNavigate();
-
-    //handle view question
-    const handleViewQuestions = () => {
-        navigate('/question')
-    }
-
-
-    //add subject has range date
-    const handleAddSubjectSave = (newSubject) => {
-        console.log('Check value before saving: ', newSubject)
-        //Convert range date
-        const newData = {
-            ...newSubject,
-        };
-        setDataSource([newData, ...dataSource]);
-        console.log('Check value after saving: ', newData)
-        handleAddSubjectModalClose();
-    };
-
-    const handleEditSubjectSave = (updatedSubject) => {
-        const updatedDataSource = dataSource.map(item =>
-            item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item,
-        );
-        setDataSource(updatedDataSource);
-        handleEditSubjectModalClose();
-    };
+    // const handleEditSubjectSave = (updatedSubject) => {
+    //     const updatedDataSource = dataSource.map(item =>
+    //         item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
+    //     );
+    //     setDataSource(updatedDataSource);
+    //     handleEditSubjectModalClose();
+    // };
     const hasSelected = selectedRowKeys.length > 0;
 
     return (
@@ -308,4 +377,5 @@ function Subject() {
 }
 
 export default Subject;
+
 
