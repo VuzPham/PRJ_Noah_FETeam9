@@ -31,12 +31,12 @@ function Profile() {
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        // Fetch user information when the component mounts
+        
         fetchUserInfo();
     }, []);
 
     const fetchUserInfo = () => {
-        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1") // Replace with your API URL and user ID
+        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1") 
             .then(response => response.json())
             .then(data => {
                 setUserInfo(data);
@@ -92,13 +92,13 @@ function Profile() {
         }
 
         if (valid) {
-            // Save user information
+           
             saveUserInfo();
         }
     };
 
     const saveUserInfo = () => {
-        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1", { // Replace with your API URL and user ID
+        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1", { 
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

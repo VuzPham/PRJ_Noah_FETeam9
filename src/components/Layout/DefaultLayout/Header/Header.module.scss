@@ -31,7 +31,7 @@
         line-height: 60px;
         padding: 0 15px;
         transition: background-color .1s linear;
-        
+
         a {
             display: flex;
             align-items: center;
@@ -50,12 +50,12 @@
             background-color: #f4c1ae;
         }
 
-        &:first-child:hover {
+        &:first-child{
             border-top-left-radius: 20px;
             border-bottom-left-radius: 20px;
         }
 
-        &:last-child:hover {
+        &:last-child{
             border-top-right-radius: 20px;
             border-bottom-right-radius: 20px;
         }

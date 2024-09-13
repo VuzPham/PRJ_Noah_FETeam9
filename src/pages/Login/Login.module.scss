@@ -248,3 +248,10 @@
         align-items: center ;
     }
 }
+
+@media (max-width: 995px){
+    .login-card{
+        width: auto;
+        height: auto;
+    }
+}
