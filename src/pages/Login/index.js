@@ -78,6 +78,12 @@ function Login() {
         }
     };
 
+    const handleSubmit = (e) => {
+        e.preventDefault(); 
+        handleLoginClick();
+    };
+
+
     const handleChangeLoginInput = (e) => {
         setLoginInput(e.target.value);
     };
@@ -107,7 +113,7 @@ function Login() {
                 </div>
 
                 <div className={cx('left-card', 'col-md-6')}>
-                    <form className={cx('login-form')}>
+                    <form className={cx('login-form')} onSubmit={handleSubmit}>
                         <h1 className={cx('title-form')}>Log In</h1>
                         <div className={cx('input-container')}>
                             <div className={cx('input-wrapper', { 'error': errors.loginInput })}>

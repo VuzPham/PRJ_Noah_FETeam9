@@ -6,8 +6,6 @@ import Profile from '~/pages/Profile';
 
 const publicRoutes = [
     {path: '/', component: Login},
-    {path: '/question', component: Question},
-
 ];
 
 const privateRoutes = [
