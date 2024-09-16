@@ -9,6 +9,7 @@ import icons from "~/assets/icon";
 import images from "~/assets/images";
 import Button from "~/components/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "~/auth/AuthContext";
 
 const cx = classNames.bind(styles);
 
@@ -22,61 +23,60 @@ function Login() {
     });
     const [showPassword, setShowPassword] = useState(false);
     const navigator = useNavigate();
+    const { login } = useAuth();
 
     const handleLoginClick = () => {
         setErrors({
             loginInput: '',
             password: '',
         });
-
+    
         let valid = true;
-
+    
         if (!loginInput) {
             setErrors(prev => ({ ...prev,  loginInput: 'Username is required.' }));
             valid = false;
         }
-
+    
         if (!password) {
             setErrors(prev => ({ ...prev, password: 'Password is required.' }));
             valid = false;
         }
-        
+    
         if (valid) {
             setIsLoading(true);
-
+    
             fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users")
-                .then(reponse => reponse.json())
+                .then(response => response.json())
                 .then(data => {
-                        const user = data.find(
+                    const user = data.find(
                         user =>
                             (user.username === loginInput || user.email === loginInput) && user.password === password
                     );
-
+    
                     if(user){
+                        login(user); 
                         navigator('/school');
-                        
-                    }else{
+                    } else {
                         const userExist = data.find(
                             user => user.username === loginInput || user.email === loginInput
                         );
-
+    
                         if(!userExist){
-                            setErrors(prev => ({...prev, loginInput: 'Username or Email not fund.'}));
-                        }else{
+                            setErrors(prev => ({...prev, loginInput: 'Username or Email not found.'}));
+                        } else {
                             setErrors(prev => ({...prev, password: 'Password is incorrect.'}));
                         }
                     }
                 })
-
                 .catch(error => {
                     setIsLoading(false);
                 })
-
-            setTimeout(() => {
-                setIsLoading(false);
-            }, 1000); 
+                .finally(() => {
+                    setIsLoading(false);
+                });
         }
-    };
+    };    
 
     const handleSubmit = (e) => {
         e.preventDefault(); 
@@ -143,12 +143,12 @@ function Login() {
                                  {errors.password && <div className={cx('error-message')}>{errors.password}</div>}
                             </div>
                         </div>
-                        <div className={cx('check-remember')}>
+                        {/* <div className={cx('check-remember')}>
                             <input
                                 type="checkbox"
                             />
                             <label>Remember me</label>
-                        </div>
+                        </div> */}
                         <button
                             type="button"
                             className={cx('btn-login')}
