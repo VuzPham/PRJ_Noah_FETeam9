@@ -1,13 +1,15 @@
 //c3
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Input, Modal } from 'antd';
-import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './Subject.module.scss';
 import ModalDelete from '../Modal/Modal_Delete';
 import ModalAddSubject from '../Modal/Modal_Add_Subject';
 import ModalEditSubject from '../Modal/Modal_Edit_Subject';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
+import axios from 'axios';
 
 
 
@@ -70,7 +72,7 @@ function Subject() {
                         icon={<EyeOutlined />}
                         size="small"
                         type="link"
-                        onClick={() => handleViewQuestions()}
+                        onClick={() => handleViewQuestions(record.id)}
                     >
                         View Questions
                     </Button>
@@ -80,29 +82,95 @@ function Subject() {
         },
     ];
 
+    //handle view question
+    const handleViewQuestions = (id) => {
+        // console.log('Check id subject from page subject: ', id)
+        navigate(`/question/${id}`)
+    }
 
-    const initialData = [
-        { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 4, name: 'Subject 4', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 5, name: 'Subject 5', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 6, name: 'Subject 6', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 7, name: 'Subject 7', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 8, name: 'Subject 8', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 9, name: 'Subject 9', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 10, name: 'Subject 10', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 11, name: 'Subject 11', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 12, name: 'Subject 12', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 13, name: 'Subject 13', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 14, name: 'Subject 14', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 15, name: 'Subject 15', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 16, name: 'Subject 16', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 17, name: 'Subject 17', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
-        { id: 18, name: 'Subject 18', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
-        { id: 19, name: 'Subject 19', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
-        { id: 20, name: 'Subject 20', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 }
-    ];
+
+    // const id_Param = useParams().id;
+    const { id } = useParams();
+    const fetSubjectFromSchool = async (id) => {
+        // const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+        // const url = 'http://localhost:3001/universities';
+
+        // try {
+        //     const response = await fetch(url);
+        //     if (!response.ok) {
+        //         throw new Error('Network response was not ok');
+        //     }
+
+        //     const universities = await response.json();
+        //     // Tìm trường đại học có id là 1
+        //     const universityId = '1';
+        //     const university = universities.find(u => u.id === universityId);
+
+        //     if (!university) {
+        //         throw new Error(`University with id ${universityId} not found`);
+        //     }
+        //     console.log('Fetch data subject from school nhé: ', university)
+        //     // Trả về danh sách các môn học của trường đại học có id là 1
+        //     return university.subjects;
+        // } catch (error) {
+        //     console.error('Error fetching data:', error);
+        //     throw error; // Re-throw the error to handle further up the call stack if needed
+        // }
+        try {
+
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            if (res) {
+                const subjects = await res.data;
+                // const schoolId = '1';
+                const schoolId = id;
+                const schoolIds = subjects.find(u => u.id === schoolId);
+                console.log('Check subjects from school id: ', schoolIds.subjects)
+                setInitialData(schoolIds.subjects);
+                // setDataSource(schoolIds.subjects);
+            } else {
+                console.log('Not found!!!!');
+            }
+
+        } catch (error) {
+            console.error('Error fetching subjects:', error);
+        }
+    }
+
+    useEffect(() => {
+        console.log('Lấy id từ param: ', id);
+        fetSubjectFromSchool(id);
+    }, [id])
+
+    const [initialData, setInitialData] = useState([]);
+    useEffect(() => {
+        setDataSource(initialData);
+    }, [initialData]);
+
+
+
+
+    // [
+    // { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+    // { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+    // { id: 4, name: 'Subject 4', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 5, name: 'Subject 5', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+    // { id: 6, name: 'Subject 6', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+    // { id: 7, name: 'Subject 7', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 8, name: 'Subject 8', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+    // { id: 9, name: 'Subject 9', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+    // { id: 10, name: 'Subject 10', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 11, name: 'Subject 11', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+    // { id: 12, name: 'Subject 12', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+    // { id: 13, name: 'Subject 13', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 14, name: 'Subject 14', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+    // { id: 15, name: 'Subject 15', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+    // { id: 16, name: 'Subject 16', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 17, name: 'Subject 17', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 },
+    // { id: 18, name: 'Subject 18', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 30 },
+    // { id: 19, name: 'Subject 19', majorName: 'Major A', semester: '01/10/2021-02/02/2022', totalQuestions: 20 },
+    // { id: 20, name: 'Subject 20', majorName: 'Major B', semester: '01/10/2021-02/02/2022', totalQuestions: 25 }
+    // ];
     const [dataSource, setDataSource] = useState(initialData);
     const [searchValue, setSearchValue] = useState('');
     const [temporarySearchValue, setTemporarySearchValue] = useState('');
@@ -200,10 +268,6 @@ function Subject() {
 
     const navigate = useNavigate();
 
-    //handle view question
-    const handleViewQuestions = () => {
-        navigate('/question')
-    }
 
 
     //add subject has range date
@@ -234,15 +298,16 @@ function Subject() {
             <div className={styles['button-actions']} style={{ textAlign: 'center' }}>
                 <div className={styles['crud']}>
                     <Button type="primary" onClick={handleAddSubjectClick}>
-                        <PlusOutlined /> Add subject
+                        <PlusOutlined />&nbsp;Add subject
                     </Button>
                     <Button
                         type="danger"
                         className={`btn btn-danger ${hasSelected ? '' : styles['disable-choose']}`}
                         onClick={handleDelete}
                         disabled={!hasSelected}
+                        style={{ display: 'flex' }}
                     >
-                        Delete
+                        <DeleteOutlined />&nbsp;Delete
                     </Button>
                 </div>
                 <div style={{ marginTop: 16 }}>

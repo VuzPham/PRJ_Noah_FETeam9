@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     DeleteOutlined, PlusOutlined, ProfileOutlined,
     DoubleRightOutlined, DoubleLeftOutlined, FormOutlined,
@@ -12,30 +12,37 @@ import img1 from '../../assets/images/bg1.jpg';
 import ModalAddSchool from '../Modal/Modal_Add_School';
 import ModalViewSchool from '../Modal/Modal_View_School';
 import ModalEditSchool from '../Modal/Modal_Edit_School';
+import axios from 'axios';
 
 
 function School() {
     const [allSchools, setAllSchools] = useState([
-        { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
-        { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' }
+        // {
+        //     name: 'School 1',
+        //     image: img,
+        //     description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo',
+        //     date: '',
+        //     address: ''
+        // },
+        // { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' },
+        // { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', date: '', address: '' }
     ]);
 
     const itemsPerPage = 10;
@@ -68,9 +75,7 @@ function School() {
         setCurrentPage(0);
     };
 
-    const handleRedirect = () => {
-        navigate('/subject');
-    };
+
 
     const handleDeleteClick = (index) => {
         setSelectedSchoolIndex(index);
@@ -130,6 +135,29 @@ function School() {
         // console.log('Check value sau: ', newSliderVisibilities)
     };
 
+    const handleRedirect = () => {
+        navigate('/subject');
+    };
+
+
+    // Fetch data schools
+
+
+    useEffect(() => {
+        fetchSchools();
+    }, [])
+
+    const [schools, setSchools] = useState([]);
+
+    const fetchSchools = async () => {
+        const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+        console.log('Check data after fetching dataa schools: ', res.data);
+        setAllSchools(res.data);
+    }
+
+    const handleSchoolClick = (subjectID) => {
+        navigate(`/subject/${subjectID}`)
+    }
 
 
 
@@ -163,7 +191,7 @@ function School() {
             <div className={styles['button-actions']}>
                 <div className={styles['crud']}>
                     <button type='button' className='btn btn-primary' onClick={() => setIsAddSchoolModalVisible(true)}>
-                        <PlusOutlined /> Add school
+                        <PlusOutlined />&nbsp;Add school
                     </button>
                 </div>
                 <div className={styles['other-action']}>
@@ -195,13 +223,17 @@ function School() {
                     {currentSchools.map((school, index) => (
                         <div className={`col ${styles['col-card']}`} key={startIndex + index}>
                             <div className={`card ${styles.card}`}>
-                                <img
-                                    src={school.image}
-                                    className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
-                                    alt="School Image"
-                                    height={120}
-                                    onClick={handleRedirect}
-                                />
+                                <div className={styles['fit-image']}
+
+                                    onClick={() => handleSchoolClick(school.id)}>
+                                    <img
+                                        src={school.image}
+                                        className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
+                                        alt="School Image"
+                                        height={120}
+                                    />
+                                </div>
+
                                 {/* Cách 2 */}
                                 <div className={styles['icons-slider']}>
                                     <input type='checkbox' id={`${styles['check']}-${index}`} style={{ display: 'none' }} />
