@@ -1,10 +1,12 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styles from './Profile.module.scss';
 import icons from "~/assets/icon";
-import { faEnvelope, faFloppyDisk, faPenToSquare, faPhone, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faEnvelope, faFloppyDisk, faPenToSquare, faPhone, faUser, faSpinner  } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from "~/auth/AuthContext";
 
 const cx = classNames.bind(styles);
 
@@ -27,26 +29,32 @@ function Profile() {
         email: '',
     });
 
+    const [isLoading, setIsLoading] = useState(false);
+    const{user, updateUser} = useAuth();
+    const navigator = useNavigate();
+
     const firstInputRef = useRef(null);
     const fileInputRef = useRef(null);
 
     useEffect(() => {
-        
-        fetchUserInfo();
-    }, []);
-
-    const fetchUserInfo = () => {
-        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1") 
-            .then(response => response.json())
-            .then(data => {
-                setUserInfo(data);
-            })
-            .catch(error => {
-                console.error("Error fetching user info:", error);
+        if(!user){
+            navigator('/login');
+        }else{
+            // Cập nhật thông tin người dùng từ AuthContext
+            setUserInfo({
+                name: user.name || '',
+                username: user.username || '',
+                phone: user.phone || '',
+                email: user.email || '',
+                phoneConfirmed: user.phoneconfirm || '',
+                emailConfirmed: user.emailconfirm || '',
+                avatar: user.avatar || icons.defaultAvatar,
             });
-    };
+        }
+    }, [user, navigator]);
 
-    const handleEditClick = () => {
+    const handleEditClick = (e) => {
+        e.preventDefault()
         setIsEditing(true);
         setTimeout(() => {
             if (firstInputRef.current) {
@@ -92,26 +100,30 @@ function Profile() {
         }
 
         if (valid) {
-           
-            saveUserInfo();
+            setIsLoading(true);
+            const {phoneConfirmed, emailConfirmed, ...updateUserInfo} = userInfo;
+            saveUserInfo(updateUserInfo);
         }
     };
 
-    const saveUserInfo = () => {
-        fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/1", { 
+    const saveUserInfo = (updateUserInfo) => {
+        fetch(`https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/${user.id}`, { 
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(userInfo),
+            body: JSON.stringify(updateUserInfo),
         })
             .then(response => response.json())
             .then(data => {
                 console.log("Profile updated successfully:", data);
                 setIsEditing(false);
+                setIsLoading(false);
+                updateUser(data);
             })
             .catch(error => {
                 console.error("Error updating profile:", error);
+                setIsLoading(false);
             });
     };
 
@@ -128,22 +140,47 @@ function Profile() {
         }));
     };
 
-    const handleAvatarChange = (e) => {
-        const file = e.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setUserInfo((prevState) => ({
-                    ...prevState,
-                    avatar: reader.result || icons.defaultAvatar,
-                }));
-            };
-            reader.readAsDataURL(file);
-        } else {
-            setUserInfo((prevState) => ({
-                ...prevState,
-                avatar: icons.defaultAvatar,
-            }));
+    // const handleAvatarChange = (e) => {
+    //     const file = e.target.files[0];
+    //     if (file) {
+    //         const reader = new FileReader();
+            
+    //         reader.onloadend = () => {
+    //             setUserInfo(prevState => ({
+    //                 ...prevState,
+    //                 avatar: reader.result // URL tạm thời của ảnh
+    //             }));
+    //         };
+            
+    //         reader.readAsDataURL(file); 
+            
+    //         const formData = new FormData();
+    //         formData.append('avatar', file);
+    
+    //         setIsLoading(true);
+    //         fetch('/api/upload-avatar', { // Cập nhật URL này để phù hợp với endpoint tải lên của máy chủ
+    //             method: 'POST',
+    //             body: formData,
+    //         })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             setUserInfo(prevState => ({
+    //                 ...prevState,
+    //                 avatar: data.avatarUrl // Máy chủ trả về URL của hình ảnh đã lưu
+    //             }));
+    //             setIsLoading(false);
+    //         })
+    //         .catch(error => {
+    //             console.error('Lỗi khi tải lên ảnh đại diện:', error);
+    //             setIsLoading(false);
+    //         });
+    //     }
+    // };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if(isEditing){
+            handleSaveClick();
         }
     };
 
@@ -163,7 +200,7 @@ function Profile() {
                                 ref={fileInputRef}
                                 style={{ display: 'none' }}
                                 accept="image/*"
-                                onChange={handleAvatarChange}
+                                // onChange={handleAvatarChange}
                             />
                             <button
                                 className={cx('btn_avatar')}
@@ -176,7 +213,7 @@ function Profile() {
                     )}
                 </div>
                 <div className={cx('info', 'col-md-8', 'col-12')}>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className={cx('input-info')}>
                             <input
                                 ref={firstInputRef}
@@ -235,27 +272,36 @@ function Profile() {
                                 <input
                                     className={cx('input-confirm', 'read-only')}
                                     name="phoneConfirmed"
-                                    value={userInfo.phoneconfirm}
+                                    value={userInfo.phoneConfirmed}
                                     readOnly
                                 />
                                 <input
                                     className={cx('input-confirm', 'read-only')}
                                     name="emailConfirmed"
-                                    value={userInfo.emailconfirm}
+                                    value={userInfo.emailConfirmed}
                                     readOnly
                                 />
                             </div>
                         </div>
                         <div className={cx('btn_edit')}>
                             {isEditing ? (
-                                <button type="button" onClick={handleSaveClick}>
-                                    Save Profile
-                                    <FontAwesomeIcon className={cx('icon-btn')} icon={faFloppyDisk}/>
+                                <button type="submit" disabled={isLoading}>
+                                    {isLoading ? (
+                                        <>
+                                            <FontAwesomeIcon className={cx('icon-btn')} icon={faSpinner} spin />
+                                            Saving...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Save Profile
+                                            <FontAwesomeIcon className={cx('icon-btn')} icon={faFloppyDisk} />
+                                        </>
+                                    )}
                                 </button>
                             ) : (
                                 <button type="button" onClick={handleEditClick}>
                                     Edit Profile 
-                                    <FontAwesomeIcon className={cx('icon-btn')} icon={faPenToSquare}/>
+                                    <FontAwesomeIcon className={cx('icon-btn')} icon={faPenToSquare} />
                                 </button>
                             )}
                         </div>
