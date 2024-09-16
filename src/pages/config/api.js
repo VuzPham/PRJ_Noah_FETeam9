@@ -1,5 +1,5 @@
 // src/config/api.js
-const API_URL = 'https://66bf5cf442533c403145f070.mockapi.io/api/question-answer/id';
+const API_URL = 'http://localhost:3001/universities/';
 
 export const fetchQuestions = async () => {
   try {

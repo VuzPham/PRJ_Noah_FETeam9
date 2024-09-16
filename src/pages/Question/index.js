@@ -22,14 +22,23 @@ const QuestionManagement = () => {
     const loadQuestions = async () => {
       try {
         const data = await fetchQuestions();
-        setQuestions(data);
+      
+
+        // Trích xuất tất cả các câu hỏi từ tất cả các môn học của tất cả các trường
+        const allQuestions = data.flatMap(university =>
+          university.subjects.flatMap(subject => subject.question)
+        );
+
+        console.log('All Questions:', allQuestions); // Log tất cả câu hỏi
+
+        setQuestions(allQuestions);
       } catch (err) {
+        console.error('Error:', err);
         setError(err.message);
       } finally {
         setLoading(false);
       }
     };
-
     loadQuestions();
   }, []);
 
@@ -88,9 +97,9 @@ const QuestionManagement = () => {
   };
 
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    if (pageNumber < 1 || pageNumber > totalPages) return; // Đảm bảo không vượt quá số trang
+    setCurrentPage(pageNumber);  // Cập nhật trang hiện tại
   };
-
   const handleQuestionToggle = (id) => {
     // Only toggle the expanded question ID if the question has an answer
     const question = questions.find((q) => q.id === id);
@@ -100,7 +109,7 @@ const QuestionManagement = () => {
   };
 
   const filteredQuestions = questions.filter((question) =>
-    question?.question?.toLowerCase().includes(searchTerm.toLowerCase())
+    question['des-question']?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
@@ -122,7 +131,6 @@ const QuestionManagement = () => {
           </div>
         </div>
       )}
-
       {currentView === 'list' && (
         <>
           <div className={styles['search-container']}>
@@ -156,7 +164,7 @@ const QuestionManagement = () => {
                         icon={expandedQuestionId === question.id ? faChevronUp : faChevronDown}
                         className={styles['question-icon']}
                       />
-                      {question.question}
+                      {question['des-question']}
                     </div>
                     {expandedQuestionId === question.id && question.answer && (
                       <div className={styles['answer-text']}>{question.answer}</div>
@@ -194,9 +202,7 @@ const QuestionManagement = () => {
                 <button
                   key={index + 1}
                   onClick={() => handlePageChange(index + 1)}
-                  className={`${styles['page-item']} ${
-                    currentPage === index + 1 ? styles['active'] : ''
-                  }`}
+                  className={`${styles['page-item']} ${currentPage === index + 1 ? styles['active'] : ''}`}
                 >
                   {index + 1}
                 </button>
@@ -266,6 +272,7 @@ const QuestionManagement = () => {
           </div>
         </div>
       )}
+      
     </div>
   );
 };
