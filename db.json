@@ -1,7 +1,7 @@
 {
   "universities": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Đại học Công Thương TP.HCM",
       "image": "",
       "description": "",
@@ -9,7 +9,7 @@
       "address": "Quận Tân Phú",
       "subjects": [
         {
-          "id": 1,
+          "id": "1",
           "name": "subject1",
           "majorName": "Môn học bắt buộc",
           "semester": "2024/09/01",
@@ -18,25 +18,25 @@
             {
               "des-question": "Số tự nhiên nào khi đem nhân với 3 và trừ đi 2 thì sẽ cho ra đáp án là số đảo ngược của chính nó.",
               "answer": "Đáp án: 28",
-              "image":" ",
+              "image": " ",
               "id": "1"
             },
             {
               "des-question": "Bạn hãy thực hiện tìm ra số tiếp theo của dãy số: 5, 16, 49, 104, ?.",
               "answer": "Đáp án: 181",
-              "image":" ",
+              "image": " ",
               "id": "2"
             },
             {
               "des-question": " Tìm số tiếp theo của dãy số: 1, 4, 10, 22, 46, ?.",
               "answer": "Đáp án: Số 94",
-              "image":" ",
+              "image": " ",
               "id": "3"
             }
           ]
         },
         {
-          "id": 2,
+          "id": "2",
           "name": "subject2",
           "majorName": "Môn học bắt buộc",
           "semester": "2024/09/01",
@@ -45,25 +45,25 @@
             {
               "des-question": "Tìm ra số tiếp theo của dãy số: 4, 7, 13, 25, ?.",
               "answer": "Đáp án: Số cần điền là 49. Ta lấy số trước nhân 2 rồi trừ 1 sẽ ra số sau liền kề.",
-              "image":" ",
+              "image": " ",
               "id": "4"
             },
             {
               "des-question": "Tìm số còn thiếu trong dãy số sau: 1, 6, 15, ?, 45, 66, 91",
               "answer": "Đáp án: Số 28. ",
-              "image":" ",
+              "image": " ",
               "id": "5"
             },
             {
               "des-question": " Tìm số tiếp theo của dãy số: 1, 4, 10, 22, 46, ?.",
               "answer": "Đáp án: Số 94",
-              "image":" ",
+              "image": " ",
               "id": "6"
             }
           ]
         },
         {
-          "id": 3,
+          "id": "3",
           "name": "subject3",
           "majorName": "Môn học bắt buộc",
           "semester": "2024/09/01",
@@ -72,25 +72,25 @@
             {
               "des-question": "Tìm số tiếp theo trong dãy số sau: 2, 5, 9, 19, 37, ?",
               "answer": "Đáp án: Số 75. ",
-              "image":" ",
+              "image": " ",
               "id": "7"
             },
             {
               "des-question": "Tìm cặp số liên tiếp trong dãy số sau: 1, 1, 2, 4, 3, 5, 5, 9, 8, 14, 13, 23, ?, ?.",
               "answer": "Số 21 và 37",
-              "image":" ",
+              "image": " ",
               "id": "8"
             },
             {
               "des-question": "Tìm ra cặp số tiếp theo trong dãy số: 14, 16, 28, 32, 42, 48, 56, 64, ?, ?.",
               "answer": "Đáp án: Số 70 và 80. ",
-              "image":" ",
+              "image": " ",
               "id": "9"
             }
           ]
         },
         {
-          "id": 4,
+          "id": "4",
           "name": "subject4",
           "majorName": "Môn học tự chọn",
           "semester": "2024/09/01",
@@ -99,46 +99,46 @@
             {
               "des-question": "Tìm ra cặp số tiếp theo trong dãy số: 14, 16, 28, 32, 42, 48, 56, 64, ?, ?.",
               "answer": "Đáp án: Số 70 và 80. ",
-              "image":" ",
+              "image": " ",
               "id": "10"
             },
             {
               "des-question": "Một thương nhân có 9 đồng tiền vàng giống nhau, nhưng có một đồng tiền giả nhẹ hơn nhưng đồng tiền thật. Sử dụng cân 2 đĩa để giúp ông ấy tìm ra những đồng tiền vàng giả với số lần cân ít nhất.",
               "answer": "Chỉ cần cân 2 lần",
-              "image":" ",
+              "image": " ",
               "id": "11"
             },
             {
-             "des-question": "Con ốc sên phải leo lên đỉnh cột cao 10 mét. Mỗi ngày leo được 4m, nhưng đêm lại tuột 3m. Vì vậy, nếu nó bắt đầu vào sáng thứ Hai, khi nào một con ốc sên khác leo lên đỉnh?",
+              "des-question": "Con ốc sên phải leo lên đỉnh cột cao 10 mét. Mỗi ngày leo được 4m, nhưng đêm lại tuột 3m. Vì vậy, nếu nó bắt đầu vào sáng thứ Hai, khi nào một con ốc sên khác leo lên đỉnh?",
               "answer": "Trả lời: 6 ngày đầu tiên ốc sên sẽ leo được 6m, đến ngày chủ nhật leo thêm được 4m, vậy chiều hôm chủ nhật ốc sẽ leo lên được tới đỉnh.",
-              "image":" ",
+              "image": " ",
               "id": "12"
             }
           ]
         },
         {
-          "id": 5,
+          "id": "5",
           "name": "subject5",
           "majorName": "Môn học bắt buộc",
           "semester": "2024/09/01",
           "totalQuestions": 25,
-         "question": [
+          "question": [
             {
               "des-question": "100 học sinh đỗ đại học. Trong đó có 55 em chọn âm nhạc, 44 em chọn thể thao và 20 em chọn cả 2. Có bao nhiêu học sinh không chọn âm nhạc và không chọn thể thao.",
               "answer": "Chúng ta sẽ tiếp cận câu đố này như sau. Có 20 học sinh chọn cả âm nhạc và thể dục nên số học sinh còn lại chọn âm nhạc là 35 và thể dục là 24.",
-              "image":" ",
+              "image": " ",
               "id": "13"
             },
             {
               "des-question": "Một người đã mua một con ngựa với giá 60 đô la. Sau đó, anh ta đã bán nó với giá 70 đô la. Sau đó, anh ấy đã mua một con khác với giá 80 đô la. Cuối cùng anh ta lại tiếp bán con ngựa với giá 90 đô la. Hỏi anh ta có kiếm tiền không? Nếu có lãi thì bao nhiêu?",
               "answer": "Người đàn ông kiếm được lợi nhuận sau 2 giao dịch. Anh ta kiếm được 10 đô la lợi nhuận cho mỗi con ngựa anh ta bán. Vì vậy, sau 2 lần anh ấy đã kiếm được tổng cộng 20 đô la.",
-              "image":" ",
+              "image": " ",
               "id": "14"
             },
             {
-             "des-question": "Trạm thu thuế của tướng cướp khét tiếng có quy định như sau: Nếu ai mang gia súc qua điểm thu sẽ bị thu một nửa. Nếu số lượng gia súc là số lẻ, sẽ khấu thêm nửa con. Sau đó sẽ trả lại 1 con cho chủ. Có 3 anh em dắt 5 con dê qua trạm. Thấy quy định này, anh cả liền nghĩ ra một cách. Họ đi qua trạm một cách dễ dàng mà không để mất một con gia súc nào. Đố bạn họ đã làm gì? ",
+              "des-question": "Trạm thu thuế của tướng cướp khét tiếng có quy định như sau: Nếu ai mang gia súc qua điểm thu sẽ bị thu một nửa. Nếu số lượng gia súc là số lẻ, sẽ khấu thêm nửa con. Sau đó sẽ trả lại 1 con cho chủ. Có 3 anh em dắt 5 con dê qua trạm. Thấy quy định này, anh cả liền nghĩ ra một cách. Họ đi qua trạm một cách dễ dàng mà không để mất một con gia súc nào. Đố bạn họ đã làm gì? ",
               "answer": "Họ tách riêng từng người và chỉ mang theo 1 hoặc 2 con dê. Bằng cách đó sẽ không có một con dê.",
-              "image":" ",
+              "image": " ",
               "id": "15"
             }
           ]
@@ -146,7 +146,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Đại học Bách Khoa TP.HCM",
       "image": "",
       "description": "",
@@ -154,7 +154,7 @@
       "address": "Quận 10",
       "subjects": [
         {
-          "id": 1,
+          "id": "6",
           "name": "subjectA",
           "majorName": "Môn học bắt buộc",
           "semester": "2024/09/01",
@@ -163,20 +163,19 @@
             {
               "des-question": "Có 3 chú gà trống đi dạo, mỗi chú đi một mét, hỏi cả ba chú đi được bao nhiêu mét?",
               "answer": "1 mét. Cả ba chú gà trống đi chung nên họ đi được 1 mét.",
-              "image":" ",
+              "image": " ",
               "id": "16"
             },
             {
               "des-question": "Một đoàn tàu đi qua một ngọn đồi trong 2 phút. Hỏi đầu đoàn tàu đi qua ngọn đồi mất bao lâu?",
               "answer": "0 phút. Đầu đoàn tàu điện đã đi qua ngọn đồi ngay khi bắt đầu",
-              "image":" ",
+              "image": " ",
               "id": "17"
             }
-           
           ]
         },
         {
-          "id": 2,
+          "id": "7",
           "name": "subjectB",
           "majorName": "Môn học tự chọn",
           "semester": "2024/09/01",
@@ -185,20 +184,19 @@
             {
               "des-question": "Có 12 con chim đậu trên một hàng rào, một người đi qua bắn chết một con chim. Hỏi còn bao nhiêu con chim trên hàng rào?",
               "answer": "Không còn con chim nào, vì những con chim khác sợ tiếng súng nên bay đi hết",
-              "image":" ",
+              "image": " ",
               "id": "18"
             },
             {
               "des-question": "Có 3 giỏ đựng bóng, mỗi giỏ chứa 3 màu bóng: đỏ, xanh dương và xanh lá cây. Bạn cần đưa tay vào giỏ và lấy ra một bóng, không nhìn vào giỏ. Hỏi bạn cần lấy ít nhất bao nhiêu bóng để chắc chắn có 3 bóng cùng màu?",
               "answer": " 7 bóng. Trường hợp xấu nhất là bạn lấy ra 6 bóng, mỗi màu 2 bóng. Lúc này, bóng thứ 7 sẽ chắc chắn tạo thành bộ 3 bóng cùng m",
-              "image":" ",
+              "image": " ",
               "id": "19"
             }
-           
           ]
         },
         {
-          "id": 3,
+          "id": "8",
           "name": "subjectC",
           "majorName": "Môn học tự chọn",
           "semester": "2024/09/01",
@@ -207,19 +205,19 @@
             {
               "des-question": "Ba anh em chia nhau 17 quả cam, không chia đều được. Hỏi mỗi người ít nhất phải nhận được bao nhiêu quả cam?",
               "answer": "1 quả cam. Trong trường hợp ít nhất, một người nhận được 1 quả, người còn lại chia nhau 16 quả",
-              "image":" ",
+              "image": " ",
               "id": "20"
             },
             {
               "des-question": "Có 30 người tham gia một cuộc thi, trong đó có 10 người chơi piano, 16 người chơi guitar, và 4 người chơi cả hai loại nhạc cụ. Hỏi có bao nhiêu người không chơi loại nhạc cụ nào?",
               "answer": "Đáp án: 8 người. Số người chơi ít nhất một loại nhạc cụ là 10 + 16 – 4 = 22 người. Vậy, 30 – 22 = 8 người không chơi loại nhạc cụ nào",
-              "image":" ",
+              "image": " ",
               "id": "21"
             },
             {
-             "des-question": "T Một cô gái thấy 100 con chim bay trên bầu trời. Nếu cô gái bắt một con chim, hỏi trên bầu trời còn bao nhiêu con chim?",
+              "des-question": "T Một cô gái thấy 100 con chim bay trên bầu trời. Nếu cô gái bắt một con chim, hỏi trên bầu trời còn bao nhiêu con chim?",
               "answer": "Đáp án: 100 con chim. Vì cô gái chỉ thấy 100 con chim bay trên bầu trời, không thể bắt được chim thật.",
-              "image":" ",
+              "image": " ",
               "id": "22"
             }
           ]
@@ -227,7 +225,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Đại học Khoa Học Tự Nhiên TP.HCM",
       "image": "",
       "description": "",
@@ -235,7 +233,7 @@
       "address": "Quận 5",
       "subjects": [
         {
-          "id": 1,
+          "id": "9",
           "name": "subjectX",
           "majorName": "Môn học bắt buộc",
           "semester": "2024/09/01",
@@ -244,25 +242,25 @@
             {
               "des-question": "Ba anh em chia nhau 17 quả cam, không chia đều được. Hỏi mỗi người ít nhất phải nhận được bao nhiêu quả cam?",
               "answer": "1 quả cam. Trong trường hợp ít nhất, một người nhận được 1 quả, người còn lại chia nhau 16 quả",
-              "image":" ",
+              "image": " ",
               "id": "23"
             },
             {
               "des-question": "Có 30 người tham gia một cuộc thi, trong đó có 10 người chơi piano, 16 người chơi guitar, và 4 người chơi cả hai loại nhạc cụ. Hỏi có bao nhiêu người không chơi loại nhạc cụ nào?",
               "answer": "Đáp án: 8 người. Số người chơi ít nhất một loại nhạc cụ là 10 + 16 – 4 = 22 người. Vậy, 30 – 22 = 8 người không chơi loại nhạc cụ nào",
-              "image":" ",
+              "image": " ",
               "id": "24"
             },
             {
-             "des-question": "T Một cô gái thấy 100 con chim bay trên bầu trời. Nếu cô gái bắt một con chim, hỏi trên bầu trời còn bao nhiêu con chim?",
+              "des-question": "T Một cô gái thấy 100 con chim bay trên bầu trời. Nếu cô gái bắt một con chim, hỏi trên bầu trời còn bao nhiêu con chim?",
               "answer": "Đáp án: 100 con chim. Vì cô gái chỉ thấy 100 con chim bay trên bầu trời, không thể bắt được chim thật.",
-              "image":" ",
+              "image": " ",
               "id": "25"
             }
           ]
         },
         {
-          "id": 2,
+          "id": "10",
           "name": "subjectY",
           "majorName": "Môn học tự chọn",
           "semester": "2024/09/01",
@@ -271,19 +269,19 @@
             {
               "des-question": "Hình tròn có mấy cạnh?",
               "answer": "Hình tròn có 2 cạnh là cạnh trong và cạnh ngoài.",
-              "image":" ",
+              "image": " ",
               "id": "26"
             },
             {
               "des-question": "Mẹ có 3 quả cam. Mẹ cho con 2 quả thì mẹ còn bao nhiêu quả cam?",
               "answer": "Đáp án: Mẹ còn 1 quả cam. ",
-              "image":" ",
+              "image": " ",
               "id": "27"
             },
             {
-             "des-question": "Mẹ có 5 quả dâu và con lấy đi 2 quả. Vậy, con có bao nhiêu quả dâu?",
+              "des-question": "Mẹ có 5 quả dâu và con lấy đi 2 quả. Vậy, con có bao nhiêu quả dâu?",
               "answer": "Đáp án: Con có 2 quả dâu. ",
-              "image":" ",
+              "image": " ",
               "id": "28"
             }
           ]

@@ -60,7 +60,6 @@ const QuestionManagement = () => {
 
   const handleUpdateQuestion = async () => {
     if (!selectedQuestion) return;
-
     try {
       const updatedQuestion = await updateQuestion(selectedQuestion.id, selectedQuestion);
       setQuestions((prevQuestions) =>
@@ -252,7 +251,7 @@ const QuestionManagement = () => {
           <h2>Edit Question</h2>
           <input
             type="text"
-            value={selectedQuestion.question}
+            value={selectedQuestion['des-question']}
             onChange={(e) => setSelectedQuestion({ ...selectedQuestion, question: e.target.value })}
             className={styles['input']}
           />
