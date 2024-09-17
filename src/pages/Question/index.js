@@ -17,53 +17,53 @@ const QuestionManagement = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [expandedQuestionId, setExpandedQuestionId] = useState(null);
-    const [showConfirmDelete, setShowConfirmDelete] = useState(null); // To control the confirmation dialog
-    const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState(null); // To store the ID of the question to delete
+    const [showConfirmDelete, setShowConfirmDelete] = useState(null);
+    const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState(null); 
     const questionsPerPage = 5;
 
     const { subjectId } = useParams();
+
     const fetchQuestionsData = async (subjectId) => {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
             if (res) {
-                const data = await res.data;
+                const data = res.data;
                 const subject = data.flatMap(university =>
-                    university.subjects.find(sub => sub.id === parseInt(subjectId, 10))
+                    university.subjects.find(sub => sub.id === parseInt(subjectId))
                 );
-                console.log('Check giá trị của khi lấy giá trị subject nè: ', subject);
-                return subject;
+
+                if (subject[0] === undefined && subject[1] !== undefined) {
+                    return [subject[1]];
+                } else {
+                    return subject.filter(item => item !== undefined);
+                }
+
             } else {
                 console.log('Not found!!!');
             }
-
-
         } catch (error) {
             console.error('Error fetching questions:', error);
             throw error;
         }
-    };
 
-    // useEffect(() => {
+    };
 
     const loadQuestions = async () => {
         try {
             const questionsData = await fetchQuestionsData(subjectId);
             console.log('Check giá trị lấy từ hàm fetchQuestionsData: ', questionsData);
             const id_sub = subjectId;
-            console.log('Check subjectId trên param: ', id_sub);
-            const subids = questionsData.find(ques => ques.id = id_sub);
-            console.log('Check load questions: ', subids.question);
+            console.log('Check subjectId trên param: ', id_sub, typeof id_sub);
+            const subids = questionsData.find(item => item.id === parseInt(id_sub));
+
+            console.log('Check load questions: ', subids);
             setQuestions(subids.question);
-            console.log('Check question base on id _subject: ', questions)
         } catch (err) {
             setError(err.message);
         } finally {
             setLoading(false);
         }
     };
-
-    //     loadQuestions();
-    // }, [subjectId]);
 
 
     useEffect(() => {
@@ -129,7 +129,6 @@ const QuestionManagement = () => {
     };
 
     const handleQuestionToggle = (id) => {
-        // Only toggle the expanded question ID if the question has an answer
         const question = questions.find((q) => q.id === id);
         if (question && question.answer) {
             setExpandedQuestionId((prevId) => (prevId === id ? null : id));
