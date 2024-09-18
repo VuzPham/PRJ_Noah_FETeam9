@@ -45,7 +45,9 @@ function ModalEditSchool({ open, onClose, onSave, school }) {
             image: values['Image'][0]?.thumbUrl,
             address: values['Address'],
             date: formattedDate,
-            description: editorContent
+            description: editorContent,
+            subjects: school.subjects,
+            question: school.subjects.question
         };
 
         onSave(updatedSchool);
