@@ -4,6 +4,7 @@ import { Button, Cascader, DatePicker, Form, Input, Upload, Modal } from 'antd';
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
 import 'react-markdown-editor-lite/lib/index.css';
+import moment from 'moment';
 
 const mdParser = new MarkdownIt();
 const { TextArea } = Input;
@@ -16,38 +17,48 @@ const normFile = (e) => {
 };
 
 function ModalEditSchool({ open, onClose, onSave, school }) {
+    console.log('Check modal edit school: ', school)
     const [form] = Form.useForm();
     const [editorContent, setEditorContent] = useState('');
-
+    // fix
     useEffect(() => {
         if (school) {
             form.setFieldsValue({
                 'Name school': school.name,
-                'Image': [{ url: school.image }],
+                'Image': [{ thumbUrl: school.image }],
                 'Address': [school.address],
-                'Date': school.date ? (school.date) : null,
+                'Date': school.date ? moment(school.date, 'DD-MM-YYYY') : null,
                 'Description': school.description
             });
-            setEditorContent(school.generalInfo);
+            setEditorContent(school.description);
         }
     }, [school, form]);
 
-    const handleEditorChange = ({ html, text }) => {
-        setEditorContent(text);
-    };
-
+    //fix
     const handleSave = async (values) => {
+        const date = values['Date'];
+        const formattedDate = date ? date.format('DD-MM-YYYY') : null;
+        console.log('Check values in hàm handleSave ở modal edit school: ', values)
         const updatedSchool = {
+            id: school.id,
             name: values['Name school'],
-            image: values['Image'][0]?.url, // Changed to url from thumbUrl
+            image: values['Image'][0]?.thumbUrl,
             address: values['Address'],
-            date: values['Date']?.format('YYYY-MM-DD'),
-            generalInfo: editorContent
+            date: formattedDate,
+            description: editorContent,
+            subjects: school.subjects,
+            question: school.subjects.question
         };
 
         onSave(updatedSchool);
+        console.log('Check handle Save ở modal edit school: ', updatedSchool);
     };
 
+
+    const handleEditorChange = ({ html, text }) => {
+        console.log('check text in medit: html: , text:  ', html, text)
+        setEditorContent(text);
+    };
     return (
         <Modal
             title="Edit School"
@@ -151,15 +162,15 @@ function ModalEditSchool({ open, onClose, onSave, school }) {
                 <MdEditor
                     name='Description'
                     style={{ height: '300px', width: '100%' }}
-                    renderHTML={text => mdParser.render(text)}
+                    renderHTML={(text) => mdParser.render(text)}
                     onChange={handleEditorChange}
                     value={editorContent}
                 />
 
                 <Form.Item>
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'right', marginTop: '10px' }}>
                         <Button className='btn btn-white' onClick={onClose} style={{ marginRight: 8 }}>Cancel</Button>
-                        <Button className='btn btn-warning' type="primary" htmlType="submit">Save changes</Button>
+                        <Button className='btn btn-warning' type='white' htmlType="submit">Save changes</Button>
                     </div>
                 </Form.Item>
             </Form>
@@ -168,3 +179,4 @@ function ModalEditSchool({ open, onClose, onSave, school }) {
 }
 
 export default ModalEditSchool;
+

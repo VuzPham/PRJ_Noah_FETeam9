@@ -1,42 +1,40 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
 import {
     DeleteOutlined, PlusOutlined, ProfileOutlined,
-    DoubleRightOutlined, DoubleLeftOutlined, FormOutlined
+    DoubleRightOutlined, DoubleLeftOutlined, FormOutlined,
+    BarsOutlined, CloseOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import ModalDelete from '../Modal/Modal_Delete';
 import styles from './School.module.scss';
-import img from '../../assets/images/bg2.jpg';
-import img1 from '../../assets/images/bg1.jpg';
 import ModalAddSchool from '../Modal/Modal_Add_School';
 import ModalViewSchool from '../Modal/Modal_View_School';
 import ModalEditSchool from '../Modal/Modal_Edit_School';
+import axios from 'axios';
 
 
 function School() {
     const [allSchools, setAllSchools] = useState([
-        // { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        // { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' }
-    
+        { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
+        { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' }
     ]);
 
     const itemsPerPage = 10;
@@ -79,9 +77,7 @@ function School() {
         setCurrentPage(0);
     };
 
-    const handleRedirect = () => {
-        navigate('/subject');
-    };
+
 
     // const handleDeleteClick = (index) => {
     //     setSelectedSchoolIndex(index);
@@ -89,6 +85,7 @@ function School() {
     // };
 
     const handleEditClick = (school) => {
+        console.log('Check ')
         setEditingSchool(school);
         setIsEditSchoolModalVisible(true);
     };
@@ -97,8 +94,13 @@ function School() {
         setIsViewSchoolModalVisible(true);
     };
 
-    const handleModalOk = () => {
+    const handleModalOk = async () => {
         if (selectedSchoolIndex !== null) {
+            const schoolToDelete = allSchools[selectedSchoolIndex];
+            const idSchoolDelete = schoolToDelete.id;
+            console.log('Check id school delete: ', idSchoolDelete);
+            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/${idSchoolDelete}`);
+            console.log('Check res  axios.delete: ', res);
             const updatedSchools = allSchools.filter((_, index) => index !== selectedSchoolIndex);
             setAllSchools(updatedSchools);
             setCurrentPage(Math.max(0, Math.min(currentPage, Math.ceil(updatedSchools.length / itemsPerPage) - 1)));
@@ -107,27 +109,75 @@ function School() {
         setIsModalOpen(false);
     };
 
+
+
+
     const handleModalCancel = () => {
         setSelectedSchoolIndex(null);
         setIsModalOpen(false);
     };
 
-    const handleSaveChanges = (updatedSchool) => {
-        const updatedSchools = allSchools.map(school =>
-            school.name === editingSchool.name ? updatedSchool : school
-        );
-        setAllSchools(updatedSchools);
-        setIsEditSchoolModalVisible(false);
+
+    const handleSaveChanges = async (updatedSchool) => {
+        try {
+            const res = await axios.put(`${process.env.REACT_APP_API_URL}/${updatedSchool.id}`, updatedSchool);
+            console.log('Check res edit school: ', res);
+
+            const updatedSchools = allSchools.map(school =>
+                school.id === updatedSchool.id ? updatedSchool : school
+            );
+
+            //update
+            setAllSchools(updatedSchools);
+            setIsEditSchoolModalVisible(false);
+        } catch (e) {
+            console.log('Error updating school: ', e);
+        }
     };
 
-    // const handleAddSchool = (newSchool) => {
-    //     setAllSchools(prevSchools => [...prevSchools, newSchool]);
-    //     setIsAddSchoolModalVisible(false);
-    // };
+    const handleAddSchool = (newSchool) => {
+        setAllSchools(prevSchools => [...prevSchools, newSchool]);
+        setIsAddSchoolModalVisible(false);
+    };
 
     const startIndex = currentPage * itemsPerPage;
     const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
     const currentSchools = allSchools.slice(startIndex, endIndex);
+    const [sliderVisibilities, setSliderVisibilities] = useState([false]);
+    const handleBtnClick = (index) => {
+        const newSliderVisibilities = [...sliderVisibilities];
+        newSliderVisibilities[index] = !newSliderVisibilities[index];
+        setSliderVisibilities(newSliderVisibilities);
+    };
+
+    const handleRedirect = () => {
+        navigate('/subject');
+    };
+
+    // Fetch data schools
+
+
+    useEffect(() => {
+        fetchSchools();
+    }, [])
+
+    const [schools, setSchools] = useState([]);
+
+    const fetchSchools = async () => {
+        // const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+        // console.log('Check data after fetching dataa schools: ', res.data);
+        // setAllSchools(res.data);
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            setAllSchools(res.data);
+        } catch (error) {
+            console.error('Error fetching schools: ', error);
+        }
+    }
+
+    const handleSchoolClick = (subjectID) => {
+        navigate(`/subject/${subjectID}`)
+    }
 
     const handleAddSchool = (newSchool) => {
         axios.post('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools', newSchool)
@@ -151,8 +201,6 @@ function School() {
     };
     return (
         <>
-            <button className={`btn btn-success ${styles['flash-button']}`} onClick={() => handleDeleteClick(0)}>Đèn flash</button>
-
             <ModalDelete
                 open={isModalOpen}
                 onOk={handleModalOk}
@@ -181,7 +229,7 @@ function School() {
             <div className={styles['button-actions']}>
                 <div className={styles['crud']}>
                     <button type='button' className='btn btn-primary' onClick={() => setIsAddSchoolModalVisible(true)}>
-                        <PlusOutlined /> Add school
+                        <PlusOutlined />&nbsp;Add school
                     </button>
                 </div>
                 <div className={styles['other-action']}>
@@ -213,13 +261,37 @@ function School() {
                     {currentSchools.map((school, index) => (
                         <div className={`col ${styles['col-card']}`} key={startIndex + index}>
                             <div className={`card ${styles.card}`}>
-                                <img
-                                    src={school.image}
-                                    className={`card-img-top ${styles['card-img-top']}`}
-                                    alt="School Image"
-                                    height={120}
-                                    onClick={handleRedirect}
-                                />
+                                <div className={styles['fit-image']}
+
+                                    onClick={() => handleSchoolClick(school.id)}>
+                                    <img
+                                        src={school.image}
+                                        className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
+                                        alt="School Image"
+                                        height={120}
+                                    />
+                                </div>
+
+                                {/* Cách 2 */}
+                                <div className={styles['icons-slider']}>
+                                    <input type='checkbox' id={`${styles['check']}-${index}`} style={{ display: 'none' }} />
+                                    <label htmlFor={`${styles['check']}-${index}`}>
+                                        <span id={styles['btn']} onClick={() => handleBtnClick(startIndex + index)}>
+                                            {sliderVisibilities[startIndex + index] ? <CloseOutlined /> : <BarsOutlined />}
+                                        </span>
+                                    </label>
+                                    <div className={`${styles['slider-container']} ${sliderVisibilities[startIndex + index] ? styles['visible'] : ''}`} >
+                                        <a>
+                                            <span><FormOutlined onClick={() => handleEditClick(school)} /></span>
+                                        </a>
+                                        <a>
+                                            <span><DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} /></span>
+                                        </a>
+                                        <a>
+                                            <span> <ProfileOutlined onClick={() => handleViewClick(school)} /></span>
+                                        </a>
+                                    </div>
+                                </div>
                                 <div className={`card-body ${styles['card-body']}`}>
                                     <h3
                                         className={`card-title ${styles['card-title']}`}
@@ -227,18 +299,20 @@ function School() {
                                     >
                                         {school.name}
                                     </h3>
-                                    <div className={styles['card-actions']}>
-                                        <ProfileOutlined onClick={() => handleViewClick(school)} />
-                                        <FormOutlined style={{ color: 'orange' }} onClick={() => handleEditClick(school)} />
-                                        <DeleteOutlined style={{ color: 'red' }} onClick={() => handleDeleteClick(startIndex + index)} />
-                                    </div>
                                 </div>
+
+
                             </div>
                         </div>
                     ))}
                 </div>
-            </div>
+            </div >
         </>
     );
 }
 export default School;
+
+
+
+
+
