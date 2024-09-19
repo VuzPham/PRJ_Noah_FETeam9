@@ -11,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 
-
 function Subject() {
 
     const columns = [
@@ -172,13 +171,37 @@ function Subject() {
         setIsDeleteModalVisible(true);
     };
 
-    const handleDeleteConfirm = () => {
-        console.log('View handleDeleteConfirm: ', selectedRowKeys)
-        const newData = dataSource.filter(item => !selectedRowKeys.includes(item.id));
-        setDataSource(newData);
-        setSelectedRowKeys([]);
-        setIsDeleteModalVisible(false);
+    const handleDeleteConfirm = async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            const universities = res.data;
+
+            const school = universities.find(u => u.id === id);
+
+            if (school) {
+                const updatedSubjects = school.subjects.filter(subject => !selectedRowKeys.includes(subject.id));
+
+                await axios.put(`${process.env.REACT_APP_API_URL}/${school.id}`, {
+                    ...school,
+                    subjects: updatedSubjects
+                });
+
+                setDataSource(updatedSubjects);
+                setSelectedRowKeys([]);
+                setIsDeleteModalVisible(false);
+
+                console.log('Delete subject success:', updatedSubjects);
+            } else {
+                console.log('Not found id school:', id);
+            }
+        } catch (error) {
+            console.error('Error delete subject:', error);
+        }
+
+
     };
+
+
 
     const handleSearchClick = () => {
         setTemporarySearchValue(searchValue);
@@ -223,24 +246,70 @@ function Subject() {
 
 
     //add subject has range date
-    const handleAddSubjectSave = (newSubject) => {
-        console.log('Check value before saving: ', newSubject)
-        //Convert range date
-        const newData = {
-            ...newSubject,
-        };
-        setDataSource([newData, ...dataSource]);
-        console.log('Check value after saving: ', newData)
-        handleAddSubjectModalClose();
+
+    const handleAddSubjectSave = async (newSubject) => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            const universities = res.data;
+
+            const school = universities.find(u => u.id === id);
+
+            if (school) {
+                //set Automatic increment of id
+                const maxId = Math.max(...school.subjects.map(subject => parseInt(subject.id)), 0);
+
+                const newId = maxId + 1;
+                newSubject.id = newId.toString();
+                const newSubjectWithId = { ...newSubject };
+
+                const updatedSubjects = [...school.subjects, newSubjectWithId];
+                await axios.put(`${process.env.REACT_APP_API_URL}/${school.id}`, {
+                    ...school,
+                    subjects: updatedSubjects
+                });
+
+                setDataSource(updatedSubjects);
+                handleAddSubjectModalClose();
+
+                console.log('Insert subject successful:', dataSource);
+            } else {
+                console.log('Not found id school');
+            }
+        } catch (error) {
+            console.error('Error insert subject:', error);
+        }
     };
 
-    const handleEditSubjectSave = (updatedSubject) => {
-        const updatedDataSource = dataSource.map(item =>
-            item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item,
-        );
-        setDataSource(updatedDataSource);
-        handleEditSubjectModalClose();
+
+    const handleEditSubjectSave = async (updatedSubject) => {
+        try {
+            const res = await axios.get('http://localhost:3001/universities');
+            const universities = res.data;
+
+            const school = universities.find(u => u.id === id);
+
+            if (school) {
+                const updatedSubjects = school.subjects.map(subject =>
+                    subject.id === updatedSubject.id ? { ...subject, ...updatedSubject } : subject
+                );
+
+                await axios.put(`http://localhost:3001/universities/${school.id}`, {
+                    ...school,
+                    subjects: updatedSubjects
+                });
+
+                setDataSource(updatedSubjects);
+                handleEditSubjectModalClose();
+
+                console.log('Edit subject successful:', updatedSubjects);
+            } else {
+                console.log('Not found school id:', id);
+            }
+        } catch (error) {
+            console.error('Error edit school:', error);
+        }
     };
+
     const hasSelected = selectedRowKeys.length > 0;
 
     return (
@@ -326,4 +395,3 @@ function Subject() {
 }
 
 export default Subject;
-

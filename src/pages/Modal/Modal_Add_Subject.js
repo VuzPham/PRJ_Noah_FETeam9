@@ -13,8 +13,8 @@ function ModalAddSubject({ open, onClose, onSave }) {
         const [startDate, endDate] = values['RangePicker'] || [];
 
         // convert rangedate format year
-        const startYear = startDate ? startDate.format('DD/MM/YYYY') : null;
-        const endYear = endDate ? endDate.format('DD/MM/YYYY') : null;
+        const startYear = startDate ? startDate.format('YYYY/MM/DD') : null;
+        const endYear = endDate ? endDate.format('YYYY/MM/DD') : null;
         const semester = startDate && endDate ? `${startYear}-${endYear}` : null;
 
         const newSubject = {

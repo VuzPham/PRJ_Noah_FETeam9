@@ -105,9 +105,22 @@ function School() {
     };
 
     const handleAddSchool = async (newSchool) => {
-        await axios.post(`${process.env.REACT_APP_API_URL}`, newSchool);
-        setAllSchools(prevSchools => [...prevSchools, newSchool]);
-        setIsAddSchoolModalVisible(false);
+        // await axios.post(`${process.env.REACT_APP_API_URL}`, newSchool);
+        // setAllSchools(prevSchools => [...prevSchools, newSchool]);
+        // setIsAddSchoolModalVisible(false);
+
+        try {
+
+            //set Automatic increment of id
+            const maxId = Math.max(...allSchools.map(school => parseInt(school.id)), 0);
+            const newId = maxId + 1;
+            newSchool.id = newId.toString();
+            await axios.post(`${process.env.REACT_APP_API_URL}`, newSchool);
+            setAllSchools(prevSchools => [...prevSchools, newSchool]);
+            setIsAddSchoolModalVisible(false);
+        } catch (error) {
+            console.error('Error adding school:', error);
+        }
     };
 
     const startIndex = currentPage * itemsPerPage;

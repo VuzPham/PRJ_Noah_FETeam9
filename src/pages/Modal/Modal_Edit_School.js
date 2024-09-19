@@ -27,7 +27,7 @@ function ModalEditSchool({ open, onClose, onSave, school }) {
                 'Name school': school.name,
                 'Image': [{ thumbUrl: school.image }],
                 'Address': [school.address],
-                'Date': school.date ? moment(school.date, 'DD-MM-YYYY') : null,
+                'Date': school.date ? moment(school.date, 'YYYY/MM/DD') : null,
                 'Description': school.description
             });
             setEditorContent(school.description);
@@ -47,9 +47,8 @@ function ModalEditSchool({ open, onClose, onSave, school }) {
             date: formattedDate,
             description: editorContent,
             subjects: school.subjects,
-            question: school.subjects.question
+            question: school.subjects && school.subjects.question
         };
-
         onSave(updatedSchool);
         console.log('Check handle Save ở modal edit school: ', updatedSchool);
     };

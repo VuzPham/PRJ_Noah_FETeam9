@@ -10,11 +10,24 @@ function ModalEditSubject({ open, onClose, onSave, initialData }) {
     console.log('Check giá trị của modal edit subject: ', initialData);
     const [form] = Form.useForm();
 
+    // useEffect(() => {
+    //     if (initialData) {
+    //         const [start, end] = initialData.semester.split('-');
+    //         const startDate = moment(`${start}`, 'DD-MM-YYYY');
+    //         const endDate = moment(`${end}`, 'DD-MM-YYYY');
+
+    //         form.setFieldsValue({
+    //             'Subject name': initialData.name,
+    //             'Major Name': initialData.majorName,
+    //             'Semester': [startDate, endDate],
+    //         });
+    //     }
+    // }, [form, initialData]);
     useEffect(() => {
         if (initialData) {
             const [start, end] = initialData.semester.split('-');
-            const startDate = moment(`${start}`, 'DD-MM-YYYY');
-            const endDate = moment(`${end}`, 'DD-MM-YYYY');
+            const startDate = moment(`${start}`, 'YYYY/MM/DD');
+            const endDate = moment(`${end}`, 'YYYY/MM/DD');
 
             form.setFieldsValue({
                 'Subject name': initialData.name,
@@ -31,7 +44,7 @@ function ModalEditSubject({ open, onClose, onSave, initialData }) {
             id: initialData.id,
             name: values['Subject name'],
             majorName: values['Major Name'],
-            semester: `${startDate.format('DD/MM/YYYY')}-${endDate.format('DD/MM/YYYY')}`,
+            semester: `${startDate.format('YYYY/MM/DD')}-${endDate.format('YYYY/MM/DD')}`,
         };
 
         onSave(newSubject);
