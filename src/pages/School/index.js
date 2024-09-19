@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     DeleteOutlined, PlusOutlined, ProfileOutlined,
     DoubleRightOutlined, DoubleLeftOutlined, FormOutlined,
@@ -12,44 +12,11 @@ import ModalViewSchool from '../Modal/Modal_View_School';
 import ModalEditSchool from '../Modal/Modal_Edit_School';
 import axios from 'axios';
 
-
 function School() {
-    const [allSchools, setAllSchools] = useState([
-        { name: 'School 1', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 2', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 3', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 4', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 5', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 6', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 7', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 8', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 9', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 10', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo', description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 11', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 12', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 13', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 14', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 15', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 16', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 17', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 18aaaaaaaaaaaaaaaaaaaaaaaaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 19aaaa', image: img, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' },
-        { name: 'School 20aaaaaaaaaaaaaaaa', image: img1, description: 'Một trường đại học danh tiếng được biết đến với sự xuất sắc trong lĩnh vực nghiên cứu và chất lượng đào tạo' }
-    ]);
-
+    const [allSchools, setAllSchools] = useState([]);
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(0);
     const [showAll, setShowAll] = useState(false);
-    useEffect(() => {
-        axios.get('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools')
-            .then(response => {
-                setAllSchools(response.data);
-            })
-            .catch(error => {
-                console.error("There was an error fetching the schools!", error);
-            });
-    }, []);
-
     const [editingSchool, setEditingSchool] = useState(null);
     const [viewingSchool, setViewingSchool] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -57,8 +24,23 @@ function School() {
     const [isAddSchoolModalVisible, setIsAddSchoolModalVisible] = useState(false);
     const [isViewSchoolModalVisible, setIsViewSchoolModalVisible] = useState(false);
     const [isEditSchoolModalVisible, setIsEditSchoolModalVisible] = useState(false);
+    const [sliderVisibilities, setSliderVisibilities] = useState([]);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        fetchSchools();
+    }, []);
+
+    const fetchSchools = async () => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            setAllSchools(res.data);
+            setSliderVisibilities(new Array(res.data.length).fill(false));
+        } catch (error) {
+            console.error('Error fetching schools:', error);
+        }
+    };
 
     const handleNext = () => {
         if ((currentPage + 1) * itemsPerPage < allSchools.length) {
@@ -77,18 +59,16 @@ function School() {
         setCurrentPage(0);
     };
 
-
-
-    // const handleDeleteClick = (index) => {
-    //     setSelectedSchoolIndex(index);
-    //     setIsModalOpen(true);
-    // };
+    const handleDeleteClick = (index) => {
+        setSelectedSchoolIndex(index);
+        setIsModalOpen(true);
+    };
 
     const handleEditClick = (school) => {
-        console.log('Check ')
         setEditingSchool(school);
         setIsEditSchoolModalVisible(true);
     };
+
     const handleViewClick = (school) => {
         setViewingSchool(school);
         setIsViewSchoolModalVisible(true);
@@ -98,52 +78,50 @@ function School() {
         if (selectedSchoolIndex !== null) {
             const schoolToDelete = allSchools[selectedSchoolIndex];
             const idSchoolDelete = schoolToDelete.id;
-            console.log('Check id school delete: ', idSchoolDelete);
-            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/${idSchoolDelete}`);
-            console.log('Check res  axios.delete: ', res);
-            const updatedSchools = allSchools.filter((_, index) => index !== selectedSchoolIndex);
-            setAllSchools(updatedSchools);
-            setCurrentPage(Math.max(0, Math.min(currentPage, Math.ceil(updatedSchools.length / itemsPerPage) - 1)));
-            setSelectedSchoolIndex(null);
+            try {
+                await axios.delete(`${process.env.REACT_APP_API_URL}/${idSchoolDelete}`);
+                const updatedSchools = allSchools.filter((_, index) => index !== selectedSchoolIndex);
+                setAllSchools(updatedSchools);
+                setCurrentPage(Math.max(0, Math.min(currentPage, Math.ceil(updatedSchools.length / itemsPerPage) - 1)));
+                setSelectedSchoolIndex(null);
+            } catch (error) {
+                console.error('Error deleting school:', error);
+            }
         }
         setIsModalOpen(false);
     };
-
-
-
 
     const handleModalCancel = () => {
         setSelectedSchoolIndex(null);
         setIsModalOpen(false);
     };
 
-
     const handleSaveChanges = async (updatedSchool) => {
         try {
-            const res = await axios.put(`${process.env.REACT_APP_API_URL}/${updatedSchool.id}`, updatedSchool);
-            console.log('Check res edit school: ', res);
-
+            await axios.put(`${process.env.REACT_APP_API_URL}/${updatedSchool.id}`, updatedSchool);
             const updatedSchools = allSchools.map(school =>
                 school.id === updatedSchool.id ? updatedSchool : school
             );
-
-            //update
             setAllSchools(updatedSchools);
             setIsEditSchoolModalVisible(false);
-        } catch (e) {
-            console.log('Error updating school: ', e);
+        } catch (error) {
+            console.error('Error updating school:', error);
         }
     };
 
-    const handleAddSchool = (newSchool) => {
-        setAllSchools(prevSchools => [...prevSchools, newSchool]);
-        setIsAddSchoolModalVisible(false);
+    const handleAddSchool = async (newSchool) => {
+        try {
+            const maxId = Math.max(...allSchools.map(school => parseInt(school.id)), 0);
+            const newId = maxId + 1;
+            newSchool.id = newId.toString();
+            await axios.post(`${process.env.REACT_APP_API_URL}`, newSchool);
+            setAllSchools(prevSchools => [...prevSchools, newSchool]);
+            setIsAddSchoolModalVisible(false);
+        } catch (error) {
+            console.error('Error adding school:', error);
+        }
     };
 
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
-    const currentSchools = allSchools.slice(startIndex, endIndex);
-    const [sliderVisibilities, setSliderVisibilities] = useState([false]);
     const handleBtnClick = (index) => {
         const newSliderVisibilities = [...sliderVisibilities];
         newSliderVisibilities[index] = !newSliderVisibilities[index];
@@ -154,76 +132,21 @@ function School() {
         navigate('/subject');
     };
 
-    // Fetch data schools
-
-
-    useEffect(() => {
-        fetchSchools();
-    }, [])
-
-    const [schools, setSchools] = useState([]);
-
-    const fetchSchools = async () => {
-        // const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-        // console.log('Check data after fetching dataa schools: ', res.data);
-        // setAllSchools(res.data);
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-            setAllSchools(res.data);
-        } catch (error) {
-            console.error('Error fetching schools: ', error);
-        }
-    }
-
     const handleSchoolClick = (subjectID) => {
-        navigate(`/subject/${subjectID}`)
-    }
+        navigate(`/subject/${subjectID}`);
+    };
 
-    const handleAddSchool = (newSchool) => {
-        axios.post('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools', newSchool)
-            .then(response => {
-                setAllSchools(prevSchools => [...prevSchools, response.data]);
-            })
-            .catch(error => {
-                console.error("There was an error adding the school!", error);
-            });
-    };
-    
-    const handleDeleteClick = (index) => {
-        const schoolToDelete = allSchools[index];
-        axios.delete(`https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/shools/${schoolToDelete.id}`)
-            .then(() => {
-                setAllSchools(prevSchools => prevSchools.filter((_, i) => i !== index));
-            })
-            .catch(error => {
-                console.error("There was an error deleting the school!", error);
-            });
-    };
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
+    const currentSchools = allSchools.slice(startIndex, endIndex);
+
     return (
         <>
-            <ModalDelete
-                open={isModalOpen}
-                onOk={handleModalOk}
-                onCancel={handleModalCancel}
-            />
+            <ModalDelete open={isModalOpen} onOk={handleModalOk} onCancel={handleModalCancel} />
+            <ModalAddSchool open={isAddSchoolModalVisible} onClose={() => setIsAddSchoolModalVisible(false)} onSave={handleAddSchool} />
+            <ModalEditSchool open={isEditSchoolModalVisible} onClose={() => setIsEditSchoolModalVisible(false)} onSave={handleSaveChanges} school={editingSchool} />
+            <ModalViewSchool open={isViewSchoolModalVisible} onOk={() => setIsViewSchoolModalVisible(false)} onCancel={() => setIsViewSchoolModalVisible(false)} school={viewingSchool} />
 
-            <ModalAddSchool
-                open={isAddSchoolModalVisible}
-                onClose={() => setIsAddSchoolModalVisible(false)}
-                onSave={handleAddSchool}
-            />
-            <ModalEditSchool
-                open={isEditSchoolModalVisible}
-                onClose={() => setIsEditSchoolModalVisible(false)}
-                onSave={handleSaveChanges}
-                school={editingSchool}
-            />
-            <ModalViewSchool
-                open={isViewSchoolModalVisible}
-                onOk={() => setIsViewSchoolModalVisible(false)}
-                onCancel={() => setIsViewSchoolModalVisible(false)}
-                school={viewingSchool}
-            />
             <h2>School page</h2>
             <hr className={styles.line} />
             <div className={styles['button-actions']}>
@@ -233,24 +156,13 @@ function School() {
                     </button>
                 </div>
                 <div className={styles['other-action']}>
-                    <button
-                        className='btn btn-danger'
-                        onClick={handleMore}
-                    >
+                    <button className='btn btn-danger' onClick={handleMore}>
                         {showAll ? 'Less' : 'More'}
                     </button>
-                    <button
-                        className='btn btn-primary'
-                        onClick={handlePrevious}
-                        disabled={currentPage === 0 || showAll}
-                    >
+                    <button className='btn btn-primary' onClick={handlePrevious} disabled={currentPage === 0 || showAll}>
                         <DoubleLeftOutlined />&nbsp;Previous
                     </button>
-                    <button
-                        className='btn btn-primary'
-                        onClick={handleNext}
-                        disabled={(currentPage + 1) * itemsPerPage >= allSchools.length || showAll}
-                    >
+                    <button className='btn btn-primary' onClick={handleNext} disabled={(currentPage + 1) * itemsPerPage >= allSchools.length || showAll}>
                         Next&nbsp;<DoubleRightOutlined />
                     </button>
                 </div>
@@ -261,9 +173,7 @@ function School() {
                     {currentSchools.map((school, index) => (
                         <div className={`col ${styles['col-card']}`} key={startIndex + index}>
                             <div className={`card ${styles.card}`}>
-                                <div className={styles['fit-image']}
-
-                                    onClick={() => handleSchoolClick(school.id)}>
+                                <div className={styles['fit-image']} onClick={() => handleSchoolClick(school.id)}>
                                     <img
                                         src={school.image}
                                         className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
@@ -272,7 +182,6 @@ function School() {
                                     />
                                 </div>
 
-                                {/* Cách 2 */}
                                 <div className={styles['icons-slider']}>
                                     <input type='checkbox' id={`${styles['check']}-${index}`} style={{ display: 'none' }} />
                                     <label htmlFor={`${styles['check']}-${index}`}>
@@ -280,39 +189,24 @@ function School() {
                                             {sliderVisibilities[startIndex + index] ? <CloseOutlined /> : <BarsOutlined />}
                                         </span>
                                     </label>
-                                    <div className={`${styles['slider-container']} ${sliderVisibilities[startIndex + index] ? styles['visible'] : ''}`} >
-                                        <a>
-                                            <span><FormOutlined onClick={() => handleEditClick(school)} /></span>
-                                        </a>
-                                        <a>
-                                            <span><DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} /></span>
-                                        </a>
-                                        <a>
-                                            <span> <ProfileOutlined onClick={() => handleViewClick(school)} /></span>
-                                        </a>
+                                    <div className={`${styles['slider-container']} ${sliderVisibilities[startIndex + index] ? styles['visible'] : ''}`}>
+                                        <a><span><FormOutlined onClick={() => handleEditClick(school)} /></span></a>
+                                        <a><span><DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} /></span></a>
+                                        <a><span><ProfileOutlined onClick={() => handleViewClick(school)} /></span></a>
                                     </div>
                                 </div>
                                 <div className={`card-body ${styles['card-body']}`}>
-                                    <h3
-                                        className={`card-title ${styles['card-title']}`}
-                                        onClick={handleRedirect}
-                                    >
+                                    <h3 className={`card-title ${styles['card-title']}`} onClick={handleRedirect}>
                                         {school.name}
                                     </h3>
                                 </div>
-
-
                             </div>
                         </div>
                     ))}
                 </div>
-            </div >
+            </div>
         </>
     );
 }
+
 export default School;
-
-
-
-
-
