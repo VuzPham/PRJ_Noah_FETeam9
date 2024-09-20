@@ -25,11 +25,15 @@ const QuestionManagement = () => {
       
 
         // Trích xuất tất cả các câu hỏi từ tất cả các môn học của tất cả các trường
-        const allQuestions = data.flatMap(university =>
-          university.subjects.flatMap(subject => subject.question)
-        );
+        const allQuestions = data.map(question => ({
+          questionDescription: question.questionDescription,
+          answer: question.answer,
+          image: question.image,
+          id: question.id,
+          questionid: question.questionid
+      }));
 
-        console.log('All Questions:', allQuestions); // Log tất cả câu hỏi
+        console.log(allQuestions)
 
         setQuestions(allQuestions);
       } catch (err) {
@@ -108,7 +112,7 @@ const QuestionManagement = () => {
   };
 
   const filteredQuestions = questions.filter((question) =>
-    question['des-question']?.toLowerCase().includes(searchTerm.toLowerCase())
+    question['questionDescription']?.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const totalPages = Math.ceil(filteredQuestions.length / questionsPerPage);
@@ -163,7 +167,7 @@ const QuestionManagement = () => {
                         icon={expandedQuestionId === question.id ? faChevronUp : faChevronDown}
                         className={styles['question-icon']}
                       />
-                      {question['des-question']}
+                      {question['questionDescription']}
                     </div>
                     {expandedQuestionId === question.id && question.answer && (
                       <div className={styles['answer-text']}>{question.answer}</div>
@@ -251,7 +255,7 @@ const QuestionManagement = () => {
           <h2>Edit Question</h2>
           <input
             type="text"
-            value={selectedQuestion['des-question']}
+            value={selectedQuestion['questionDescription']}
             onChange={(e) => setSelectedQuestion({ ...selectedQuestion, question: e.target.value })}
             className={styles['input']}
           />

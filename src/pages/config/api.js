@@ -1,5 +1,5 @@
 // src/config/api.js
-const API_URL = 'http://localhost:3001/universities/';
+const API_URL = 'http://localhost:3001/question/';
 
 export const fetchQuestions = async () => {
   try {
