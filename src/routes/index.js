@@ -12,7 +12,7 @@ const publicRoutes = [
 
 const privateRoutes = [
     { path: '/school', component: School },
-    // { path: '/subject', component: Subject },
+    { path: '/subject', component: Subject },
     { path: '/subject/:id', component: Subject },
     // { path: '/question', component: Question },
     { path: '/question/:subjectId', component: Question },
