@@ -24,7 +24,8 @@ body {
 
     .crud {
         button {
-            width          : 100px;
+            width          : auto;
+            max-width      : 150px;
             font-size      : 14px;
             display        : flex;
             justify-content: space-around;
@@ -60,7 +61,7 @@ body {
 
     .col-card {
         margin-bottom: 40px;
-
+        width        : 25%;
 
     }
 
@@ -78,39 +79,51 @@ body {
     border-radius  : 0.375rem;
     overflow       : hidden;
 
+    .fit-image {
+        border-top-left-radius : inherit;
+        border-top-right-radius: inherit;
+        object-fit             : cover;
+        height                 : 160px;
+        width                  : 100%;
+        position               : relative;
 
-    img {
+        img {
 
-        &.card-img-top {
-            border-top-left-radius : inherit;
-            border-top-right-radius: inherit;
-            object-fit             : cover;
-            height                 : 160px;
-            width                  : 100%;
-            position               : relative;
+            &.card-img-top {
+                position       : absolute;
+                width          : 100%;
+                height         : 100%;
+                image-rendering: pixelated;
+                object-fit     : contain;
 
-            &.slider-visible {
-                filter    : blur(0.5px);
-                transition: filter 0.3s ease;
+                &.slider-visible {
+                    filter    : blur(0.6px);
+                    transition: filter 0.3s ease;
+                }
             }
+
+            &:hover {
+                cursor: pointer;
+            }
+
+
         }
-
-        &:hover {
-            cursor: pointer;
-        }
-
-
     }
 
+
+
+
+
     .icons-slider {
-        width           : 17%;
+        width           : 15%;
         height          : 16%;
         position        : absolute;
-        left            : 83%;
+        left            : 85%;
         background-color: rgba(0, 0, 0, 0.6);
         font-weight     : bold;
         color           : white;
         display         : flex;
+        text-align      : justify;
 
         &:hover {
             cursor: pointer;
@@ -144,7 +157,7 @@ body {
         .slider-container {
             border-radius   : 3px;
             position        : absolute;
-            width           : 42px;
+            width           : 100%;
             height          : auto;
             top             : 100%;
             background-color: rgba(0, 0, 0, 0.5);
@@ -162,7 +175,7 @@ body {
                 color           : white;
                 height          : 40px;
                 line-height     : 40px;
-                padding-left    : 10px;
+                padding-left    : 14px;
                 border-bottom   : 1px solid rgba(255, 255, 255, .1);
                 border-top      : 1px solid black;
                 // border-left  : 3px solid red;
@@ -188,7 +201,6 @@ body {
 
         }
     }
-
 
     .card-body {
         display        : flex;

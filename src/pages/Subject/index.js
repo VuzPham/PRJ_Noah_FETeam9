@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, Button, Input, Modal } from 'antd';
-import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined } from '@ant-design/icons';
+import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './Subject.module.scss';
 import ModalDelete from '../Modal/Modal_Delete';
 import ModalAddSubject from '../Modal/Modal_Add_Subject';
@@ -42,8 +42,8 @@ function Subject() {
                 console.log('Check semester bên file subject: ', semester)
                 const [start, end] = semester.split('-');
                 if (start && end) {
-                    const startMonthYear = moment(start, 'DD/MM/YYYY').format('MM/YYYY');
-                    const endMonthYear = moment(end, 'DD/MM/YYYY').format('MM/YYYY');
+                    const startMonthYear = moment(start, 'YYYY/MM/DD').format('MM/YYYY');
+                    const endMonthYear = moment(end, 'YYYY/MM/DD').format('MM/YYYY');
 
                     return `${startMonthYear} - ${endMonthYear}`;
                 }
@@ -51,7 +51,13 @@ function Subject() {
         },
         {
             title: 'Total Questions',
-            dataIndex: 'totalQuestions',
+            dataIndex: 'question',
+
+            render: question => {
+                console.log('Check total question: ', question)
+                return question ? question.length : 0;
+            }
+
         },
         {
             title: 'Actions',
@@ -206,6 +212,8 @@ function Subject() {
         setIsDeleteModalVisible(false);
     };
 
+
+
     const handleSearchClick = () => {
         setTemporarySearchValue(searchValue);
     };
@@ -302,15 +310,16 @@ function Subject() {
             <div className={styles['button-actions']} style={{ textAlign: 'center' }}>
                 <div className={styles['crud']}>
                     <Button type="primary" onClick={handleAddSubjectClick}>
-                        <PlusOutlined /> Add subject
+                        <PlusOutlined />&nbsp;Add subject
                     </Button>
                     <Button
                         type="danger"
                         className={`btn btn-danger ${hasSelected ? '' : styles['disable-choose']}`}
                         onClick={handleDelete}
                         disabled={!hasSelected}
+                        style={{ display: 'flex' }}
                     >
-                        Delete
+                        <DeleteOutlined />&nbsp;Delete
                     </Button>
                 </div>
                 <div style={{ marginTop: 16 }}>

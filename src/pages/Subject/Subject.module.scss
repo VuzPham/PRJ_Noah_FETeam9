@@ -10,16 +10,15 @@
     gap            : 10px;
     justify-content: space-between;
 
+
     .crud {
         display        : flex;
         gap            : 10px;
         flex-wrap      : wrap;
         justify-content: center;
-    }
 
-    .crud {
         button {
-            width    : 100px;
+            width    : 120px;
             font-size: 14px;
         }
     }
