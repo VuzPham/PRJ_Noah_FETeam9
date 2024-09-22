@@ -94,15 +94,12 @@ function Subject() {
     const { id } = useParams();
     const fetSubjectFromSchool = async (id) => {
         try {
-
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
+            console.log('Fetch subject from id school: ', res);
             if (res) {
                 const subjects = await res.data;
-                const schoolId = id;
-                const schoolIds = subjects.find(u => u.id == schoolId);
-                console.log('Check subjects from school id: ', schoolIds.subjects)
-                setInitialData(schoolIds.subjects);
-                // setDataSource(schoolIds.subjects);
+                setInitialData(subjects);
+                // setDataSource(subjects);
             } else {
                 console.log('Not found!!!!');
             }
@@ -113,7 +110,7 @@ function Subject() {
     }
 
     useEffect(() => {
-        console.log('Lấy id từ param: ', id);
+        console.log('Lấy id school từ param: ', id);
         fetSubjectFromSchool(id);
     }, [id])
 
@@ -173,27 +170,10 @@ function Subject() {
 
     const handleDeleteConfirm = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-            const universities = res.data;
-
-            const school = universities.find(u => u.id === id);
-
-            if (school) {
-                const updatedSubjects = school.subjects.filter(subject => !selectedRowKeys.includes(subject.id));
-
-                await axios.put(`${process.env.REACT_APP_API_URL}/${school.id}`, {
-                    ...school,
-                    subjects: updatedSubjects
-                });
-
-                setDataSource(updatedSubjects);
-                setSelectedRowKeys([]);
-                setIsDeleteModalVisible(false);
-
-                console.log('Delete subject success:', updatedSubjects);
-            } else {
-                console.log('Not found id school:', id);
-            }
+            await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${selectedRowKeys[0]}`);
+            setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
+            setSelectedRowKeys([]);
+            setIsDeleteModalVisible(false);
         } catch (error) {
             console.error('Error delete subject:', error);
         }
@@ -249,32 +229,26 @@ function Subject() {
 
     const handleAddSubjectSave = async (newSubject) => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-            const universities = res.data;
 
-            const school = universities.find(u => u.id === id);
+            // console.log('Check value datasoucre in handle add subject: ', Math.max(...dataSource.map(sub=> parseInt(sub.id)),0))
+            // console.log('Check datasoucre in handle add subject: ', Math.max(dataSource.map(subject => parseInt(subject.id)), 0))
+            const maxId = Math.max(...dataSource.map(subject => parseInt(subject.id)), 0);
+            console.log('Check max ID in subject page: ', maxId);
 
-            if (school) {
-                //set Automatic increment of id
-                const maxId = Math.max(...school.subjects.map(subject => parseInt(subject.id)), 0);
-
-                const newId = maxId + 1;
-                newSubject.id = newId.toString();
-                const newSubjectWithId = { ...newSubject };
-
-                const updatedSubjects = [...school.subjects, newSubjectWithId];
-                await axios.put(`${process.env.REACT_APP_API_URL}/${school.id}`, {
-                    ...school,
-                    subjects: updatedSubjects
-                });
-
-                setDataSource(updatedSubjects);
+            const newId = maxId + 1;
+            newSubject.id = newId.toString();
+            newSubject.universityId = id;
+            console.log('Next subjectID : ', newSubject.id)
+            const res = await axios.post(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`, newSubject);
+            console.log('Check res in function add subject from id school: ', res);
+            if (res.status == 201) {
+                const newData = res.data;
+                setDataSource(prevData => [...prevData, newData]);
                 handleAddSubjectModalClose();
-
-                console.log('Insert subject successful:', dataSource);
             } else {
-                console.log('Not found id school');
+                console.log('Error new subject')
             }
+
         } catch (error) {
             console.error('Error insert subject:', error);
         }
@@ -282,32 +256,17 @@ function Subject() {
 
 
     const handleEditSubjectSave = async (updatedSubject) => {
+
         try {
-            const res = await axios.get('http://localhost:3001/universities');
-            const universities = res.data;
-
-            const school = universities.find(u => u.id === id);
-
-            if (school) {
-                const updatedSubjects = school.subjects.map(subject =>
-                    subject.id === updatedSubject.id ? { ...subject, ...updatedSubject } : subject
-                );
-
-                await axios.put(`http://localhost:3001/universities/${school.id}`, {
-                    ...school,
-                    subjects: updatedSubjects
-                });
-
-                setDataSource(updatedSubjects);
-                handleEditSubjectModalClose();
-
-                console.log('Edit subject successful:', updatedSubjects);
-            } else {
-                console.log('Not found school id:', id);
-            }
+            await axios.put(`${process.env.REACT_APP_API_SUBJECT}/${updatedSubject.id}`, updatedSubject);
+            const updatedDataSource = dataSource.map(item =>
+                item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
+            );
+            setDataSource(updatedDataSource);
         } catch (error) {
-            console.error('Error edit school:', error);
+            console.error('Error updating subject: ', error);
         }
+        handleEditSubjectModalClose();
     };
 
     const hasSelected = selectedRowKeys.length > 0;

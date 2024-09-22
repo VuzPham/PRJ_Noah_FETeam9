@@ -107,6 +107,7 @@ function ModalAddSchool({ open, onClose, onSave }) {
                                     {
                                         value: '114 Lê Trọng Tấn',
                                         label: '114 Lê Trọng Tấn',
+
                                     },
                                 ],
                             },
@@ -117,6 +118,16 @@ function ModalAddSchool({ open, onClose, onSave }) {
                                     {
                                         value: '236B Lê Văn Sỹ',
                                         label: '236B Lê Văn Sỹ',
+                                    },
+                                ],
+                            },
+                            {
+                                value: 'GoVap',
+                                label: 'Quận Gò Vấp',
+                                children: [
+                                    {
+                                        value: '12 Nguyễn Văn Bảo, phường 4',
+                                        label: '12 Nguyễn Văn Bảo, phường 4',
                                     },
                                 ],
                             }

@@ -4,6 +4,7 @@ import { faEdit, faTrashAlt, faPlus, faSave, faTimes, faChevronDown, faChevronUp
 import styles from './Question.module.scss';
 import { fetchQuestions, addQuestion, updateQuestion, deleteQuestion } from '../config/api';
 import { useParams } from 'react-router-dom';
+import { useRef } from 'react';
 import axios from 'axios';
 
 
@@ -18,57 +19,49 @@ const QuestionManagement = () => {
     const [error, setError] = useState(null);
     const [expandedQuestionId, setExpandedQuestionId] = useState(null);
     const [showConfirmDelete, setShowConfirmDelete] = useState(null);
-    const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState(null); 
+    const [confirmDeleteQuestionId, setConfirmDeleteQuestionId] = useState(null);
     const questionsPerPage = 5;
 
     const { subjectId } = useParams();
 
+    // const fetchQuestionsData = async (subjectId) => {
+    //     try {
+    //         const res = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subjectId}`);
+    //         console.log('Check res in page question from id subject: ', res);
+    //         if (res) {
+    //             const ques = await res.data;
+    //             console.log('Check res in fetchQuestionsData: ', res.data);
+
+    //             setQuestions(ques);
+    //             console.log('Check setQuestions:', questions);
+    //         } else {
+    //             console.log('No exist data');
+    //         }
+
+    //     } catch (error) {
+    //         console.error('Error fetching questions:', error);
+    //         throw error;
+    //     }
+    // };
+
     const fetchQuestionsData = async (subjectId) => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-            if (res) {
-                const data = res.data;
-                const subject = data.flatMap(university =>
-                    university.subjects.find(sub => sub.id === parseInt(subjectId))
-                );
+    
+            const res = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subjectId}`)
+            const filteredQuestions = res.data.filter(question => question.subjectid === subjectId);
+            console.log('Check filter: ', filteredQuestions);
+            setQuestions(filteredQuestions);
 
-                if (subject[0] === undefined && subject[1] !== undefined) {
-                    return [subject[1]];
-                } else {
-                    return subject.filter(item => item !== undefined);
-                }
-
-            } else {
-                console.log('Not found!!!');
-            }
         } catch (error) {
-            console.error('Error fetching questions:', error);
-            throw error;
-        }
-
-    };
-
-    const loadQuestions = async () => {
-        try {
-            const questionsData = await fetchQuestionsData(subjectId);
-            console.log('Check giá trị lấy từ hàm fetchQuestionsData: ', questionsData);
-            const id_sub = subjectId;
-            console.log('Check subjectId trên param: ', id_sub, typeof id_sub);
-            const subids = questionsData.find(item => item.id === parseInt(id_sub));
-
-            console.log('Check load questions: ', subids);
-            setQuestions(subids.question);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
+            console.error('Error fetching questions data:', error);
         }
     };
 
 
     useEffect(() => {
         console.log('Check giá trị lấy từ param : ', subjectId);
-        loadQuestions();
+        fetchQuestionsData(subjectId);
+        // console.log('Check giá trị lấy từ param : ', fetchQuestionsData(subjectId));
     }, [subjectId])
     const handleAddQuestion = async () => {
         try {
@@ -145,8 +138,9 @@ const QuestionManagement = () => {
     const currentQuestions = filteredQuestions.slice(indexOfFirstQuestion, indexOfLastQuestion);
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
-
+    console.log('Check giá trị questions chung: ', questions)
     return (
+
         <div className={styles['container']}>
             {showConfirmDelete && (
                 <div className={styles['confirm-dialog']}>
@@ -181,6 +175,7 @@ const QuestionManagement = () => {
                         </div>
                         <ul className={styles['question-list']}>
                             {questions.map((question) => (
+
                                 <li key={question.id} className={styles['question-row']}>
                                     <div className={styles['question-item']}>
                                         <div
@@ -191,7 +186,7 @@ const QuestionManagement = () => {
                                                 icon={expandedQuestionId === question.id ? faChevronUp : faChevronDown}
                                                 className={styles['question-icon']}
                                             />
-                                            {question.des_question}
+                                            {question.questionDescription}
                                         </div>
                                         {expandedQuestionId === question.id && question.answer && (
                                             <div className={styles['answer-text']}>{question.answer}</div>
