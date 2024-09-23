@@ -1,4 +1,3 @@
-//c3
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Input, Modal } from 'antd';
 import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -49,13 +48,9 @@ function Subject() {
         },
         {
             title: 'Total Questions',
-            dataIndex: 'question',
+            dataIndex: 'totalQuestions',
 
-            render: question => {
-                console.log('Check total question: ', question)
-                return question ? question.length : 0;
-            }
-
+            render: (_, record) => totalQuestions[record.id] || 0,
         },
         {
             title: 'Actions',
@@ -92,22 +87,51 @@ function Subject() {
 
 
     const { id } = useParams();
+    // const fetSubjectFromSchool = async (id) => {
+    //     try {
+    //         const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
+    //         console.log('Fetch subject from id school: ', res);
+    //         if (res) {
+    //             const subjects = await res.data;
+    //             setInitialData(subjects);
+    //             // setDataSource(subjects);
+    //         } else {
+    //             console.log('Not found!!!!');
+    //         }
+
+    //     } catch (error) {
+    //         console.error('Error fetching subjects:', error);
+    //     }
+    // }
+    const [totalQuestions, setTotalQuestions] = useState({});
+
+
     const fetSubjectFromSchool = async (id) => {
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
-            console.log('Fetch subject from id school: ', res);
             if (res) {
-                const subjects = await res.data;
+                const subjects = res.data;
+                console.log('Check subject: ', res.data)
                 setInitialData(subjects);
-                // setDataSource(subjects);
-            } else {
-                console.log('Not found!!!!');
-            }
 
+                const listQuestion = subjects.map(async (subject) => {
+                    const questionsRes = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subject.id}`);
+                    return { id: subject.id, total: questionsRes.data.length };
+                });
+
+                const questionsCount = await Promise.all(listQuestion);
+                const questionsMap = {};
+                questionsCount.forEach(item => {
+                    questionsMap[item.id] = item.total;
+                });
+
+                setTotalQuestions(questionsMap);
+            }
         } catch (error) {
             console.error('Error fetching subjects:', error);
         }
-    }
+    };
+
 
     useEffect(() => {
         console.log('Lấy id school từ param: ', id);
@@ -168,18 +192,35 @@ function Subject() {
         setIsDeleteModalVisible(true);
     };
 
+    //delete all subject by selectedRowKeys
     const handleDeleteConfirm = async () => {
         try {
-            await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${selectedRowKeys[0]}`);
+            await Promise.all(selectedRowKeys.map(async (key) => {
+                await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${key}`);
+            }));
+
             setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
             setSelectedRowKeys([]);
+            await fetSubjectFromSchool(id);
             setIsDeleteModalVisible(false);
         } catch (error) {
-            console.error('Error delete subject:', error);
+            console.error('Error deleting subjects:', error);
         }
-
-
     };
+
+    //delete 1 id for each subject
+    // const handleDeleteConfirm = async () => {
+    //     try {
+    //         await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${selectedRowKeys[0]}`);
+    //         setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
+    //         setSelectedRowKeys([]);
+    //         setIsDeleteModalVisible(false);
+    //     } catch (error) {
+    //         console.error('Error delete subject:', error);
+    //     }
+
+
+    // };
 
 
 
@@ -243,7 +284,9 @@ function Subject() {
             console.log('Check res in function add subject from id school: ', res);
             if (res.status == 201) {
                 const newData = res.data;
+
                 setDataSource(prevData => [...prevData, newData]);
+                await fetSubjectFromSchool(id);
                 handleAddSubjectModalClose();
             } else {
                 console.log('Error new subject')
@@ -262,6 +305,7 @@ function Subject() {
             const updatedDataSource = dataSource.map(item =>
                 item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
             );
+            await fetSubjectFromSchool(id);
             setDataSource(updatedDataSource);
         } catch (error) {
             console.error('Error updating subject: ', error);
