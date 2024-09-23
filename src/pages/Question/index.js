@@ -22,8 +22,16 @@ const QuestionManagement = () => {
   const [showImageColumn, setShowImageColumn] = useState(true);
   const [selectedQuestions, setSelectedQuestions] = useState(new Set());
   const questionsPerPage = 5;
+  const availableImages = [
+    { id: 1, url: 'path/to/image1.jpg', name: 'Image 1' },
+    { id: 2, url: 'path/to/image2.jpg', name: 'Image 2' },
+    // Thêm các hình ảnh khác vào đây
+  ];
+  const [errorMessages, setErrorMessages] = useState({ question: '', image: '' });
 
+  const [enlargedImage, setEnlargedImage] = useState(null);
   useEffect(() => {
+    
     const loadQuestions = async () => {
       try {
         const data = await fetchQuestions();
@@ -44,8 +52,22 @@ const QuestionManagement = () => {
 
     loadQuestions();
   }, []);
-
+  useEffect(() => {
+    if (currentView === 'addQuestion') {
+      setNewQuestion({ questionDescription: '', answer: '', image: '' });
+    } else if (currentView === 'editQuestion' && selectedQuestion) {
+      setSelectedQuestion({ ...selectedQuestion }); // Copy selected question
+    }
+  }, [currentView, selectedQuestion]);
+  
   const handleAddQuestion = async () => {
+    setErrorMessages({ question: '', image: '' }); // Reset error messages
+  
+    if (!newQuestion.questionDescription && !newQuestion.image) {
+      setErrorMessages({ question: 'Enter question or image', image: 'Image is required.' });
+      return;
+    }
+    
     try {
       const addedQuestion = await addQuestion(newQuestion);
       setQuestions(prevQuestions => [...prevQuestions, addedQuestion]);
@@ -55,7 +77,7 @@ const QuestionManagement = () => {
       console.error('Error adding question:', err);
     }
   };
-
+  const [isHovered, setIsHovered] = useState(false); 
   const handleEditQuestion = (question) => {
     setSelectedQuestion(question);
     setCurrentView('editQuestion');
@@ -63,19 +85,25 @@ const QuestionManagement = () => {
 
   const handleUpdateQuestion = async () => {
     if (!selectedQuestion) return;
-
-    console.log("Updating question ID:", selectedQuestion.id); // Thêm dòng này để kiểm tra ID
-
-    try {
-        const updatedQuestion = await updateQuestion(selectedQuestion.id, selectedQuestion);
-        setQuestions(prevQuestions => prevQuestions.map(q => (q.id === updatedQuestion.id ? updatedQuestion : q)));
-        setSelectedQuestion(null);
-        setCurrentView('list');
-    } catch (err) {
-        console.error('Error updating question:', err);
-        alert('Failed to update question: ' + (err.message || 'Unknown error'));
+  
+    setErrorMessages({ question: '', image: '' }); // Reset error messages
+  
+    if (!selectedQuestion.questionDescription && !selectedQuestion.image) {
+      setErrorMessages({ question: 'Enter question or image', image: 'Image is required.' });
+      return;
     }
-};
+  
+    try {
+      const updatedQuestion = await updateQuestion(selectedQuestion.id, selectedQuestion);
+      setQuestions(prevQuestions => prevQuestions.map(q => (q.id === updatedQuestion.id ? updatedQuestion : q)));
+      setSelectedQuestion(null);
+      setCurrentView('list');
+    } catch (err) {
+      console.error('Error updating question:', err);
+      alert('Failed to update question: ' + (err.message || 'Unknown error'));
+    }
+  };
+  
 
 
 const handleDeleteQuestion = (id) => {
@@ -119,6 +147,14 @@ const confirmDelete = async () => {
     }
     setQuestions(prevQuestions => prevQuestions.filter(q => !selectedQuestions.has(q.id)));
     setSelectedQuestions(new Set());
+  };
+  const handleImageClick = (image) => {
+    console.log("Image clicked:", image); // Kiểm tra xem có gọi hàm không
+    setEnlargedImage(image); // Set hình ảnh lớn
+};
+
+  const closeImageModal = () => {
+    setEnlargedImage(null); // Close the modal
   };
 
   const filteredQuestions = questions.filter((question) =>
@@ -219,10 +255,30 @@ const confirmDelete = async () => {
                 </div>
               </div>
               {showImageColumn && (
-                <div className={styles['image-column']}>
-                  {question.image && <img src={question.image} alt="Question visual" className={styles['question-image']} />}
-                </div>
-              )}
+  <div className={styles['image-column']}>
+    {question.image && (
+      <img
+        src={question.image}
+        alt="Question visual"
+        className={styles['question-image']}
+        onClick={() => handleImageClick(question.image)} // Pass the correct image URL
+      />
+    )}
+  </div>
+)}
+
+{enlargedImage && (
+  <div className={styles['modal']} onClick={closeImageModal}>
+    <img
+      src={enlargedImage} // Use the enlargedImage state
+      alt="Enlarged"
+      className={styles['enlarged-image']}
+    />
+  </div>
+)}
+
+
+
               <div className={styles['action-column']}>
                 <button onClick={() => handleEditQuestion(question)} className={styles['btn-edit']}>
                   <FontAwesomeIcon icon={faEdit} /> Edit
@@ -236,33 +292,55 @@ const confirmDelete = async () => {
         </ul>
       </div>
 
-      {currentView === 'addQuestion' &&  (
+      {currentView === 'addQuestion' && (
   <div className={styles['overlay']}>
     <div className={styles['form-container']}>
       <h2>Add Question</h2>
-      <label >Question:</label>
+      <label>Question:</label>
       <textarea
         placeholder="Question Description"
         value={newQuestion.questionDescription}
         onChange={(e) => setNewQuestion({ ...newQuestion, questionDescription: e.target.value })}
         className={styles['form-input']}
       />
-      <label >Answer:</label>
+      {errorMessages.question && <label className={styles['error-message']}>{errorMessages.question}</label>}
 
+      <label>Answer:</label>
       <textarea
         placeholder="Answer"
         value={newQuestion.answer}
         onChange={(e) => setNewQuestion({ ...newQuestion, answer: e.target.value })}
         className={styles['form-input']}
       />
-      <label >Image:</label>
-      <input
-        type="text"
-        placeholder="Image URL"
-        value={newQuestion.image}
-        onChange={(e) => setNewQuestion({ ...newQuestion, image: e.target.value })}
-        className={styles['form-input']}
-      />
+
+      <label>Image:</label>
+      <div
+        className={styles['image-upload']}
+        onClick={() => document.getElementById('image-upload-input').click()}
+      >
+        <input
+          id="image-upload-input"
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                setNewQuestion({ ...newQuestion, image: reader.result });
+              };
+              reader.readAsDataURL(file);
+            }
+          }}
+        />
+        {newQuestion.image ? (
+          <img src={newQuestion.image} alt="Uploaded" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          <span>+Upload</span>
+        )}
+      </div>
+
       <button onClick={handleAddQuestion} className={styles['btn-save']}>
         <FontAwesomeIcon icon={faSave} /> Save
       </button>
@@ -273,35 +351,55 @@ const confirmDelete = async () => {
   </div>
 )}
 
-{currentView === 'editQuestion' && selectedQuestion &&  (
+{currentView === 'editQuestion' && selectedQuestion && (
   <div className={styles['overlay']}>
     <div className={styles['form-container']}>
       <h2>Edit Question</h2>
-      <label >Question:</label>
-
+      <label>Question:</label>
       <textarea
         value={selectedQuestion.questionDescription}
         placeholder="Question Description"
         onChange={(e) => setSelectedQuestion({ ...selectedQuestion, questionDescription: e.target.value })}
         className={styles['form-input']}
       />
-      <label >Answer:</label>
+      {errorMessages.question && <p className={styles['error-message']}>{errorMessages.question}</p>}
 
+      <label>Answer:</label>
       <textarea
         value={selectedQuestion.answer}
         placeholder="Answer"
         onChange={(e) => setSelectedQuestion({ ...selectedQuestion, answer: e.target.value })}
         className={styles['form-input']}
       />
-      <label >Image:</label>
 
-      <input
-        type="text"
-        placeholder="Image URL"
-        value={selectedQuestion.image}
-        onChange={(e) => setSelectedQuestion({ ...selectedQuestion, image: e.target.value })}
-        className={styles['form-input']}
-      />
+      <label>Image:</label>
+      <div
+        className={styles['image-upload']}
+        onClick={() => document.getElementById('image-upload-input-edit').click()}
+      >
+        <input
+          id="image-upload-input-edit"
+          type="file"
+          accept="image/*"
+          style={{ display: 'none' }}
+          onChange={(e) => {
+            const file = e.target.files[0];
+            if (file) {
+              const reader = new FileReader();
+              reader.onloadend = () => {
+                setSelectedQuestion({ ...selectedQuestion, image: reader.result });
+              };
+              reader.readAsDataURL(file);
+            }
+          }}
+        />
+        {selectedQuestion.image ? (
+          <img src={selectedQuestion.image} alt="Uploaded" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          <span>+Upload</span>
+        )}
+      </div>
+
       <button onClick={handleUpdateQuestion} className={styles['btn-save']}>
         <FontAwesomeIcon icon={faSave} /> Save
       </button>
@@ -311,6 +409,8 @@ const confirmDelete = async () => {
     </div>
   </div>
 )}
+
+
 <div className={styles['pagination']}>
         <button
           onClick={() => handlePageChange(currentPage - 1)}
