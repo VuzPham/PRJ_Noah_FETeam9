@@ -6,8 +6,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import styles from './Question.module.scss';
 import { fetchQuestions, addQuestion, updateQuestion, deleteQuestion } from '../config/api';
-
-
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 const QuestionManagement = () => {
   const [questions, setQuestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -24,27 +24,30 @@ const QuestionManagement = () => {
   const [selectedQuestions, setSelectedQuestions] = useState(new Set());
   const questionsPerPage = 5;
 
-  useEffect(() => {
-    const loadQuestions = async () => {
-      try {
-        const data = await fetchQuestions();
-        const allQuestions = data.map(question => ({
-          questionDescription: question.questionDescription,
-          answer: question.answer,
-          image: question.image,
-          id: question.id,
-          questionid: question.questionid
-        }));
-        setQuestions(allQuestions);
-      } catch (err) {
-        setError(err.message);
-      } finally {
+  const { subjectId } = useParams();
+  const fetchQuestionsData = async (subjectId) => {
+    try {
+        setLoading(true);
+        const response = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subjectId}`);
+        if (response && response.data) {
+            setQuestions(response.data);
+            console.log('Fetched Questions:', response.data);
+        } else {
+            console.log('No questions found for this subject.');
+        }
         setLoading(false);
-      }
-    };
+    } catch (error) {
+        console.error('Error fetching questions:', error);
+        setError('Failed to fetch questions');
+        setLoading(false);
+    }
+};
 
-    loadQuestions();
-  }, []);
+
+useEffect(() => {
+    console.log('Check giá trị lấy từ param : ', subjectId);
+    fetchQuestionsData(subjectId);
+}, [subjectId])
 
   const handleAddQuestion = async () => {
     try {
