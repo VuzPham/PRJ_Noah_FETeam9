@@ -56,22 +56,6 @@
   "subjects": [
     {
       "universityId": "3",
-      "id": "5",
-      "name": "subject5",
-      "majorName": "Môn học bắt buộc",
-      "semester": "2024/09/01",
-      "totalQuestions": 25
-    },
-    {
-      "universityId": "3",
-      "id": "6",
-      "name": "subjectA",
-      "majorName": "Môn học bắt buộc",
-      "semester": "2024/09/01",
-      "totalQuestions": 30
-    },
-    {
-      "universityId": "3",
       "id": "7",
       "name": "subjectB",
       "majorName": "Môn học tự chọn",
@@ -94,11 +78,11 @@
       "universityId": "5"
     },
     {
-      "id": "1",
-      "name": "subject12",
+      "id": "3",
+      "name": "Lập trình C",
       "majorName": "Nhập môn lập trình",
-      "semester": "2024/09/03-2024/10/23",
-      "universityId": "6"
+      "semester": "2024/09/04-2024/10/16",
+      "universityId": "2"
     }
   ],
   "question": [
@@ -194,7 +178,7 @@
       "subjectid": "4"
     },
     {
-      "questionDescriptionquestionDescription": "Một người đã mua một con ngựa với giá 60 đô la. Sau đó, anh ta đã bán nó với giá 70 đô la. Sau đó, anh ấy đã mua một con khác với giá 80 đô la. Cuối cùng anh ta lại tiếp bán con ngựa với giá 90 đô la. Hỏi anh ta có kiếm tiền không? Nếu có lãi thì bao nhiêu?",
+      "questionDescription": "Một người đã mua một con ngựa với giá 60 đô la. Sau đó, anh ta đã bán nó với giá 70 đô la. Sau đó, anh ấy đã mua một con khác với giá 80 đô la. Cuối cùng anh ta lại tiếp bán con ngựa với giá 90 đô la. Hỏi anh ta có kiếm tiền không? Nếu có lãi thì bao nhiêu?",
       "answer": "Người đàn ông kiếm được lợi nhuận sau 2 giao dịch. Anh ta kiếm được 10 đô la lợi nhuận cho mỗi con ngựa anh ta bán. Vì vậy, sau 2 lần anh ấy đã kiếm được tổng cộng 20 đô la.",
       "image": " ",
       "id": "14",

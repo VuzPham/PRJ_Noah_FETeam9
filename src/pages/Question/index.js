@@ -23,37 +23,21 @@ const QuestionManagement = () => {
     const questionsPerPage = 5;
 
     const { subjectId } = useParams();
-
-    // const fetchQuestionsData = async (subjectId) => {
-    //     try {
-    //         const res = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subjectId}`);
-    //         console.log('Check res in page question from id subject: ', res);
-    //         if (res) {
-    //             const ques = await res.data;
-    //             console.log('Check res in fetchQuestionsData: ', res.data);
-
-    //             setQuestions(ques);
-    //             console.log('Check setQuestions:', questions);
-    //         } else {
-    //             console.log('No exist data');
-    //         }
-
-    //     } catch (error) {
-    //         console.error('Error fetching questions:', error);
-    //         throw error;
-    //     }
-    // };
-
     const fetchQuestionsData = async (subjectId) => {
         try {
-    
-            const res = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subjectId}`)
-            const filteredQuestions = res.data.filter(question => question.subjectid === subjectId);
-            console.log('Check filter: ', filteredQuestions);
-            setQuestions(filteredQuestions);
-
+            setLoading(true);
+            const response = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subjectId}`);
+            if (response && response.data) {
+                setQuestions(response.data);
+                console.log('Fetched Questions:', response.data);
+            } else {
+                console.log('No questions found for this subject.');
+            }
+            setLoading(false);
         } catch (error) {
-            console.error('Error fetching questions data:', error);
+            console.error('Error fetching questions:', error);
+            setError('Failed to fetch questions');
+            setLoading(false);
         }
     };
 
@@ -61,7 +45,6 @@ const QuestionManagement = () => {
     useEffect(() => {
         console.log('Check giá trị lấy từ param : ', subjectId);
         fetchQuestionsData(subjectId);
-        // console.log('Check giá trị lấy từ param : ', fetchQuestionsData(subjectId));
     }, [subjectId])
     const handleAddQuestion = async () => {
         try {
@@ -173,7 +156,9 @@ const QuestionManagement = () => {
                             <div className={styles['header-item']}>Edit</div>
                             <div className={styles['header-item']}>Delete</div>
                         </div>
-                        <ul className={styles['question-list']}>
+                        {questions.length === 0 ? (
+                            <p style={{ fontFamily: 'Brush Script MT', fontSize: '24px', textAlign: 'center' }}>No questions</p>
+                        ) : (<ul className={styles['question-list']}>
                             {questions.map((question) => (
 
                                 <li key={question.id} className={styles['question-row']}>
@@ -209,7 +194,8 @@ const QuestionManagement = () => {
                                     </div>
                                 </li>
                             ))}
-                        </ul>
+                        </ul>)}
+
 
                         {/* Pagination */}
                         <div className={styles['pagination']}>
