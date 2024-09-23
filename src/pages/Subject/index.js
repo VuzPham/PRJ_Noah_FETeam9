@@ -1,6 +1,5 @@
 //c3
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { Table, Button, Input, Modal } from 'antd';
 import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 import styles from './Subject.module.scss';
@@ -9,12 +8,11 @@ import ModalAddSubject from '../Modal/Modal_Add_Subject';
 import ModalEditSubject from '../Modal/Modal_Edit_Subject';
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
-
-
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 
 function Subject() {
 
-    
     const columns = [
         {
             title: 'Subject Name',
@@ -77,7 +75,7 @@ function Subject() {
                         icon={<EyeOutlined />}
                         size="small"
                         type="link"
-                        // onClick={() => handleViewQuestions()}
+                        onClick={() => handleViewQuestions(record.id)}
                     >
                         View Questions
                     </Button>
@@ -87,32 +85,42 @@ function Subject() {
         },
     ];
 
-    // const initialData = [
-    //     { id: 1, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 2, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    //     { id: 3, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    //     { id: 4, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 5, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    //     { id: 6, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    //     { id: 7, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 8, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    //     { id: 9, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    //     { id: 10, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 11, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    //     { id: 12, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    //     { id: 13, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 14, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    //     { id: 15, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    //     { id: 16, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 17, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 },
-    //     { id: 18, name: 'Subject 3', majorName: 'Major A', semester: '2021-2022', totalQuestions: 30 },
-    //     { id: 19, name: 'Subject 1', majorName: 'Major A', semester: '2021-2022', totalQuestions: 20 },
-    //     { id: 20, name: 'Subject 2', majorName: 'Major B', semester: '2021-2022', totalQuestions: 25 }
-    // ];
-    // const [dataSource, setDataSource] = useState(initialData);
-    const [dataSource, setDataSource] = useState([]);
+    //handle view question
+    const handleViewQuestions = (id) => {
+        navigate(`/question/${id}`)
+    }
+
+
+    const { id } = useParams();
+    const fetSubjectFromSchool = async (id) => {
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
+            console.log('Fetch subject from id school: ', res);
+            if (res) {
+                const subjects = await res.data;
+                setInitialData(subjects);
+                // setDataSource(subjects);
+            } else {
+                console.log('Not found!!!!');
+            }
+
+        } catch (error) {
+            console.error('Error fetching subjects:', error);
+        }
+    }
+
+    useEffect(() => {
+        console.log('Lấy id school từ param: ', id);
+        fetSubjectFromSchool(id);
+    }, [id])
+
+    const [initialData, setInitialData] = useState([]);
+    useEffect(() => {
+        setDataSource(initialData);
+    }, [initialData]);
+
+    const [dataSource, setDataSource] = useState(initialData);
     const [searchValue, setSearchValue] = useState('');
-    
     const [temporarySearchValue, setTemporarySearchValue] = useState('');
     const [loading, setLoading] = useState(false);
     const [tableParams, setTableParams] = useState({
@@ -129,31 +137,6 @@ function Subject() {
     const [editSubjectData, setEditSubjectData] = useState(null);
     const [inputFocused, setInputFocused] = useState(false);
 
-    // useEffect(() => {
-    //     if (temporarySearchValue) {
-    //         const filteredData = dataSource.filter(entry =>
-    //             `${entry.name}`.toLowerCase().includes(temporarySearchValue.toLowerCase())
-    //         );
-    //         setDataSource(filteredData);
-    //     } else {
-    //         setDataSource(initialData);
-    //     }
-    // }, [temporarySearchValue]);
-
-    useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true);
-            try {
-                const response = await axios.get('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects'); 
-                setDataSource(response.data);
-            } catch (error) {
-                console.error("Error fetching data: ", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchData();
-    }, []);
 
     useEffect(() => {
         if (temporarySearchValue) {
@@ -162,15 +145,7 @@ function Subject() {
             );
             setDataSource(filteredData);
         } else {
-            const fetchData = async () => {
-                try {
-                    const response = await axios.get('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects');
-                    setDataSource(response.data);
-                } catch (error) {
-                    console.error("Error fetching data: ", error);
-                }
-            };
-            fetchData();
+            setDataSource(initialData);
         }
     }, [temporarySearchValue]);
 
@@ -193,23 +168,17 @@ function Subject() {
         setIsDeleteModalVisible(true);
     };
 
-    // const handleDeleteConfirm = () => {
-    //     console.log('View handleDeleteConfirm: ', selectedRowKeys)
-    //     const newData = dataSource.filter(item => !selectedRowKeys.includes(item.id));
-    //     setDataSource(newData);
-    //     setSelectedRowKeys([]);
-    //     setIsDeleteModalVisible(false);
-    // };
-
     const handleDeleteConfirm = async () => {
         try {
-            await axios.delete(`https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects/${selectedRowKeys[0]}`); 
+            await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${selectedRowKeys[0]}`);
             setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
             setSelectedRowKeys([]);
+            setIsDeleteModalVisible(false);
         } catch (error) {
-            console.error('Delete failed: ', error);
+            console.error('Error delete subject:', error);
         }
-        setIsDeleteModalVisible(false);
+
+
     };
 
 
@@ -235,50 +204,7 @@ function Subject() {
         setIsAddSubjectModalVisible(false);
     };
 
-    // const handleAddSubjectSave = (newSubject) => {
-    //     setDataSource([newSubject, ...dataSource]);
-    //     handleAddSubjectModalClose();
-    // };
 
-    const handleAddSubjectSave = async (newSubject) => {
-        try {
-            const response = await axios.post('https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects', newSubject);
-            setDataSource([response.data, ...dataSource]);
-        } catch (error) {
-            console.error('Error adding subject: ', error);
-        }
-        handleAddSubjectModalClose();
-    };
-
-    const handleEditSubjectSave = async (updatedSubject) => {
-        try {
-            const response = await axios.put(`https://66daa7d5f47a05d55be574f4.mockapi.io/api/v1/subjects/${updatedSubject.id}`, updatedSubject);
-            const updatedDataSource = dataSource.map(item =>
-                item.id === updatedSubject.id ? { ...item, ...response.data } : item
-            );
-            setDataSource(updatedDataSource);
-        } catch (error) {
-            console.error('Error updating subject: ', error);
-        }
-        handleEditSubjectModalClose();
-    };
-
-    //add subject has range date
-    // const handleAddSubjectSave = (newSubject) => {
-    //     //Convert range date
-    //     const newData = {
-    //         ...newSubject,
-    //          semester: formatSemester(newSubject.semester),
-    //     };
-    //     setDataSource([newData, ...dataSource]);
-    //     handleAddSubjectModalClose();
-    // };
-
-    // const formatSemester = (semester) => {
-    //     if (!semester) return null;
-    //     const [startYear, endYear] = semester.split('-');
-    //     return `${startYear}-${endYear}`;
-    // };
 
     const rowSelection = {
         selectedRowKeys,
@@ -295,17 +221,59 @@ function Subject() {
         setEditSubjectData(null);
     };
 
-    // const handleEditSubjectSave = (updatedSubject) => {
-    //     const updatedDataSource = dataSource.map(item =>
-    //         item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
-    //     );
-    //     setDataSource(updatedDataSource);
-    //     handleEditSubjectModalClose();
-    // };
+    const navigate = useNavigate();
+
+
+
+    //add subject has range date
+
+    const handleAddSubjectSave = async (newSubject) => {
+        try {
+
+            // console.log('Check value datasoucre in handle add subject: ', Math.max(...dataSource.map(sub=> parseInt(sub.id)),0))
+            // console.log('Check datasoucre in handle add subject: ', Math.max(dataSource.map(subject => parseInt(subject.id)), 0))
+            const maxId = Math.max(...dataSource.map(subject => parseInt(subject.id)), 0);
+            console.log('Check max ID in subject page: ', maxId);
+
+            const newId = maxId + 1;
+            newSubject.id = newId.toString();
+            newSubject.universityId = id;
+            console.log('Next subjectID : ', newSubject.id)
+            const res = await axios.post(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`, newSubject);
+            console.log('Check res in function add subject from id school: ', res);
+            if (res.status == 201) {
+                const newData = res.data;
+                setDataSource(prevData => [...prevData, newData]);
+                handleAddSubjectModalClose();
+            } else {
+                console.log('Error new subject')
+            }
+
+        } catch (error) {
+            console.error('Error insert subject:', error);
+        }
+    };
+
+
+    const handleEditSubjectSave = async (updatedSubject) => {
+
+        try {
+            await axios.put(`${process.env.REACT_APP_API_SUBJECT}/${updatedSubject.id}`, updatedSubject);
+            const updatedDataSource = dataSource.map(item =>
+                item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
+            );
+            setDataSource(updatedDataSource);
+        } catch (error) {
+            console.error('Error updating subject: ', error);
+        }
+        handleEditSubjectModalClose();
+    };
+
     const hasSelected = selectedRowKeys.length > 0;
 
     return (
         <>
+            <h2>Subject page</h2>
             <hr className={styles.line} />
             <div className={styles['button-actions']} style={{ textAlign: 'center' }}>
                 <div className={styles['crud']}>
@@ -386,5 +354,3 @@ function Subject() {
 }
 
 export default Subject;
-
-
