@@ -1,0 +1,126 @@
+.header {
+  background-color: var(--white);
+  width: 100%;
+  height: 60px;
+  border-radius: 20px;
+  position: relative;
+}
+
+.icon {
+  margin-right: 5px;
+}
+
+.menu-icon {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.nav-list {
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+.nav-list .nav-item {
+  position: relative;
+  list-style-type: none;
+  font-weight: 700;
+  line-height: 60px;
+  padding: 0 15px;
+  transition: background-color 0.1s linear;
+}
+.nav-list .nav-item a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  height: 100%;
+  justify-content: center;
+  width: 100%;
+}
+.nav-list .nav-item a.active {
+  text-decoration: underline;
+}
+.nav-list .nav-item:hover {
+  background-color: #f4c1ae;
+}
+.nav-list .nav-item:first-child {
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.nav-list .nav-item:last-child {
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.nav-list .nav-item:last-child::after {
+  display: none;
+}
+.nav-list .profile {
+  margin-left: auto;
+}
+
+@media (max-width: 768px) {
+  .header {
+    height: 40px;
+  }
+
+  .menu-icon {
+    display: block;
+    height: 100%;
+    margin-left: 15px;
+    padding-top: 3px;
+  }
+
+  .nav-list {
+    position: absolute;
+    top: 40px;
+    left: 28px;
+    right: 0;
+    background-color: var(--white);
+    border-radius: 0 0 20px 20px;
+    width: 40%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    opacity: 0;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0;
+  }
+  .nav-list .nav-item {
+    width: 80%;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  .nav-list .nav-item:last-child {
+    border-bottom: none;
+  }
+  .nav-list .nav-item a {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .nav-list .nav-item::after {
+    display: none;
+  }
+  .nav-list .nav-item::before {
+    display: none;
+  }
+  .nav-list .profile {
+    margin-left: 0;
+  }
+
+  .nav-list.open {
+    max-height: 500px;
+    opacity: 1;
+  }
+}

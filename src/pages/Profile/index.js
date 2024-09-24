@@ -3,9 +3,11 @@ import { useNavigate } from "react-router-dom";
 import classNames from "classnames/bind";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { faEnvelope, faFloppyDisk, faPenToSquare, faPhone, faUser, faSpinner  } from "@fortawesome/free-solid-svg-icons";
+
 import styles from './Profile.module.scss';
 import icons from "~/assets/icon";
-import { faEnvelope, faFloppyDisk, faPenToSquare, faPhone, faUser, faSpinner  } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from "~/auth/AuthContext";
 
 const cx = classNames.bind(styles);
@@ -101,27 +103,30 @@ function Profile() {
 
         if (valid) {
             setIsLoading(true);
-            const {phoneConfirmed, emailConfirmed, ...updateUserInfo} = userInfo;
+    
+            const updateUserInfo = {
+                ...user,  // Giữ nguyên các thông tin cũ không thay đổi
+                name: userInfo.name,
+                username: userInfo.username,
+                phone: userInfo.phone,
+                email: userInfo.email,
+                avatar: userInfo.avatar,  
+            };
+    
             saveUserInfo(updateUserInfo);
         }
     };
 
     const saveUserInfo = (updateUserInfo) => {
-        fetch(`https://66da8eb4f47a05d55be5216b.mockapi.io/user/users/${user.id}`, { 
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(updateUserInfo),
-        })
-            .then(response => response.json())
-            .then(data => {
+        axios.put(`http://localhost:3001/user/${user.id}`, updateUserInfo)
+            .then((response) => {
+                const data = response.data;
                 console.log("Profile updated successfully:", data);
                 setIsEditing(false);
                 setIsLoading(false);
-                updateUser(data);
+                updateUser(data);  // Cập nhật lại user trong context
             })
-            .catch(error => {
+            .catch((error) => {
                 console.error("Error updating profile:", error);
                 setIsLoading(false);
             });
@@ -140,42 +145,49 @@ function Profile() {
         }));
     };
 
-    // const handleAvatarChange = (e) => {
-    //     const file = e.target.files[0];
-    //     if (file) {
-    //         const reader = new FileReader();
+    const handleAvatarChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            const reader = new FileReader();
             
-    //         reader.onloadend = () => {
-    //             setUserInfo(prevState => ({
-    //                 ...prevState,
-    //                 avatar: reader.result // URL tạm thời của ảnh
-    //             }));
-    //         };
+            // Đọc file ảnh và hiển thị tạm thời
+            reader.onloadend = () => {
+                setUserInfo(prevState => ({
+                    ...prevState,
+                    avatar: reader.result // URL tạm thời của ảnh
+                }));
+            };
             
-    //         reader.readAsDataURL(file); 
-            
-    //         const formData = new FormData();
-    //         formData.append('avatar', file);
+            reader.readAsDataURL(file); 
     
-    //         setIsLoading(true);
-    //         fetch('/api/upload-avatar', { // Cập nhật URL này để phù hợp với endpoint tải lên của máy chủ
-    //             method: 'POST',
-    //             body: formData,
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             setUserInfo(prevState => ({
-    //                 ...prevState,
-    //                 avatar: data.avatarUrl // Máy chủ trả về URL của hình ảnh đã lưu
-    //             }));
-    //             setIsLoading(false);
-    //         })
-    //         .catch(error => {
-    //             console.error('Lỗi khi tải lên ảnh đại diện:', error);
-    //             setIsLoading(false);
-    //         });
-    //     }
-    // };
+            // Cập nhật thông tin người dùng với avatar mới
+            const updateUserInfo = {
+                ...userInfo,
+                avatar: reader.result // Lưu trữ URL base64
+            };
+    
+            setIsLoading(true);
+    
+            // Gửi request lên server để cập nhật avatar
+            fetch(`http://localhost:3001/users/${user.id}`, { 
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(updateUserInfo),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Avatar updated successfully:", data);
+                setUserInfo(data); // Cập nhật userInfo với dữ liệu mới
+                setIsLoading(false);
+            })
+            .catch(error => {
+                console.error('Error updating avatar:', error);
+                setIsLoading(false);
+            });
+        }
+    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -200,7 +212,7 @@ function Profile() {
                                 ref={fileInputRef}
                                 style={{ display: 'none' }}
                                 accept="image/*"
-                                // onChange={handleAvatarChange}
+                                onChange={handleAvatarChange}
                             />
                             <button
                                 className={cx('btn_avatar')}

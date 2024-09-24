@@ -22,7 +22,7 @@
     margin: 0;
     padding: 0;
     width: 100%; 
-    transition: max-height 0.3s ease, opacity 0.3s ease; // Smooth transition for max-height
+    transition: max-height 0.3s ease, opacity 0.3s ease;
 
     .nav-item {
         position: relative;
@@ -59,18 +59,6 @@
             border-top-right-radius: 20px;
             border-bottom-right-radius: 20px;
         }
-
-        &::after {
-            content: "";
-            position: absolute;
-            right: 0; 
-            top: 50%; 
-            height: 60%; 
-            width: 1px; 
-            background-color: #b4b4b4; 
-            transform: translateY(-50%); 
-        }
-
         &:last-child::after {
             display: none; 
         }
