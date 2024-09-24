@@ -317,7 +317,7 @@ function Subject() {
 
     return (
         <>
-            <h2>Subject page</h2>
+           
             <hr className={styles.line} />
             <div className={styles['button-actions']} style={{ textAlign: 'center' }}>
                 <div className={styles['crud']}>
