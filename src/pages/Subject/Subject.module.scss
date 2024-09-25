@@ -1,0 +1,42 @@
+.line {
+    width : 100%;
+    margin: 0px 20px;
+}
+
+.button-actions {
+    margin         : 20px 0px 20px 0px;
+    display        : flex;
+    flex-wrap      : wrap;
+    gap            : 10px;
+    justify-content: space-between;
+
+
+    .crud {
+        display        : flex;
+        gap            : 10px;
+        flex-wrap      : wrap;
+        justify-content: center;
+
+        button {
+            width    : 120px;
+            font-size: 14px;
+        }
+    }
+
+    @media (max-width: 768px) {
+
+        .crud,
+        .other-action {
+            width          : 100%;
+            justify-content: space-around;
+        }
+    }
+}
+
+.disable-choose {
+    cursor      : not-allowed;
+    border-color: #d9d9d9;
+    color       : rgba(0, 0, 0, 0.25);
+    background  : rgba(0, 0, 0, 0.04);
+    box-shadow  : none;
+}

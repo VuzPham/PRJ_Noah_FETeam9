@@ -1,0 +1,257 @@
+.item-center{
+    display: flex;
+    justify-content: center;
+}
+.wrapper{
+    @extend .item-center;  
+    position: relative;
+    margin-top: 30px
+}
+
+.login-card{
+    @extend .item-center;  
+    align-items: center;   
+    background-color: #FFF1DA;
+    width: 1125px;
+    height: 675px; 
+    border-radius: 10px;
+    // box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.2),
+    //             -3px 3px 5px 2px rgba(0, 0, 0, 0.2);
+
+    .right-card{
+        @extend .item-center;  
+        align-items: center;
+        flex-direction: column;
+    }
+}
+
+.title-right{
+    @extend .item-center;
+    align-items: center;
+
+    h2{
+        font-weight: bold;
+        padding: 10px;
+        font-size: 3.0rem;
+    }
+
+    .icon-hand{
+        width: 30px;
+    }
+}
+
+.title-des{
+    @extend .item-center;
+    align-items: center;
+    flex-direction: column;
+
+    h4{
+        font-weight: 100;
+    }
+}
+
+.draw{
+    width: 340px;
+    mix-blend-mode: darken;
+}
+
+.logo{
+    border-radius: 999px;
+    width: 140px;
+}
+
+.login-form{
+    position: relative;
+    background-color: #fff;
+    height: 500px;
+    width: 400px;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 3px 3px 5px 2px rgba(0, 0, 0, 0.2),
+                -3px 3px 5px 2px rgba(0, 0, 0, 0.2);
+}
+
+.general{
+    position: absolute;
+    top: 50px;
+    margin-left: 50px;
+}
+.title-form{
+    @extend .item-center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 2.8rem;
+}
+
+.input-container{
+    @extend .item-center;
+    margin: 30px 0;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.input-wrapper{
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .input-icon {
+        position: absolute;
+        left: 15px; 
+        color: #999; 
+        pointer-events: none;
+    }
+
+    input{
+        padding: 10px 10px 10px 40px;
+        width: 100%;
+        border-radius: 999px;
+        border: 1px solid #333;
+        box-sizing: border-box;
+        font-size: 1.8rem;
+    }
+}
+
+.toggle-password{
+    position: absolute;
+    right: 15px;
+}
+
+
+.input-wrapper.error input {
+    border-color: red;
+}
+
+.check-remember{
+
+    input{
+        margin: 0 10px 20px 20px;
+        cursor: pointer;
+    }
+}
+
+.btn-login{
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    padding: 10px;
+    background-color: #1677FF;
+    font-size: 1.7rem;
+    color: var(--white);
+    font-weight: 700;
+    transition: all .1s linear;
+    cursor: pointer;
+
+    &:hover{
+        background-color: #1010e4;
+    }
+}
+
+.login-more{
+    @extend .item-center;
+    text-align: center;
+    flex-direction: column;
+
+    h5{
+        width: 100%;
+        position: relative;
+        padding: 15px 20px;
+        font-weight: 100;
+    }
+}
+
+.login-more h5::before,
+.login-more h5::after{
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 30%;
+    height: 1px;
+    background-color: #8a8a8a;
+    transform: translateY(-50%);
+}
+
+.login-more h5::before{
+    left: 0;
+}
+.login-more h5::after{
+    right: 0;
+}
+
+.btn__login-google{
+    @extend .item-center;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #333;
+    border-radius: 10px;
+    cursor: pointer;
+    background-color: var(--white);
+    transition: all .1s linear;
+
+    &:hover{
+        box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2),
+                    -1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+    }
+    .goole-icon{
+        width:15px;
+        margin-right: 8px;
+    }
+}
+
+.forgot-password{
+   @extend .item-center;
+    margin-top: 30px;
+    .btn-forgot{
+        font-size: 14px;
+        font-weight: 100;
+    }
+}
+
+
+
+.input-error {
+    border: 1px solid red;
+  }
+
+.error-message {
+    color: red;
+    font-size: 1rem;
+    margin-top: 0.25rem;
+    position: absolute;
+    bottom: -1.5rem; 
+    left: 40px;
+}
+
+@media (max-width: 768px){
+    .login-card{
+        width: auto;
+        height: auto;
+        padding: 20px 0;
+    }
+   
+    .logo{
+        border-radius: 999px;
+        width: 100px;
+    }
+
+    .draw{
+        display: none;
+    }
+
+    .title-des{
+        display: none;
+    }
+
+    .left-card{
+        display: flex;
+        justify-content: center;
+        align-items: center ;
+    }
+}
+
+@media (max-width: 995px){
+    .login-card{
+        width: auto;
+        height: auto;
+    }
+}

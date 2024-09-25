@@ -1,34 +1,41 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { publicRoutes, privateRoutes } from '~/routes';
-import {DefaulLayout} from '~/components/Layout';
+import { AuthProvider } from '~/auth/AuthContext';
+
+import DefaultLayout from '~/components/Layout/DefaultLayout';
+import ProtectedRoute from '~/components/ProtectedRoute';
 
 function App() {
   return (
-    <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Page = route.component;
-            return <Route key={index} path={route.path} element={<Page />} />;
-          })}
-          
-          {privateRoutes.map((route, index) => {
-            const Page = route.component;
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                    <DefaulLayout> 
-                      <Page />
-                    </DefaulLayout>
-                }
-              />
-            );
-          })}
-        </Routes>
-      </div>
-    </Router>
+    <AuthProvider>
+      <Router>
+        <div className="App">
+          <Routes>
+            {publicRoutes.map((route, index) => {
+              const Page = route.component;
+              return <Route key={index} path={route.path} element={<Page />} />;
+            })}
+
+            {privateRoutes.map((route, index) => {
+              const Page = route.component;
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <ProtectedRoute>
+                      <DefaultLayout>
+                        <Page />
+                      </DefaultLayout>
+                    </ProtectedRoute>
+                  }
+                />
+              );
+            })}
+          </Routes>
+        </div>
+      </Router>
+    </AuthProvider>
   );
 }
 
