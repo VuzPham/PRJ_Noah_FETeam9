@@ -1,14 +1,17 @@
 import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBook, faCircleQuestion, faGraduationCap, faUser, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { NavLink } from "react-router-dom";
-import { useState } from "react";
-
+import { NavLink, useNavigate, useLocation } from "react-router-dom"; 
+import { useEffect, useState } from "react";
 import styles from './Header.module.scss';
+
 const cx = classNames.bind(styles);
 
 function Header() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [selectedSubjectId, setSelectedSubjectId] = useState(null); 
+    const navigate = useNavigate();
+    const location = useLocation(); // Lấy thông tin đường dẫn hiện tại
 
     const toggleMenu = () => {
         setIsMenuOpen(!isMenuOpen);
@@ -17,6 +20,33 @@ function Header() {
     const closeMenu = () => {
         setIsMenuOpen(false);
     };
+
+    useEffect(() => {
+        const schoolId = localStorage.getItem('selectedSchoolId');
+        setSelectedSubjectId(schoolId);
+    }, []);
+
+    const handleSubjectClick = () => {
+        const selectedSchoolId = localStorage.getItem('selectedSchoolId');
+        if (selectedSchoolId) {
+            navigate(`/subject/${selectedSchoolId}`);
+        } else {
+            console.log("No school selected");
+        }
+    };
+
+    const handleQuestionClick = (e) => {
+        if (!selectedSubjectId) {
+            e.preventDefault();
+        } else {
+            closeMenu();
+            navigate(`/question/${selectedSubjectId}`);
+        }
+    };
+
+    const isOnSchoolPage = location.pathname === '/school';
+    const isOnQuestionPage = location.pathname.startsWith('/question'); // Kiểm tra nếu đang ở trang Question
+    const isSubjectPage = location.pathname.startsWith('/subject');
 
     return (
         <div className={cx('wrapper')}>
@@ -30,23 +60,27 @@ function Header() {
                             <NavLink
                                 to="/school"
                                 className={({ isActive }) => cx('nav-link', { active: isActive })}
-                                onClick={closeMenu}>
+                                onClick={() => {
+                                    closeMenu();
+                                    localStorage.removeItem('selectedSchoolId'); 
+                                    setSelectedSubjectId(null);
+                                }}>
                                 <FontAwesomeIcon className={cx('icon')} icon={faGraduationCap} /> School
                             </NavLink>
                         </li>
-                        <li className={cx('nav-item')}>
+                        <li className={cx('nav-item', { disabled: isOnSchoolPage })}>
                             <NavLink
-                                to="/subject"
+                                to={`/subject/${localStorage.getItem('selectedSchoolId')}`} 
                                 className={({ isActive }) => cx('nav-link', { active: isActive })}
-                                onClick={closeMenu}>
+                                onClick={handleSubjectClick}>
                                 <FontAwesomeIcon className={cx('icon')} icon={faBook} /> Subject
                             </NavLink>
                         </li>
-                        <li className={cx('nav-item')}>
+                        <li className={cx('nav-item', { disabled: isOnSchoolPage || isSubjectPage  })}>
                             <NavLink
-                                to="/question"
-                                className={({ isActive }) => cx('nav-link', { active: isActive })}
-                                onClick={closeMenu}>
+                                to={`/question/${selectedSubjectId}`}
+                                className={({ isActive }) => cx('nav-link', { active: isActive || isOnQuestionPage })} // Cập nhật đây
+                                onClick={handleQuestionClick}>
                                 <FontAwesomeIcon className={cx('icon')} icon={faCircleQuestion} /> Question
                             </NavLink>
                         </li>

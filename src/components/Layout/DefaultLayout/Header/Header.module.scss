@@ -16,6 +16,7 @@
     cursor: pointer;
 }
 
+
 .nav-list {
     display: flex;
     align-items: center;
@@ -31,6 +32,12 @@
         line-height: 60px;
         padding: 0 15px;
         transition: background-color .1s linear;
+
+        &.disabled {
+            pointer-events: none;  // Vô hiệu hóa sự kiện chuột
+            opacity: 0.5;          // Giảm độ sáng để hiển thị trạng thái vô hiệu hóa
+            color: gray;           // Thay đổi màu sắc để thể hiện trạng thái vô hiệu hóa
+        }
 
         a {
             display: flex;
