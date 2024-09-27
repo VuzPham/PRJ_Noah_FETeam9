@@ -1,0 +1,658 @@
+.loading-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 999;
+}
+
+.loading-spinner {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #3498db;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+.container {
+  padding: 20px;
+  width: 90%;
+  margin: 0 auto;
+  .btn-header{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  .no-image {
+    transition: 1s;
+    grid-template-columns: 1fr 7fr 3fr !important; /* When image column is hidden */
+  }
+  // Confirm dialog styling
+  .confirm-dialog {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+
+    &-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      p {
+        margin-bottom: 20px;
+      }
+      .confirm-dialog-button{
+        margin: auto;
+      }
+      
+      .btn-confirm, .btn-cancel {
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        display: inline-block;
+        width: 10rem;
+      }
+
+      .btn-confirm {
+        background-color: #dc3545;
+        color: white;
+      }
+
+      .btn-cancel {
+        background-color: #6c757d;
+        color: white;
+      }
+    }
+  }
+
+  // Button to add new question
+  .btn-add {
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 0 20px;
+    &:hover {
+      background-color: #218838;
+    }
+  }
+
+  // Button to delete selected questions
+  .btn-delete-selected {
+    padding: 10px 20px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+    &:hover {
+      background-color: #c82333;
+    }
+
+    &:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+    }
+  }
+
+  // Search container
+  .search-container {
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 10px;
+
+    .search-label {
+      align-self: center;
+    }
+
+    .search-input {
+      padding: 8px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+  }
+
+  // Question table
+  .question-table {
+    .table-header {
+      display: grid;
+      grid-template-columns: 1fr 5fr 3fr 2fr;
+      gap: 10px;
+      padding: 10px;
+      background-color: #f8f9fa;
+      font-weight: bold;
+      border-bottom: 2px solid #dee2e6;
+      background-color: #fff;
+      border-radius: 20px 10px;
+      padding: 20px;
+    }
+    &.no-image {
+      grid-template-columns: 1fr 7fr 3fr; /* When image column is hidden */
+    }
+    .header-item {
+      text-align: center;
+
+      
+    }
+    .header-item-mobile{
+      text-align: center;
+    }
+    .image-column{
+      margin: auto;
+    }
+    .question-row {
+      display: grid;
+      grid-template-columns: 1fr 5fr 3fr 2fr;
+      gap: 10px;
+      padding: 10px;
+      border-bottom: 1px solid #dee2e6;
+      align-items: center;
+    }
+    &.no-image {
+      grid-template-columns: 1fr 7fr 3fr; 
+    }
+    .question-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      
+      .question-item {
+        display: flex;
+        align-items: center;
+        
+        .question-text {
+          text-align: justify;
+          cursor: pointer;
+
+          .question-icon {
+            margin-right: 10px;
+          }
+          
+          .question-text-content {
+            margin-left: 10px;
+          }
+        }
+
+        .checkbox {
+          margin-left: auto; // Align checkbox to the right
+        }
+      }
+
+      .image-column {
+        display: flex;
+        align-items: center;
+
+        .question-image {
+          width: 90%;
+          height: auto;
+          border-radius: 5px;
+          margin: auto;
+        }
+      }
+
+      .action-column {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        
+      }
+    }
+
+    
+    
+  }
+  .btn-edit, .btn-delete {
+    padding: 8px 10px;
+    margin-left: 5px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    background: none;
+    &:hover {
+      opacity: 0.9;
+    }
+    
+  }
+
+  .btn-edit {
+    color: #007bff;
+  }
+
+  .btn-delete {
+    color: #dc3545;
+  }
+  // Form container styling
+  .form-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 10px;
+    margin-top: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    // Add blur effect on background
+    
+
+    h2 {
+      margin-bottom: 15px;
+    }
+
+    .form-input {
+      padding: 10px;
+      margin-bottom: 15px;
+      width: 100%;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    .btn-save {
+      background-color: #28a745;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #218838;
+      }
+    }
+
+    .btn-cancel {
+      margin-left: 10px;
+      background-color: #dc3545;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+
+      &:hover {
+        background-color: #c82333;
+      }
+    }
+  }
+
+  // Highlighted answers
+  .answer-text {
+    background-color: #e9ecef;
+    min-height: 80px;
+    border-radius: 5px;
+    padding: 10px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+    width: 100%;
+  }
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.btn-pagination {
+  background-color: #007bff;
+  border: none;
+  color: #fff;
+  padding: 10px 20px;
+  margin: 0 5px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  display: flex;
+  align-items: center;
+  
+  &:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: #0056b3;
+  }
+  
+  &:active:not(:disabled) {
+    background-color: #004494;
+  }
+}
+
+.pagination-info {
+  margin: 0 15px;
+  font-size: 16px;
+}
+.question-item {
+  
+  align-items: center;
+  padding: 10px;  // Add padding around the question item
+}
+
+.question-icon {
+  margin-right: 10px;  // Space between icon and question text
+  font-size: 18px; // Adjust icon size as needed
+  color: #007bff; // Icon color
+  margin: auto 10px;
+}
+
+.question-text {
+  width: 100%; 
+  padding: 0 10px; // Padding on left and right of the question text
+}
+.question-icon-quest{
+  display: grid;
+
+  grid-template-columns: 1fr 10fr;
+}
+.slideThree {
+  width: 80px;
+  height: 26px;
+  background: #4487d7;
+  margin: 20px auto;
+  position: relative;
+  border-radius: 50px;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px rgba(255, 255, 255, 0.2);
+
+  &:after {
+    content: 'OFF';
+    color: #000;
+    position: absolute;
+    right: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.15);
+  }
+
+  &:before {
+    content: 'ON';
+    color: #fff; /* You can replace this with $activeColor if you're using SCSS variables */
+    position: absolute;
+    left: 10px;
+    z-index: 0;
+    font: 12px/26px Arial, sans-serif;
+    font-weight: bold;
+  }
+
+  label {
+    display: block;
+    width: 34px;
+    height: 20px;
+    cursor: pointer;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    z-index: 1;
+    background: #fcfff4;
+    background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    transition: all 0.4s ease;
+    box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  }
+
+  input[type='checkbox'] {
+    visibility: hidden;
+
+    &:checked + label {
+      left: 43px;
+    }
+  }
+}
+.image-upload {
+  width: 102px;
+  height: 102px !important;
+  text-align: center;
+  vertical-align: top;
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px dashed #d9d9d9;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.btn-delete01 {
+  position: absolute;
+  top: 10px; /* Thay đổi tùy ý để căn chỉnh */
+  right: 10px; /* Thay đổi tùy ý để căn chỉnh */
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: red; /* Màu sắc của thùng rác */
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.enlarged-image {
+  max-width: 90%;
+  max-height: 90%;
+}
+.error-message {
+  color: red;
+  font-size: 1.5rem;
+  margin-bottom: 0.5em;
+}
+
+
+
+
+
+
+
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+  }
+  .select-checkbox {
+    display: none;
+  }
+  /* Confirm dialog styling */
+  .confirm-dialog {
+    width: 90%;
+    padding: 15px;
+  }
+  .btn-delete-selected{
+    display: none;
+  }
+  .btn-add{
+    margin-left: 10% !important;
+    margin-bottom: 30px !important;
+    width: 80%;
+
+  }
+  .btn-save,
+  .btn-cancel {
+    margin: 10px 0;
+    padding: 8px 15px;
+    font-size: 14px;
+  }
+
+  /* Search container */
+  .search-container {
+    display: block;
+    margin-bottom: 15px;
+
+    .search-label {
+      display: block;
+      margin-bottom: 5px;
+    }
+    .search-input {
+      width: 100%;
+    }
+    
+  }
+  .btn-header{
+    grid-template-columns: 2fr 1fr !important;
+  }
+  /* Question table */
+  
+  .question-table {
+    .checkbox{
+      display: none;
+    }
+    .table-header {
+      display: block !important; /* Ẩn tiêu đề bảng trên màn hình di động */
+    }
+    .header-item{
+      display: none;
+    }
+    
+    .question-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      .question-row {
+        display: block !important; /* Đặt hàng câu hỏi dưới dạng khối */
+        padding: 10px;
+        border-bottom: 1px solid #dee2e6;
+      }
+
+      .question-item {
+        display: block; /* Hiển thị câu hỏi dưới dạng khối */
+        padding: 10px 0;
+        
+        .question-text {
+          margin-bottom: 10px;
+        }
+
+        
+
+        .additional-content {
+          display: block; /* Hiển thị nội dung bổ sung dưới câu hỏi */
+          margin-top: 10px;
+
+          .question-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+          }
+
+          .btn-edit,
+          .btn-delete {
+            display: inline-block;
+            margin: 5px 0;
+            padding: 8px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            background: none;
+            &:hover {
+              opacity: 0.9;
+            }
+          }
+
+          .btn-edit {
+            background-color: #007bff;
+          }
+
+          .btn-delete {
+            background-color: #dc3545;
+          }
+        }
+      }
+      .image-column,
+        .action-column {
+          text-align: center !important;
+          display: block !important;
+        }
+    }
+  }
+
+  .header-item{
+    text-align: center;
+  }
+  /* Form container styling */
+  .form-container {
+    width: 100%;
+    padding: 15px;
+    margin-top: 10px;
+  }
+
+  /* Pagination */
+  .pagination {
+    
+    align-items: center;
+    margin: 10px 0;
+
+    .btn-pagination {
+      margin: 5px 0;
+      padding: 8px 15px;
+      font-size: 14px;
+      width: 10rem;
+    }
+
+    .pagination-info {
+      font-size: 14px;
+    }
+  }
+
+  .slideThree {
+    display: none;
+  }
+
+  
+
+}

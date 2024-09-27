@@ -12,8 +12,10 @@ import ModalViewSchool from '../Modal/Modal_View_School';
 import ModalEditSchool from '../Modal/Modal_Edit_School';
 import axios from 'axios';
 
+
 function School() {
     const [allSchools, setAllSchools] = useState([]);
+
     const itemsPerPage = 10;
     const [currentPage, setCurrentPage] = useState(0);
     const [showAll, setShowAll] = useState(false);
@@ -24,23 +26,8 @@ function School() {
     const [isAddSchoolModalVisible, setIsAddSchoolModalVisible] = useState(false);
     const [isViewSchoolModalVisible, setIsViewSchoolModalVisible] = useState(false);
     const [isEditSchoolModalVisible, setIsEditSchoolModalVisible] = useState(false);
-    const [sliderVisibilities, setSliderVisibilities] = useState([]);
 
     const navigate = useNavigate();
-
-    useEffect(() => {
-        fetchSchools();
-    }, []);
-
-    const fetchSchools = async () => {
-        try {
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-            setAllSchools(res.data);
-            setSliderVisibilities(new Array(res.data.length).fill(false));
-        } catch (error) {
-            console.error('Error fetching schools:', error);
-        }
-    };
 
     const handleNext = () => {
         if ((currentPage + 1) * itemsPerPage < allSchools.length) {
@@ -59,16 +46,18 @@ function School() {
         setCurrentPage(0);
     };
 
+
+
     const handleDeleteClick = (index) => {
         setSelectedSchoolIndex(index);
         setIsModalOpen(true);
     };
 
     const handleEditClick = (school) => {
+        console.log('Check ')
         setEditingSchool(school);
         setIsEditSchoolModalVisible(true);
     };
-
     const handleViewClick = (school) => {
         setViewingSchool(school);
         setIsViewSchoolModalVisible(true);
@@ -78,39 +67,51 @@ function School() {
         if (selectedSchoolIndex !== null) {
             const schoolToDelete = allSchools[selectedSchoolIndex];
             const idSchoolDelete = schoolToDelete.id;
-            try {
-                await axios.delete(`${process.env.REACT_APP_API_URL}/${idSchoolDelete}`);
-                const updatedSchools = allSchools.filter((_, index) => index !== selectedSchoolIndex);
-                setAllSchools(updatedSchools);
-                setCurrentPage(Math.max(0, Math.min(currentPage, Math.ceil(updatedSchools.length / itemsPerPage) - 1)));
-                setSelectedSchoolIndex(null);
-            } catch (error) {
-                console.error('Error deleting school:', error);
-            }
+            console.log('Check id school delete: ', idSchoolDelete);
+            const res = await axios.delete(`${process.env.REACT_APP_API_URL}/${idSchoolDelete}`);
+            console.log('Check res  axios.delete: ', res);
+            const updatedSchools = allSchools.filter((_, index) => index !== selectedSchoolIndex);
+            setAllSchools(updatedSchools);
+            setCurrentPage(Math.max(0, Math.min(currentPage, Math.ceil(updatedSchools.length / itemsPerPage) - 1)));
+            setSelectedSchoolIndex(null);
         }
         setIsModalOpen(false);
     };
+
+
+
 
     const handleModalCancel = () => {
         setSelectedSchoolIndex(null);
         setIsModalOpen(false);
     };
 
+
     const handleSaveChanges = async (updatedSchool) => {
         try {
-            await axios.put(`${process.env.REACT_APP_API_URL}/${updatedSchool.id}`, updatedSchool);
+            const res = await axios.put(`${process.env.REACT_APP_API_URL}/${updatedSchool.id}`, updatedSchool);
+            console.log('Check res edit school: ', res);
+
             const updatedSchools = allSchools.map(school =>
                 school.id === updatedSchool.id ? updatedSchool : school
             );
+
+            //update
             setAllSchools(updatedSchools);
             setIsEditSchoolModalVisible(false);
-        } catch (error) {
-            console.error('Error updating school:', error);
+        } catch (e) {
+            console.log('Error updating school: ', e);
         }
     };
 
     const handleAddSchool = async (newSchool) => {
+        // await axios.post(`${process.env.REACT_APP_API_URL}`, newSchool);
+        // setAllSchools(prevSchools => [...prevSchools, newSchool]);
+        // setIsAddSchoolModalVisible(false);
+
         try {
+
+            //set Automatic increment of id
             const maxId = Math.max(...allSchools.map(school => parseInt(school.id)), 0);
             const newId = maxId + 1;
             newSchool.id = newId.toString();
@@ -122,6 +123,10 @@ function School() {
         }
     };
 
+    const startIndex = currentPage * itemsPerPage;
+    const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
+    const currentSchools = allSchools.slice(startIndex, endIndex);
+    const [sliderVisibilities, setSliderVisibilities] = useState([false]);
     const handleBtnClick = (index) => {
         const newSliderVisibilities = [...sliderVisibilities];
         newSliderVisibilities[index] = !newSliderVisibilities[index];
@@ -132,21 +137,56 @@ function School() {
         navigate('/subject');
     };
 
-    const handleSchoolClick = (subjectID) => {
-        navigate(`/subject/${subjectID}`);
-    };
+    // Fetch data schools
 
-    const startIndex = currentPage * itemsPerPage;
-    const endIndex = showAll ? allSchools.length : startIndex + itemsPerPage;
-    const currentSchools = allSchools.slice(startIndex, endIndex);
+
+    useEffect(() => {
+        fetchSchools();
+    }, [])
+
+    const [schools, setSchools] = useState([]);
+
+    const fetchSchools = async () => {
+        // const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+        // console.log('Check data after fetching dataa schools: ', res.data);
+        // setAllSchools(res.data);
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            setAllSchools(res.data);
+        } catch (error) {
+            console.error('Error fetching schools: ', error);
+        }
+    }
+
+    const handleSchoolClick = (subjectID) => {
+        navigate(`/subject/${subjectID}`)
+    }
 
     return (
         <>
-            <ModalDelete open={isModalOpen} onOk={handleModalOk} onCancel={handleModalCancel} />
-            <ModalAddSchool open={isAddSchoolModalVisible} onClose={() => setIsAddSchoolModalVisible(false)} onSave={handleAddSchool} />
-            <ModalEditSchool open={isEditSchoolModalVisible} onClose={() => setIsEditSchoolModalVisible(false)} onSave={handleSaveChanges} school={editingSchool} />
-            <ModalViewSchool open={isViewSchoolModalVisible} onOk={() => setIsViewSchoolModalVisible(false)} onCancel={() => setIsViewSchoolModalVisible(false)} school={viewingSchool} />
+            <ModalDelete
+                open={isModalOpen}
+                onOk={handleModalOk}
+                onCancel={handleModalCancel}
+            />
 
+            <ModalAddSchool
+                open={isAddSchoolModalVisible}
+                onClose={() => setIsAddSchoolModalVisible(false)}
+                onSave={handleAddSchool}
+            />
+            <ModalEditSchool
+                open={isEditSchoolModalVisible}
+                onClose={() => setIsEditSchoolModalVisible(false)}
+                onSave={handleSaveChanges}
+                school={editingSchool}
+            />
+            <ModalViewSchool
+                open={isViewSchoolModalVisible}
+                onOk={() => setIsViewSchoolModalVisible(false)}
+                onCancel={() => setIsViewSchoolModalVisible(false)}
+                school={viewingSchool}
+            />
             <h2>School page</h2>
             <hr className={styles.line} />
             <div className={styles['button-actions']}>
@@ -156,13 +196,24 @@ function School() {
                     </button>
                 </div>
                 <div className={styles['other-action']}>
-                    <button className='btn btn-danger' onClick={handleMore}>
+                    <button
+                        className='btn btn-danger'
+                        onClick={handleMore}
+                    >
                         {showAll ? 'Less' : 'More'}
                     </button>
-                    <button className='btn btn-primary' onClick={handlePrevious} disabled={currentPage === 0 || showAll}>
+                    <button
+                        className='btn btn-primary'
+                        onClick={handlePrevious}
+                        disabled={currentPage === 0 || showAll}
+                    >
                         <DoubleLeftOutlined />&nbsp;Previous
                     </button>
-                    <button className='btn btn-primary' onClick={handleNext} disabled={(currentPage + 1) * itemsPerPage >= allSchools.length || showAll}>
+                    <button
+                        className='btn btn-primary'
+                        onClick={handleNext}
+                        disabled={(currentPage + 1) * itemsPerPage >= allSchools.length || showAll}
+                    >
                         Next&nbsp;<DoubleRightOutlined />
                     </button>
                 </div>
@@ -173,7 +224,9 @@ function School() {
                     {currentSchools.map((school, index) => (
                         <div className={`col ${styles['col-card']}`} key={startIndex + index}>
                             <div className={`card ${styles.card}`}>
-                                <div className={styles['fit-image']} onClick={() => handleSchoolClick(school.id)}>
+                                <div className={styles['fit-image']}
+
+                                    onClick={() => handleSchoolClick(school.id)}>
                                     <img
                                         src={school.image}
                                         className={`card-img-top ${styles['card-img-top']} ${sliderVisibilities[startIndex + index] ? styles['slider-visible'] : ''}`}
@@ -182,6 +235,7 @@ function School() {
                                     />
                                 </div>
 
+                                {/* Cách 2 */}
                                 <div className={styles['icons-slider']}>
                                     <input type='checkbox' id={`${styles['check']}-${index}`} style={{ display: 'none' }} />
                                     <label htmlFor={`${styles['check']}-${index}`}>
@@ -189,24 +243,34 @@ function School() {
                                             {sliderVisibilities[startIndex + index] ? <CloseOutlined /> : <BarsOutlined />}
                                         </span>
                                     </label>
-                                    <div className={`${styles['slider-container']} ${sliderVisibilities[startIndex + index] ? styles['visible'] : ''}`}>
-                                        <a><span><FormOutlined onClick={() => handleEditClick(school)} /></span></a>
-                                        <a><span><DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} /></span></a>
-                                        <a><span><ProfileOutlined onClick={() => handleViewClick(school)} /></span></a>
+                                    <div className={`${styles['slider-container']} ${sliderVisibilities[startIndex + index] ? styles['visible'] : ''}`} >
+                                        <a>
+                                            <span><FormOutlined onClick={() => handleEditClick(school)} /></span>
+                                        </a>
+                                        <a>
+                                            <span><DeleteOutlined onClick={() => handleDeleteClick(startIndex + index)} /></span>
+                                        </a>
+                                        <a>
+                                            <span> <ProfileOutlined onClick={() => handleViewClick(school)} /></span>
+                                        </a>
                                     </div>
                                 </div>
                                 <div className={`card-body ${styles['card-body']}`}>
-                                    <h3 className={`card-title ${styles['card-title']}`} onClick={handleRedirect}>
+                                    <h3
+                                        className={`card-title ${styles['card-title']}`}
+                                        onClick={handleRedirect}
+                                    >
                                         {school.name}
                                     </h3>
                                 </div>
+
+
                             </div>
                         </div>
                     ))}
                 </div>
-            </div>
+            </div >
         </>
     );
 }
-
 export default School;

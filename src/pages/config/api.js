@@ -1,5 +1,5 @@
 // src/config/api.js
-const API_URL = 'https://66bf5cf442533c403145f070.mockapi.io/api/question-answer/id';
+const API_URL = 'http://localhost:3001/question/';
 
 export const fetchQuestions = async () => {
   try {
@@ -10,7 +10,6 @@ export const fetchQuestions = async () => {
     throw error;
   }
 };
-
 
 export const addQuestion = async (newQuestion) => {
   try {
@@ -26,25 +25,30 @@ export const addQuestion = async (newQuestion) => {
   }
 };
 
-export const updateQuestion = async (id, updatedQuestion) => {
-  try {
-    const response = await fetch(`${API_URL}/${id}`, {
+export const updateQuestion = async (id, questionData) => {
+  const response = await fetch(`http://localhost:3001/question/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(updatedQuestion),
-    });
-    if (!response.ok) throw new Error('Failed to update question');
-    return await response.json();
-  } catch (error) {
-    throw error;
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(questionData),
+  });
+
+  if (!response.ok) {
+      throw new Error(`Error updating question: ${response.statusText}`);
   }
+
+  return await response.json();
 };
 
 export const deleteQuestion = async (id) => {
+  if (!id) throw new Error('Question ID is required'); // Kiểm tra ID không rỗng
+
   try {
-    const response = await fetch(`${API_URL}/${id}`, { method: 'DELETE' });
-    if (!response.ok) throw new Error('Failed to delete question');
+      const response = await fetch(`http://localhost:3001/question/${id}`, { method: 'DELETE' }); // Sửa lại đây
+      if (!response.ok) throw new Error(`Error deleting question: ${response.statusText}`);
   } catch (error) {
-    throw error;
+      throw error;
   }
 };
+

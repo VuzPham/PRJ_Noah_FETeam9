@@ -1,4 +1,3 @@
-//c3
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Input, Modal } from 'antd';
 import { EditOutlined, PlusOutlined, SearchOutlined, CloseCircleFilled, EyeOutlined, DeleteOutlined } from '@ant-design/icons';
@@ -10,7 +9,6 @@ import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-
 
 function Subject() {
 
@@ -50,13 +48,9 @@ function Subject() {
         },
         {
             title: 'Total Questions',
-            dataIndex: 'question',
+            dataIndex: 'totalQuestions',
 
-            render: question => {
-                console.log('Check total question: ', question)
-                return question ? question.length : 0;
-            }
-
+            render: (_, record) => totalQuestions[record.id] || 0,
         },
         {
             title: 'Actions',
@@ -93,28 +87,54 @@ function Subject() {
 
 
     const { id } = useParams();
+    // const fetSubjectFromSchool = async (id) => {
+    //     try {
+    //         const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
+    //         console.log('Fetch subject from id school: ', res);
+    //         if (res) {
+    //             const subjects = await res.data;
+    //             setInitialData(subjects);
+    //             // setDataSource(subjects);
+    //         } else {
+    //             console.log('Not found!!!!');
+    //         }
+
+    //     } catch (error) {
+    //         console.error('Error fetching subjects:', error);
+    //     }
+    // }
+    const [totalQuestions, setTotalQuestions] = useState({});
+
+
     const fetSubjectFromSchool = async (id) => {
         try {
-
-            const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
+            const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
             if (res) {
-                const subjects = await res.data;
-                const schoolId = id;
-                const schoolIds = subjects.find(u => u.id == schoolId);
-                console.log('Check subjects from school id: ', schoolIds.subjects)
-                setInitialData(schoolIds.subjects);
-                // setDataSource(schoolIds.subjects);
-            } else {
-                console.log('Not found!!!!');
-            }
+                const subjects = res.data;
+                console.log('Check subject: ', res.data)
+                setInitialData(subjects);
 
+                const listQuestion = subjects.map(async (subject) => {
+                    const questionsRes = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${subject.id}`);
+                    return { id: subject.id, total: questionsRes.data.length };
+                });
+
+                const questionsCount = await Promise.all(listQuestion);
+                const questionsMap = {};
+                questionsCount.forEach(item => {
+                    questionsMap[item.id] = item.total;
+                });
+
+                setTotalQuestions(questionsMap);
+            }
         } catch (error) {
             console.error('Error fetching subjects:', error);
         }
-    }
+    };
+
 
     useEffect(() => {
-        console.log('Lấy id từ param: ', id);
+        console.log('Lấy id school từ param: ', id);
         fetSubjectFromSchool(id);
     }, [id])
 
@@ -122,7 +142,6 @@ function Subject() {
     useEffect(() => {
         setDataSource(initialData);
     }, [initialData]);
-
 
     const [dataSource, setDataSource] = useState(initialData);
     const [searchValue, setSearchValue] = useState('');
@@ -172,28 +191,38 @@ function Subject() {
         if (selectedRowKeys.length === 0) return;
         setIsDeleteModalVisible(true);
     };
-    // const handleAddSubjectSave = async (newSubject) => {
+
+    //delete all subject by selectedRowKeys
+    const handleDeleteConfirm = async () => {
+        try {
+            await Promise.all(selectedRowKeys.map(async (key) => {
+                await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${key}`);
+            }));
+
+            setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
+            setSelectedRowKeys([]);
+            await fetSubjectFromSchool(id);
+            setIsDeleteModalVisible(false);
+        } catch (error) {
+            console.error('Error deleting subjects:', error);
+        }
+    };
+
+    //delete 1 id for each subject
+    // const handleDeleteConfirm = async () => {
     //     try {
-    //         const response = await axios.post(`${process.env.REACT_APP_API_URL}/subjects`, newSubject);
-    //         setDataSource([response.data, ...dataSource]);
-    //         setIsAddSubjectModalVisible(false);
+    //         await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${selectedRowKeys[0]}`);
+    //         setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
+    //         setSelectedRowKeys([]);
+    //         setIsDeleteModalVisible(false);
     //     } catch (error) {
-    //         console.error('Error adding subject:', error);
+    //         console.error('Error delete subject:', error);
     //     }
+
+
     // };
-    const handleAddSubjectSave = (newSubject) => {
-        const newSubjectWithId = { id: dataSource.length + 1, ...newSubject };  // Tạo ID tạm
-        setDataSource([newSubjectWithId, ...dataSource]);  // Cập nhật state
-        setIsAddSubjectModalVisible(false);
-    };
-    
-    const handleDeleteConfirm = () => {
-        console.log('View handleDeleteConfirm: ', selectedRowKeys)
-        const newData = dataSource.filter(item => !selectedRowKeys.includes(item.id));
-        setDataSource(newData);
-        setSelectedRowKeys([]);
-        setIsDeleteModalVisible(false);
-    };
+
+
 
     const handleSearchClick = () => {
         setTemporarySearchValue(searchValue);
@@ -235,13 +264,55 @@ function Subject() {
 
     const navigate = useNavigate();
 
-    const handleEditSubjectSave = (updatedSubject) => {
-        const updatedDataSource = dataSource.map(item =>
-            item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item,
-        );
-        setDataSource(updatedDataSource);
+
+
+    //add subject has range date
+
+    const handleAddSubjectSave = async (newSubject) => {
+        try {
+
+            // console.log('Check value datasoucre in handle add subject: ', Math.max(...dataSource.map(sub=> parseInt(sub.id)),0))
+            // console.log('Check datasoucre in handle add subject: ', Math.max(dataSource.map(subject => parseInt(subject.id)), 0))
+            const maxId = Math.max(...dataSource.map(subject => parseInt(subject.id)), 0);
+            console.log('Check max ID in subject page: ', maxId);
+
+            const newId = maxId + 1;
+            newSubject.id = newId.toString();
+            newSubject.universityId = id;
+            console.log('Next subjectID : ', newSubject.id)
+            const res = await axios.post(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`, newSubject);
+            console.log('Check res in function add subject from id school: ', res);
+            if (res.status == 201) {
+                const newData = res.data;
+
+                setDataSource(prevData => [...prevData, newData]);
+                await fetSubjectFromSchool(id);
+                handleAddSubjectModalClose();
+            } else {
+                console.log('Error new subject')
+            }
+
+        } catch (error) {
+            console.error('Error insert subject:', error);
+        }
+    };
+
+
+    const handleEditSubjectSave = async (updatedSubject) => {
+
+        try {
+            await axios.put(`${process.env.REACT_APP_API_SUBJECT}/${updatedSubject.id}`, updatedSubject);
+            const updatedDataSource = dataSource.map(item =>
+                item.id === updatedSubject.id ? { ...item, ...updatedSubject } : item
+            );
+            await fetSubjectFromSchool(id);
+            setDataSource(updatedDataSource);
+        } catch (error) {
+            console.error('Error updating subject: ', error);
+        }
         handleEditSubjectModalClose();
     };
+
     const hasSelected = selectedRowKeys.length > 0;
 
     return (
@@ -301,7 +372,7 @@ function Subject() {
 
             <ModalAddSubject
                 open={isAddSubjectModalVisible}
-                onClose={() => setIsAddSubjectModalVisible(false)}
+                onClose={handleAddSubjectModalClose}
                 onSave={handleAddSubjectSave}
             />
 
