@@ -3,6 +3,7 @@ import classNames from "classnames/bind";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock, faUser, faSpinner, faEyeSlash, faEye } from "@fortawesome/free-solid-svg-icons";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import axios from 'axios';
 
 import styles from './Login.module.scss'
 import icons from "~/assets/icon";
@@ -46,23 +47,22 @@ function Login() {
         if (valid) {
             setIsLoading(true);
     
-            fetch("https://66da8eb4f47a05d55be5216b.mockapi.io/user/users")
-                .then(response => response.json())
-                .then(data => {
-                    const user = data.find(
+            axios.get(process.env.REACT_APP_API_LOGIN)
+                .then(response => {
+                    const user = response.data.find(
                         user =>
                             (user.username === loginInput || user.email === loginInput) && user.password === password
                     );
     
-                    if(user){
+                    if (user) {
                         login(user); 
                         navigator('/school');
                     } else {
-                        const userExist = data.find(
+                        const userExist = response.data.find(
                             user => user.username === loginInput || user.email === loginInput
                         );
     
-                        if(!userExist){
+                        if (!userExist) {
                             setErrors(prev => ({...prev, loginInput: 'Username or Email not found.'}));
                         } else {
                             setErrors(prev => ({...prev, password: 'Password is incorrect.'}));
@@ -70,6 +70,7 @@ function Login() {
                     }
                 })
                 .catch(error => {
+                    console.error(error);
                     setIsLoading(false);
                 })
                 .finally(() => {
