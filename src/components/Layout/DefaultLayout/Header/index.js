@@ -47,6 +47,7 @@ function Header() {
     const isOnSchoolPage = location.pathname === '/school';
     const isOnQuestionPage = location.pathname.startsWith('/question'); // Kiểm tra nếu đang ở trang Question
     const isSubjectPage = location.pathname.startsWith('/subject');
+    const isProfilePage = location.pathname.startsWith('/profile');
 
     return (
         <div className={cx('wrapper')}>
@@ -68,7 +69,7 @@ function Header() {
                                 <FontAwesomeIcon className={cx('icon')} icon={faGraduationCap} /> School
                             </NavLink>
                         </li>
-                        <li className={cx('nav-item', { disabled: isOnSchoolPage })}>
+                        <li className={cx('nav-item', { disabled: isOnSchoolPage || isProfilePage })}>
                             <NavLink
                                 to={`/subject/${localStorage.getItem('selectedSchoolId')}`} 
                                 className={({ isActive }) => cx('nav-link', { active: isActive })}
@@ -76,10 +77,10 @@ function Header() {
                                 <FontAwesomeIcon className={cx('icon')} icon={faBook} /> Subject
                             </NavLink>
                         </li>
-                        <li className={cx('nav-item', { disabled: isOnSchoolPage || isSubjectPage  })}>
+                        <li className={cx('nav-item', { disabled: isOnSchoolPage || isSubjectPage || isProfilePage  })}>
                             <NavLink
                                 to={`/question/${selectedSubjectId}`}
-                                className={({ isActive }) => cx('nav-link', { active: isActive || isOnQuestionPage })} // Cập nhật đây
+                                className={({ isActive }) => cx('nav-link', { active: isActive || isOnQuestionPage })} 
                                 onClick={handleQuestionClick}>
                                 <FontAwesomeIcon className={cx('icon')} icon={faCircleQuestion} /> Question
                             </NavLink>

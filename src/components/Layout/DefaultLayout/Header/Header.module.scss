@@ -3,7 +3,7 @@
     width: 100%;
     height: 60px;
     border-radius: 20px;
-    position: relative; // To ensure the absolute positioning of the menu works
+    position: relative; 
 }
 
 .icon {
@@ -34,9 +34,9 @@
         transition: background-color .1s linear;
 
         &.disabled {
-            pointer-events: none;  // Vô hiệu hóa sự kiện chuột
-            opacity: 0.5;          // Giảm độ sáng để hiển thị trạng thái vô hiệu hóa
-            color: gray;           // Thay đổi màu sắc để thể hiện trạng thái vô hiệu hóa
+            pointer-events: none;  
+            opacity: 0.5;          
+            color: rgb(145, 143, 143);           
         }
 
         a {
@@ -49,7 +49,8 @@
             width: 100%;
 
             &.active {
-                text-decoration: underline;
+                color: #5500ff;
+                font-weight: 900;
             }
         }
 
@@ -132,6 +133,15 @@
 
             &::before {
                 display: none;
+            }
+            &:first-child{
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+            }
+    
+            &:last-child{
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
             }
         }
 

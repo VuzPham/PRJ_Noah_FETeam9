@@ -130,6 +130,51 @@ function ModalAddSchool({ open, onClose, onSave }) {
                                         label: '12 Nguyễn Văn Bảo, phường 4',
                                     },
                                 ],
+                            },
+                            {
+                                value: 'Quan 1',
+                                label: 'Quận 1',
+                                
+                            },
+                            {
+                                value: 'Quan 2',
+                                label: 'Quận 2',
+                                
+                            },
+                            {
+                                value: 'Quan 3',
+                                label: 'Quận 3',
+                                
+                            },
+                            {
+                                value: 'Quan 4',
+                                label: 'Quận 4',
+                                
+                            },
+                            {
+                                value: 'Quan 5',
+                                label: 'Quận 5',
+                                
+                            },
+                            {
+                                value: 'Quan 6',
+                                label: 'Quận 6',
+                                
+                            },
+                            {
+                                value: 'Quan 7',
+                                label: 'Quận 7',
+                                
+                            },
+                            {
+                                value: 'Quan 8',
+                                label: 'Quận 8',
+                                
+                            },
+                            {
+                                value: 'Thu Duc',
+                                label: 'Thủ Đức',
+                                
                             }
                         ]}
                         style={{ width: '100%' }}

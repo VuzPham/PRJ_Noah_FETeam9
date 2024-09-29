@@ -188,7 +188,7 @@ function School({ onSelectSchool }) {
                 onCancel={() => setIsViewSchoolModalVisible(false)}
                 school={viewingSchool}
             />
-            <h2>School page</h2>
+           
             <hr className={styles.line} />
             <div className={styles['button-actions']}>
                 <div className={styles['crud']}>
