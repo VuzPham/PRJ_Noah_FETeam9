@@ -13,7 +13,7 @@ import ModalEditSchool from '../Modal/Modal_Edit_School';
 import axios from 'axios';
 
 
-function School() {
+function School({ onSelectSchool }) {
     const [allSchools, setAllSchools] = useState([]);
 
     const itemsPerPage = 10;
@@ -28,6 +28,7 @@ function School() {
     const [isEditSchoolModalVisible, setIsEditSchoolModalVisible] = useState(false);
 
     const navigate = useNavigate();
+
 
     const handleNext = () => {
         if ((currentPage + 1) * itemsPerPage < allSchools.length) {
@@ -139,7 +140,6 @@ function School() {
 
     // Fetch data schools
 
-
     useEffect(() => {
         fetchSchools();
     }, [])
@@ -158,8 +158,9 @@ function School() {
         }
     }
 
-    const handleSchoolClick = (subjectID) => {
-        navigate(`/subject/${subjectID}`)
+    const handleSchoolClick = (schoolID) => {
+        localStorage.setItem('selectedSchoolId', schoolID);
+        navigate(`/subject/${schoolID}`)
     }
 
     return (

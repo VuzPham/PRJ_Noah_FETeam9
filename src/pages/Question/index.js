@@ -94,7 +94,7 @@ useEffect(() => {
   
     if (!selectedQuestion) return;
 
-    console.log("Updating question ID:", selectedQuestion.id); // Thêm dòng này để kiểm tra ID
+    console.log("Updating question ID:", selectedQuestion.id); 
 
     try {
         const updatedQuestion = await updateQuestion(selectedQuestion.id, selectedQuestion);

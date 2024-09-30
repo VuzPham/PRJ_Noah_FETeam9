@@ -14,7 +14,7 @@
 .profile-card{
     width: 1030px;
     height: 530px;
-    margin-top: 40px;
+    margin-top: 20px;
     background-color: var(--white);
     border-radius: 20px;
     padding: 20px;
@@ -68,7 +68,7 @@
 .name{
     font-size: 30px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     &.read-only {
         border: none;
         outline: none;
@@ -196,5 +196,14 @@
 
     .input-confirm{
         width: 30%;
+    }
+
+    .input-info{
+        input{
+            padding: 5px 10px;
+        }
+    }
+    .input-confirm{
+        padding: 5px 10px;
     }
 }

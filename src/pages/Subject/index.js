@@ -36,7 +36,7 @@ function Subject() {
             dataIndex: 'semester',
             width: '20%',
             render: semester => {
-                console.log('Check semester bên file subject: ', semester)
+                // console.log('Check semester bên file subject: ', semester)
                 const [start, end] = semester.split('-');
                 if (start && end) {
                     const startMonthYear = moment(start, 'YYYY/MM/DD').format('MM/YYYY');
@@ -196,7 +196,17 @@ function Subject() {
     const handleDeleteConfirm = async () => {
         try {
             await Promise.all(selectedRowKeys.map(async (key) => {
+                //delete subjects by id
                 await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${key}`);
+
+                //get questions by subjectid
+                const response = await axios.get(`${process.env.REACT_APP_API_QUESTION}?subjectid=${key}`);
+                const relatedQuestions = response.data;
+
+                //delete array question base on subjectid
+                await Promise.all(relatedQuestions.map(async (question) => {
+                    await axios.delete(`${process.env.REACT_APP_API_QUESTION}/${question.id}`);
+                }));
             }));
 
             setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
@@ -204,7 +214,7 @@ function Subject() {
             await fetSubjectFromSchool(id);
             setIsDeleteModalVisible(false);
         } catch (error) {
-            console.error('Error deleting subjects:', error);
+            console.error('Error deleting subjects or related questions:', error);
         }
     };
 

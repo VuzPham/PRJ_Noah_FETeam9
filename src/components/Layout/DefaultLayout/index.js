@@ -1,9 +1,9 @@
 import Header from "./Header";
 
-function DefaulLayout({children}) {
+function DefaulLayout({children, selectedSchool, onSelectSchool}) {
     return ( 
         <div>
-            <Header />
+             <Header selectedSchool={selectedSchool} currentPage="subject" />
             <div className="container">
                 <div className="content">
                     {children}

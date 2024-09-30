@@ -79,10 +79,10 @@ function ModalAddSubject({ open, onClose, onSave }) {
                     name="Major Name"
                     label="Major Name"
                     rules={[{ required: true }]}
-                    initialValue={`Nhập môn lập trình`}
+                    // initialValue={`Nhập môn lập trình`}
                 >
                     <Select
-                        defaultValue="Nhập môn lập trình"
+                        // defaultValue="Nhập môn lập trình"
                         style={{
                             width: '100%',
                         }}

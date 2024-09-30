@@ -116,6 +116,14 @@
   "subjects": [
     {
       "universityId": "1",
+      "id": "1",
+      "name": "Môn Học HUIT 1",
+      "majorName": "Môn học bắt buộc Uni-1",
+      "semester": "2024/06/11-2024/12/25",
+      "totalQuestions": 25
+    },
+    {
+      "universityId": "1",
       "id": "2",
       "name": "Môn Học HUIT 2",
       "majorName": "Môn học bắt buộc Uni-1",
