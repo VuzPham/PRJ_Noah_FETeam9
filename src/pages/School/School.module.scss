@@ -63,7 +63,21 @@ body {
         margin-bottom: 40px;
         width        : 25%;
 
+        @media (max-width: 1200px) {
+            width: 33%;
+        }
+
+        @media (max-width: 768px) {
+            width: 50%;
+        }
+
+        @media (max-width: 480px) {
+            width: 100%;
+        }
+
     }
+
+
 
 
 }
@@ -113,10 +127,9 @@ body {
         }
 
         &:hover {
-            cursor       : pointer;
-            // box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-            box-shadow   : 0 0px 8px rgba(191, 184, 184, 0.934);
-            transform    : translateY(-4px);
+            cursor    : pointer;
+            box-shadow: 0 0px 8px rgba(191, 184, 184, 0.934);
+            transform : translateY(-4px);
         }
     }
 
@@ -165,6 +178,7 @@ body {
 
         }
 
+
         .slider-container {
             border-radius   : 3px;
             position        : absolute;
@@ -174,6 +188,7 @@ body {
             background-color: rgba(0, 0, 0, 0.5);
             visibility      : hidden;
 
+
             &.visible {
                 visibility: visible;
             }
@@ -181,17 +196,16 @@ body {
 
 
             a {
-                width           : 100%;
-                display         : block;
-                color           : white;
-                height          : 40px;
-                line-height     : 40px;
-                padding-left    : 14px;
-                border-bottom   : 1px solid rgba(255, 255, 255, .1);
-                border-top      : 1px solid black;
-                // border-left  : 3px solid red;
-                box-sizing      : border-box;
-                align-items     : center;
+                width        : 100%;
+                display      : block;
+                color        : white;
+                height       : 40px;
+                line-height  : 40px;
+                padding-left : 14px;
+                border-bottom: 1px solid rgba(255, 255, 255, .1);
+                border-top   : 1px solid black;
+                box-sizing   : border-box;
+                align-items  : center;
 
                 span {
                     font-size: 20px;
@@ -202,15 +216,42 @@ body {
                     padding-left: 20%;
                     border-left : 4px solid red;
                     color       : red;
-
-                    // color              : #ffff00;
-                    font-weight        : bold;
-                    // background-color: #b93632;
+                    font-weight : bold;
                 }
 
             }
 
+            @media (max-width: 1200px) {
+                left : 0%;
+                width: 100%;
+
+                a {
+                    padding-left: 30%;
+                }
+            }
+
+            @media (max-width: 768px) {
+                left : 0%;
+                width: 100%;
+
+                a {
+                    padding-left: 24%;
+                }
+            }
+
+            @media (max-width: 480px) {
+                left : 0%;
+                width: 100%;
+
+                a {
+                    padding-left: 35%;
+                }
+            }
+
         }
+
+
+
     }
 
     .card-body {
@@ -268,41 +309,4 @@ body {
     display    : flex;
     align-items: center;
     min-height : calc(100% - 1rem);
-}
-
-
-
-.flash-button {
-    color          : white !important;
-    border         : none;
-    padding        : 10px 20px;
-    text-align     : center;
-    text-decoration: none;
-    display        : inline-block;
-    font-size      : 16px;
-    cursor         : pointer;
-    border-radius  : 5px;
-    transition     : background-color 0.3s ease;
-    position       : relative;
-
-    &:active {
-        animation: flash 0.5s;
-    }
-
-    @keyframes flash {
-        0% {
-            background-color: #ffff00;
-            box-shadow      : 0 0 0 rgba(0, 0, 0, 0);
-        }
-
-        50% {
-            background-color: #068506;
-            box-shadow      : 0 0 15px rgba(2, 128, 2, 0.8);
-        }
-
-        100% {
-            background-color: #ffff00;
-            box-shadow      : 0 0 0 rgba(0, 0, 0, 0);
-        }
-    }
 }

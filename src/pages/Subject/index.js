@@ -87,22 +87,7 @@ function Subject() {
 
 
     const { id } = useParams();
-    // const fetSubjectFromSchool = async (id) => {
-    //     try {
-    //         const res = await axios.get(`${process.env.REACT_APP_API_SUBJECT}?universityId=${id}`);
-    //         console.log('Fetch subject from id school: ', res);
-    //         if (res) {
-    //             const subjects = await res.data;
-    //             setInitialData(subjects);
-    //             // setDataSource(subjects);
-    //         } else {
-    //             console.log('Not found!!!!');
-    //         }
 
-    //     } catch (error) {
-    //         console.error('Error fetching subjects:', error);
-    //     }
-    // }
     const [totalQuestions, setTotalQuestions] = useState({});
 
 
@@ -218,22 +203,6 @@ function Subject() {
         }
     };
 
-    //delete 1 id for each subject
-    // const handleDeleteConfirm = async () => {
-    //     try {
-    //         await axios.delete(`${process.env.REACT_APP_API_SUBJECT}/${selectedRowKeys[0]}`);
-    //         setDataSource(dataSource.filter(item => !selectedRowKeys.includes(item.id)));
-    //         setSelectedRowKeys([]);
-    //         setIsDeleteModalVisible(false);
-    //     } catch (error) {
-    //         console.error('Error delete subject:', error);
-    //     }
-
-
-    // };
-
-
-
     const handleSearchClick = () => {
         setTemporarySearchValue(searchValue);
     };
@@ -275,14 +244,8 @@ function Subject() {
     const navigate = useNavigate();
 
 
-
-    //add subject has range date
-
     const handleAddSubjectSave = async (newSubject) => {
         try {
-
-            // console.log('Check value datasoucre in handle add subject: ', Math.max(...dataSource.map(sub=> parseInt(sub.id)),0))
-            // console.log('Check datasoucre in handle add subject: ', Math.max(dataSource.map(subject => parseInt(subject.id)), 0))
             const maxId = Math.max(...dataSource.map(subject => parseInt(subject.id)), 0);
             console.log('Check max ID in subject page: ', maxId);
 
@@ -327,7 +290,7 @@ function Subject() {
 
     return (
         <>
-           
+
             <hr className={styles.line} />
             <div className={styles['button-actions']} style={{ textAlign: 'center' }}>
                 <div className={styles['crud']}>
@@ -369,7 +332,8 @@ function Subject() {
                         marginBottom: 16,
                         width: inputFocused || searchValue ? '50%' : '40%',
                         transition: 'width 0.3s ease',
-                        borderRadius: '20px'
+                        borderRadius: '20px',
+                        height: '40px'
                     }}
                 />
             </div>
