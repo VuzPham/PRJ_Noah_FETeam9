@@ -38,11 +38,12 @@
 }
 .container {
   padding: 20px;
-  width: 90%;
+  width: 95%;
   margin: 0 auto;
   .btn-header{
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
     align-items: center;
     margin-bottom: 30px;
   }
@@ -105,7 +106,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    margin: 0 20px;
+    margin: 0;
     &:hover {
       background-color: #218838;
     }
@@ -130,24 +131,48 @@
     }
   }
 
-  // Search container
-  .search-container {
-    margin-bottom: 20px;
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 10px;
+ /* Base style for the input */
+.search-input {
+  margin-bottom: 16px;
+  width: 40%;
+  transition: width 0.3s ease;
+  border-radius: 20px;
+  padding-right: 40px; /* Đảm bảo chỗ cho icon suffix */
+  padding-left: 10px;
+  padding-bottom: 2px;
+  border: none;
+}
 
-    .search-label {
-      align-self: center;
-    }
+/* Khi input được focus hoặc có giá trị */
+.search-input.focused {
+  width: 50%;
+}
 
-    .search-input {
-      padding: 8px;
-      border-radius: 10px;
-      border: 1px solid #ccc;
-      width: 100%;
-    }
+/* Responsive adjustments cho màn hình nhỏ */
+@media (max-width: 768px) {
+  .search-input {
+    width: 70%;
   }
+
+  .search-input.focused {
+    width: 80% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-input {
+    width: 90%;
+  }
+
+  .search-input.focused {
+    width: 100%; /* Ở mobile khi focus, input sẽ chiếm toàn bộ chiều rộng */
+  }
+}
+
+
+  
+  /* Responsive adjustments cho màn hình nhỏ */
+
 
   // Question table
   .question-table {
@@ -160,7 +185,7 @@
       font-weight: bold;
       border-bottom: 2px solid #dee2e6;
       background-color: #fff;
-      border-radius: 20px 10px;
+      border-radius: 10px;
       padding: 20px;
     }
     &.no-image {
@@ -387,6 +412,18 @@
 
   grid-template-columns: 1fr 10fr;
 }
+.checkbox-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  margin-bottom: 16px; /* Optional spacing below the checkbox */
+}
+
+/* Label for "Image" text */
+.checkbox-label {
+  font-size: 16px; /* Adjust as needed */
+  text-align: right;
+}
 .slideThree {
   width: 80px;
   height: 26px;
@@ -515,7 +552,6 @@
     display: none;
   }
   .btn-add{
-    margin-left: 10% !important;
     margin-bottom: 30px !important;
     width: 80%;
 
@@ -545,7 +581,9 @@
     grid-template-columns: 2fr 1fr !important;
   }
   /* Question table */
-  
+  .checkbox-wrapper {
+    display: none;
+  }  
   .question-table {
     .checkbox{
       display: none;

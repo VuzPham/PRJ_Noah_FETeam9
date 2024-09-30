@@ -8,6 +8,7 @@ import styles from './Question.module.scss';
 import { fetchQuestions, addQuestion, updateQuestion, deleteQuestion } from '../config/api';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import { SearchOutlined, CloseCircleFilled } from '@ant-design/icons'; 
 const QuestionManagement = () => {
   const [questions, setQuestions] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -42,7 +43,16 @@ const QuestionManagement = () => {
         setLoading(false);
     }
 };
+const [searchValue, setSearchValue] = useState('');
+const [temporarySearchValue, setTemporarySearchValue] = useState('');
+const handleSearchClick = () => {
+  setTemporarySearchValue(searchValue);
+};
 
+const handleClearSearch = () => {
+  setSearchValue('');
+  setTemporarySearchValue('');
+};
 const handleImageDelete = () => {
   setNewQuestion({ ...newQuestion, image: '' }); // Clear the image state
 };
@@ -76,7 +86,7 @@ useEffect(() => {
       console.error('Error adding question:', err);
     }
   };
-
+  
   const handleEditQuestion = (question) => {
     setSelectedQuestion(question);
     setCurrentView('editQuestion');
@@ -106,7 +116,7 @@ useEffect(() => {
         alert('Failed to update question: ' + (err.message || 'Unknown error'));
     }
 };
-
+const [inputFocused, setInputFocused] = useState(false);
 
 const handleDeleteQuestion = (id) => {
   setConfirmDeleteQuestionId(id);
@@ -198,27 +208,51 @@ const confirmDelete = async () => {
         <button onClick={handleDeleteSelected} className={styles['btn-delete-selected']} disabled={selectedQuestions.size === 0}>
           <FontAwesomeIcon icon={faTrashAlt} /> Delete Selected
         </button>
-        <div className={styles['slideThree']}>
-          <input
+        <div className={styles['checkbox-wrapper']}>
+    <label htmlFor="toggleImageColumn" className={styles['checkbox-label']}>Image</label>
+    <div className={styles['slideThree']}>
+        <input
             type="checkbox"
             id="toggleImageColumn"
             checked={showImageColumn}
             onChange={() => setShowImageColumn(!showImageColumn)}
-          />
-          <label htmlFor="toggleImageColumn"></label>
-        </div>
+        />
+        <label htmlFor="toggleImageColumn"></label>
+    </div>
+</div>
+
       </div>
 
-      <div className={styles['search-container']}>
-        <label className={styles['search-label']} htmlFor="search">Search:</label>
-        <input
-          id="search"
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className={styles['search-input']}
-        />
-      </div>
+      
+
+      <div className={styles['search-container']} style={{ textAlign: 'center', margin: '16px' }}>
+    <input
+        id="search"
+        type="text"
+        value={searchTerm}
+        placeholder="Search Name"
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onFocus={() => setInputFocused(true)}
+        onBlur={() => setInputFocused(false)}
+        className={`${styles['search-input']} ${inputFocused || searchTerm ? styles['focused'] : ''}`} // Sử dụng class 'focused'
+    />
+    <div style={{
+        position: 'relative',
+        display: 'inline-block',
+        marginLeft: '-35px',
+        cursor: 'pointer'
+    }}>
+        {searchTerm ? (
+            <>
+                <CloseCircleFilled onClick={handleClearSearch} style={{ marginRight: 10 }} />
+                <SearchOutlined onClick={handleSearchClick} />
+            </>
+        ) : (
+            <SearchOutlined onClick={handleSearchClick} />
+        )}
+    </div>
+</div>
+
 
       <div className={styles['question-table']}>
         <div className={`${styles['table-header']} ${!showImageColumn ? styles['no-image'] : ''}`}>
