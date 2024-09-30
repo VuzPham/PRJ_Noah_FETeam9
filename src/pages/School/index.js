@@ -11,12 +11,9 @@ import ModalAddSchool from '../Modal/Modal_Add_School';
 import ModalViewSchool from '../Modal/Modal_View_School';
 import ModalEditSchool from '../Modal/Modal_Edit_School';
 import axios from 'axios';
-
-
 function School() {
     const [allSchools, setAllSchools] = useState([]);
-
-    const itemsPerPage = 10;
+    const itemsPerPage = 8;
     const [currentPage, setCurrentPage] = useState(0);
     const [showAll, setShowAll] = useState(false);
     const [editingSchool, setEditingSchool] = useState(null);
@@ -78,24 +75,16 @@ function School() {
         setIsModalOpen(false);
     };
 
-
-
-
     const handleModalCancel = () => {
         setSelectedSchoolIndex(null);
         setIsModalOpen(false);
     };
-
-
     const handleSaveChanges = async (updatedSchool) => {
         try {
             const res = await axios.put(`${process.env.REACT_APP_API_URL}/${updatedSchool.id}`, updatedSchool);
-            console.log('Check res edit school: ', res);
-
             const updatedSchools = allSchools.map(school =>
                 school.id === updatedSchool.id ? updatedSchool : school
             );
-
             //update
             setAllSchools(updatedSchools);
             setIsEditSchoolModalVisible(false);
@@ -105,13 +94,8 @@ function School() {
     };
 
     const handleAddSchool = async (newSchool) => {
-        // await axios.post(`${process.env.REACT_APP_API_URL}`, newSchool);
-        // setAllSchools(prevSchools => [...prevSchools, newSchool]);
-        // setIsAddSchoolModalVisible(false);
 
         try {
-
-            //set Automatic increment of id
             const maxId = Math.max(...allSchools.map(school => parseInt(school.id)), 0);
             const newId = maxId + 1;
             newSchool.id = newId.toString();
@@ -147,9 +131,6 @@ function School() {
     const [schools, setSchools] = useState([]);
 
     const fetchSchools = async () => {
-        // const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
-        // console.log('Check data after fetching dataa schools: ', res.data);
-        // setAllSchools(res.data);
         try {
             const res = await axios.get(`${process.env.REACT_APP_API_URL}`);
             setAllSchools(res.data);
