@@ -11,13 +11,7 @@ import ModalAddSchool from '../Modal/Modal_Add_School';
 import ModalViewSchool from '../Modal/Modal_View_School';
 import ModalEditSchool from '../Modal/Modal_Edit_School';
 import axios from 'axios';
-<<<<<<< HEAD
-
-
-function School({ onSelectSchool }) {
-=======
 function School() {
->>>>>>> origin/NhuHuynh
     const [allSchools, setAllSchools] = useState([]);
     const itemsPerPage = 8;
     const [currentPage, setCurrentPage] = useState(0);

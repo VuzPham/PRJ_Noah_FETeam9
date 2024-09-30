@@ -111,6 +111,17 @@
       ],
       "date": "01-01-1982",
       "description": "Trường Đại học Ngoại thương (tiếng Anh: Foreign Trade University, FTU), còn được gọi vắn tắt là Ngoại thương, là một trường đại học công lập của Việt Nam, trực thuộc Bộ Giáo dục & Đào tạo và chịu sự quản lý nhà nước của Bộ Giáo dục & Đào tạo, trụ sở tại số 91 phố Chùa Láng, phường Láng Thượng, quận Đống Đa, thủ đô Hà Nội. Trường ra đời năm 1960 từ khởi nguồn tiền thân bộ môn ngoại thương thuộc Trường Đại học Kinh tế – Tài chính (nay là Trường Đại học Kinh tế Quốc dân) do Bộ Ngoại giao trực tiếp quản lý, tập trung vào kinh tế đối ngoại; được chính thức tách ra với tên gọi ban đầu là Trường Cán bộ Ngoại giao – Ngoại thương năm 1962, tích hợp cùng Học viện Ngoại giao.[1] Năm 1967, trường Đại học Ngoại thương chính thức được thành lập thuộc Bộ Ngoại thương,[Ghi chú 1] rồi chuyển sang Bộ Đại học và Trung học Chuyên nghiệp năm 1985, tái thiết trở thành Bộ Giáo dục và Đào tạo từ năm 1984 cho đến ngày nay."
+    },
+    {
+      "id": "11",
+      "name": "21",
+      "image": "",
+      "address": [
+        "TanBinh",
+        "236B Lê Văn Sỹ"
+      ],
+      "date": "12-09-2024",
+      "description": ""
     }
   ],
   "subjects": [
@@ -225,6 +236,20 @@
       "majorName": "Môn học bắt buộc Uni-4",
       "semester": "2024/09/04-2024/10/16",
       "universityId": "4"
+    },
+    {
+      "id": "16",
+      "name": "12",
+      "majorName": "KHTN",
+      "semester": "2024/09/24-2024/10/27",
+      "universityId": "11"
+    },
+    {
+      "id": "17",
+      "name": "21",
+      "majorName": "KHXH",
+      "semester": "2024/09/21-2024/10/27",
+      "universityId": "11"
     }
   ],
   "question": [
